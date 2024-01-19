@@ -1,0 +1,44 @@
+{
+  "private": true,
+  "author": "sunshu <18046567175@163.com>",
+  "scripts": {
+    "build": "umi build",
+    "dev": "umi dev",
+    "postinstall": "umi setup",
+    "prepare": "husky install",
+    "setup": "umi setup",
+    "start": "npm run dev"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,css,less}": [
+      "umi lint"
+    ]
+  },
+  "dependencies": {
+    "@ant-design/cssinjs": "^1.18.2",
+    "@ant-design/icons": "^5.2.6",
+    "ahooks": "^3.7.8",
+    "antd": "^5.12.8",
+    "classnames": "^2.5.1",
+    "crypto-js": "^4.2.0",
+    "js-cookie": "^3.0.5",
+    "umi": "^4.1.0",
+    "zustand": "^4.4.7"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.46",
+    "@types/react-dom": "^18.2.18",
+    "@umijs/lint": "^4.1.0",
+    "@umijs/plugins": "^4.1.0",
+    "eslint": "^8.56.0",
+    "husky": "^8",
+    "lint-staged": "^13.0.0",
+    "prettier": "^2",
+    "prettier-plugin-organize-imports": "^3.2.2",
+    "prettier-plugin-packagejson": "^2.4.3",
+    "stylelint": "^16.1.0",
+    "stylelint-config-standard": "36.0.0",
+    "tailwindcss": "^3",
+    "typescript": "^4"
+  }
+}

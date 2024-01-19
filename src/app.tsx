@@ -1,0 +1,164 @@
+// src/app.ts
+import userAPI from '@/api/sys/user';
+import ErrorShowTypeEnum from '@/enums/sys/ErrorShowTypeEnum';
+import ResponseStructure from '@/interfaces/sys/ResponseStructure';
+import '@/patch/preflight.css';
+import { message, notification } from 'antd';
+import Cookies from 'js-cookie';
+import type { RequestConfig } from 'umi';
+
+const loginPath = '/login';
+
+// export default defineApp({});
+
+const authHeaderInterceptor = (url: string, options: RequestConfig) => {
+  const authHeader = { 'X-Authorization': Cookies.get('TOKEN') };
+  return {
+    url: `${url}`,
+    options: { ...options, interceptors: true, headers: authHeader },
+  };
+};
+
+// 运行时配置
+//RequestConfig 需要配置 200以外状态码报错 200以内根据status，description判断，正确直接返回data,错误返回错误信息和status，
+// 通过请求参数配置错误信息的展示方式
+// 配置线上请求地址，配置cookies请求拦截，未登录页面跳转.
+// 登录时请求用户信息，Initiate中checkToken,如果token存在，请求用户信息，如果不存在，跳转登录页面
+export const request: RequestConfig = {
+  // 统一的请求设定
+  timeout: 1000,
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest',
+  },
+
+  // 错误处理： umi@3 的错误处理方案。
+  errorConfig: {
+    // 错误抛出
+    errorThrower: (res: ResponseStructure) => {
+      const { data, description, status } = res;
+      console.log('errorThrower', res);
+      if (status !== 0) {
+        const error: any = new Error(description);
+        error.name = 'BizError';
+        error.info = { status, description, data };
+        throw error; // 抛出自制的错误
+      }
+    },
+    // 错误接收及处理
+    errorHandler: (error: any, opts: any) => {
+      console.log('errorHandler', error, opts);
+      if (opts?.skipErrorHandler) throw error;
+      // 我们的 errorThrower 抛出的错误。
+      if (error.name === 'BizError') {
+        const errorInfo: ResponseStructure | undefined = error.info;
+        const { errorShowType = ErrorShowTypeEnum.SILENT } = opts;
+        if (errorInfo && errorShowType) {
+          const { description, status } = errorInfo;
+          switch (errorShowType) {
+            case ErrorShowTypeEnum.SILENT:
+              // do nothing
+              break;
+            case ErrorShowTypeEnum.WARN_MESSAGE:
+              message.warning(description);
+              break;
+            case ErrorShowTypeEnum.ERROR_MESSAGE:
+              message.error(description);
+              break;
+            case ErrorShowTypeEnum.NOTIFICATION:
+              notification.open({
+                description: description,
+                message: status,
+              });
+              break;
+            case ErrorShowTypeEnum.REDIRECT:
+              // TODO: redirect
+              break;
+            default:
+              message.error(description);
+          }
+        }
+      } else if (error.response) {
+        // Axios 的错误
+        // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围
+        message.error(`Response status:${error.response.status}`);
+      } else if (error.request) {
+        // 请求已经成功发起，但没有收到响应
+        // \`error.request\` 在浏览器中是 XMLHttpRequest 的实例，
+        // 而在node.js中是 http.ClientRequest 的实例
+        message.error('None response! Please retry.');
+      } else {
+        // 发送请求时出了点问题
+        message.error('Request error, please retry.');
+      }
+    },
+  },
+
+  // 请求拦截器
+  requestInterceptors: [
+    (config) => {
+      console.log('requestInterceptors');
+      // 拦截请求配置，进行个性化处理。
+      const url = config.url.concat('');
+
+      return { ...config, url };
+    },
+    authHeaderInterceptor,
+  ],
+
+  // 响应拦截器
+  responseInterceptors: [
+    (response) => {
+      // 拦截响应数据，进行个性化处理 没有权限跳转登录页
+      const { data, status, description } = response.data;
+      console.log('responseInterceptors', response, data, status);
+      if (status !== '0') {
+        return Promise.reject({
+          name: 'BizError',
+          info: { status, description, data },
+        });
+      }
+
+      console.log('responseInterceptors', response, data, status);
+      return response;
+    },
+  ],
+};
+
+// 全局数据
+export async function getInitialState() {
+  // 在这里判断是否登录，如果登录加载全局数据。在登录回调中refresh这个全局数据
+
+  const fetchUserInfo = async () => {
+    return await userAPI.getUserInfo();
+  };
+
+  const checkToken = async () => {
+    try {
+      await userAPI.checkToken({
+        skipErrorHandler: true,
+      });
+
+      return true;
+    } catch (error) {
+      alert('请登录');
+      // history.push('/login');
+    }
+
+    return false;
+  };
+
+  if (location.pathname !== loginPath) {
+    const isEffectiveToken = await checkToken();
+    if (isEffectiveToken) {
+      const currentUser = await fetchUserInfo();
+      return {
+        fetchUserInfo,
+        currentUser,
+      };
+    }
+  }
+
+  return {
+    fetchUserInfo,
+  };
+}
