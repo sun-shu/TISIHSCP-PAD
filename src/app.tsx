@@ -140,7 +140,6 @@ export async function getInitialState() {
 
       return true;
     } catch (error) {
-      alert('请登录');
       // history.push('/login');
     }
 

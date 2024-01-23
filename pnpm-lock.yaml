@@ -34,6 +34,9 @@ dependencies:
     version: 4.4.7(@types/react@18.2.46)(react@18.2.0)
 
 devDependencies:
+  '@tailwindcss/line-clamp':
+    specifier: ^0.4.4
+    version: 0.4.4(tailwindcss@3.0.0)
   '@types/react':
     specifier: ^18.2.46
     version: 18.2.46
@@ -1999,6 +2002,14 @@ packages:
       deepmerge: 4.3.1
       svgo: 2.8.0
     dev: false
+
+  /@tailwindcss/line-clamp@0.4.4(tailwindcss@3.0.0):
+    resolution: {integrity: sha512-5U6SY5z8N42VtrCrKlsTAA35gy2VSyYtHWCsg1H87NU1SXnEfekTVlrga9fzUDrrHcGi2Lb5KenUWb4lRQT5/g==}
+    peerDependencies:
+      tailwindcss: '>=2.0.0 || >=3.0.0 || >=3.0.0-alpha.1'
+    dependencies:
+      tailwindcss: 3.0.0(autoprefixer@10.4.16)(postcss@8.4.33)
+    dev: true
 
   /@tanstack/match-sorter-utils@8.11.3:
     resolution: {integrity: sha512-2XVYTN6fLFyeIPywDL/HGKIQce3V6oUch1FHweGwxruPKEXip6Z9qg+zWZwNE26WG6CktqJh6NqTq90a42jeEw==}

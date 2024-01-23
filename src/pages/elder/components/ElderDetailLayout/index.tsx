@@ -73,18 +73,22 @@ const ElderDetailLayout = ({ title = '', children }) => {
           </Affix>
         </div>
 
-        <div>
-          <div className="pt-[10px] bg-slate-50 self-stretch flex flex-col  items-start max-md:max-w-full ">
-            <div className="text-3xl font-semibold leading-10 pb-5 ">
+        <div className="pt-[10px] bg-slate-50 self-stretch flex flex-col  items-start w-auto ">
+          <Affix offsetTop={50} className="w-full">
+            <div className="text-3xl font-semibold leading-10 pb-5 bg-gray-F6 pt-[10px] w-full">
               {title}
             </div>
+          </Affix>
 
-            <div className="landscape:hidden mb-[20px]">
-              <ElderInfoCardCol />
-            </div>
-
-            {children}
+          <div className="landscape:hidden">
+            <Affix offsetTop={120}>
+              <div className="bg-gray-F6 py-[20px]">
+                <ElderInfoCardCol />
+              </div>
+            </Affix>
           </div>
+
+          {children}
         </div>
       </div>
     </>

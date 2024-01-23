@@ -34,11 +34,10 @@ export default defineConfig({
     dataField: 'data',
   },
   routes: [
-    { path: '/', component: 'task/list/index' },
+    { path: '/', component: 'evaluate/taskList/index' },
     { path: '/docs', component: 'docs' },
     { path: '/login', component: 'user/login/index', layout: false },
     { path: '/user-info', component: 'user/info/index' },
-    { path: '/task-list', component: 'task/list/index' },
     {
       path: '/elder',
       routes: [
@@ -52,6 +51,29 @@ export default defineConfig({
           path: '/elder/evaluation-report',
           component: 'elder/evaluationReport/index',
         },
+        {
+          path: '/elder/evaluation-report',
+          component: 'elder/evaluationReport/index',
+        },
+      ],
+    },
+    {
+      path: '/evaluate',
+      routes: [
+        {
+          path: '/evaluate',
+          redirect: '/evaluate/task-list',
+        },
+
+        {
+          path: '/evaluate/evaluateTemplate/list',
+          redirect: '/evaluate/evaluateTemplate/list/index',
+        },
+        {
+          path: '/evaluate/evaluate-group',
+          component: 'evaluate/group/index',
+        },
+        { path: '/evaluate/task-list', component: 'evaluate/taskList/index' },
       ],
     },
   ],
