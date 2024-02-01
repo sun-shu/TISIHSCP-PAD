@@ -14,6 +14,9 @@ dependencies:
   ahooks:
     specifier: ^3.7.8
     version: 3.7.8(react@18.2.0)
+  amfe-flexible:
+    specifier: ^2.2.1
+    version: 2.2.1
   antd:
     specifier: ^5.12.8
     version: 5.12.8(react-dom@18.2.0)(react@18.2.0)
@@ -58,6 +61,9 @@ devDependencies:
   lint-staged:
     specifier: ^13.0.0
     version: 13.0.0
+  postcss-pxtorem:
+    specifier: ^6.1.0
+    version: 6.1.0(postcss@8.4.33)
   prettier:
     specifier: ^2
     version: 2.0.0
@@ -3122,6 +3128,10 @@ packages:
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
       uri-js: 4.4.1
+
+  /amfe-flexible@2.2.1:
+    resolution: {integrity: sha512-L2VfvDzoETBjhRptg5u/IUuzHSuxm22JpSRb404p/TBGeRfwWmmNEbB+TFPIP/sS/+pbM18bCFH9QnMojLuPNw==}
+    dev: false
 
   /ansi-escapes@4.3.2:
     resolution: {integrity: sha512-gKXj5ALrKWQLsYG9jlTRmR/xKluxHV+Z9QEwNIgCfM1/uwPMCuzVVnh5mwTd+OuBZcwSIMbqssNWRm1lE51QaQ==}
@@ -7303,6 +7313,14 @@ packages:
       postcss: 8.4.33
       postcss-selector-parser: 6.0.15
     dev: false
+
+  /postcss-pxtorem@6.1.0(postcss@8.4.33):
+    resolution: {integrity: sha512-ROODSNci9ADal3zUcPHOF/K83TiCgNSPXQFSbwyPHNV8ioHIE4SaC+FPOufd8jsr5jV2uIz29v1Uqy1c4ov42g==}
+    peerDependencies:
+      postcss: ^8.0.0
+    dependencies:
+      postcss: 8.4.33
+    dev: true
 
   /postcss-replace-overflow-wrap@4.0.0(postcss@8.4.33):
     resolution: {integrity: sha512-KmF7SBPphT4gPPcKZc7aDkweHiKEEO8cla/GjcBK+ckKxiZslIu3C4GCRW3DNfL0o7yW7kMQu9xlZ1kXRXLXtw==}

@@ -75,7 +75,10 @@ const ElderDetailLayout = ({ title = '', children }) => {
 
         <div className="pt-[10px] bg-slate-50 self-stretch flex flex-col  items-start w-auto ">
           <Affix offsetTop={50} className="w-full">
-            <div className="text-3xl font-semibold leading-10 pb-5 bg-gray-F6 pt-[10px] w-full">
+            <div
+              className="text-[28px]
+ font-semibold leading-10 pb-5 bg-gray-F6 pt-[10px] w-full"
+            >
               {title}
             </div>
           </Affix>

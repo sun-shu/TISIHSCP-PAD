@@ -1,7 +1,6 @@
-import { history } from '@@/core/history';
 import { ProfileFilled, SearchOutlined } from '@ant-design/icons';
 import { Affix, Button, ConfigProvider, Input } from 'antd';
-
+import { history } from 'umi';
 const SearchComponent = () => {
   return (
     <>
@@ -46,10 +45,7 @@ const EvaluateTemplateCard = () => {
   };
 
   return (
-    <div
-      className="relative rounded bg-white w-full flex flex-row items-center justify-between py-[0.63rem] pr-[1.25rem] mb-[20px] pl-[0.63rem] box-border cursor-pointer text-left text-[1.25rem] text-darkslategray font-px"
-      onClick={handleGoToDetailClick}
-    >
+    <div className="relative rounded bg-white w-full flex flex-row items-center justify-between py-[0.63rem] pr-[1.25rem] mb-[20px] pl-[0.63rem] box-border cursor-pointer text-left text-[1.25rem] text-darkslategray font-px">
       <div className="w-[22.38rem] flex flex-row items-center justify-start gap-[0.63rem]">
         <div className="flex-col justify-start items-start inline-flex">
           <div className="w-[220px] text-zinc-700 text-lg font-semibold font-['PingFang SC'] leading-9">
@@ -64,6 +60,9 @@ const EvaluateTemplateCard = () => {
         <Button
           className="px-[10px] py-[4px]"
           type="primary"
+          onClick={() => {
+            history.push('/evaluate/template-list-composite');
+          }}
           icon={<ProfileFilled className="site-form-item-icon  font-bold " />}
         >
           使用模版

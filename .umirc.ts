@@ -1,3 +1,4 @@
+import pxtorem from 'postcss-pxtorem';
 import { defineConfig } from 'umi';
 
 export default defineConfig({
@@ -52,8 +53,8 @@ export default defineConfig({
           component: 'elder/evaluationReport/index',
         },
         {
-          path: '/elder/evaluation-report',
-          component: 'elder/evaluationReport/index',
+          path: '/elder/evaluation-trend',
+          component: 'elder/evaluationTrend/index',
         },
       ],
     },
@@ -64,14 +65,13 @@ export default defineConfig({
           path: '/evaluate',
           redirect: '/evaluate/task-list',
         },
-
         {
-          path: '/evaluate/evaluateTemplate/list',
-          redirect: '/evaluate/evaluateTemplate/list/index',
+          path: '/evaluate/template-list',
+          component: 'evaluateTemplate/list/index',
         },
         {
-          path: '/evaluate/evaluate-group',
-          component: 'evaluate/group/index',
+          path: '/evaluate/template-list-composite',
+          component: 'evaluateTemplate/listOfComposite/index',
         },
         { path: '/evaluate/task-list', component: 'evaluate/taskList/index' },
       ],
@@ -81,7 +81,6 @@ export default defineConfig({
     '@': 'src/',
   },
   npmClient: 'pnpm',
-
   proxy: {
     '/api': {
       target: 'http://jsonplaceholder.typicode.com/',
@@ -95,4 +94,12 @@ export default defineConfig({
     },
   },
   tailwindcss: {},
+
+  extraPostCSSPlugins: [
+    pxtorem({
+      rootValue: 16, // 根据设计稿设置
+      propList: ['*'],
+      unitPrecision: 10,
+    }),
+  ],
 });

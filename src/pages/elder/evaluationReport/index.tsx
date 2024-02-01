@@ -1,4 +1,4 @@
-import ElderDetailLayout from '@/pages/elder/components/ElderDetailLayout';
+import ElderDetailLayout from '@/components/ElderDetailLayout';
 import { useLayoutEffect, useState } from 'react';
 
 const EvaluationReportSummer = () => {

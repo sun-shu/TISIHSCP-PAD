@@ -6,6 +6,7 @@ import styles from './index.less';
 export default function Layout() {
   const px2rem = px2remTransformer({
     rootValue: 16, // 32px = 1rem; @default 16
+    precision: 10,
   });
 
   const isActive = (match, location) => {

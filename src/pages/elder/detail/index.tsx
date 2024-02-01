@@ -1,4 +1,4 @@
-import ElderDetailLayout from '@/pages/elder/components/ElderDetailLayout/index';
+import ElderDetailLayout from '@/components/ElderDetailLayout/index';
 import { CaretDownFilled, DeleteFilled } from '@ant-design/icons';
 import { Button } from 'antd';
 import classNames from 'classnames';
@@ -11,7 +11,7 @@ const LoadMoreDivider = ({ handleLoadMoreBtnClick }) => {
     <div className="w-[620px] h-10 justify-between items-center inline-flex">
       <div className="w-60 h-px bg-zinc-300" />
       <div
-        className="w-[134.67px] flex-col justify-center items-center inline-flex"
+        className="w-[134.67px] flex-col justify-center items-center inline-flex pt-[10px]"
         onClick={handleLoadMoreBtnClick}
       >
         <div className="py-0.5 justify-center items-center gap-2.5 inline-flex">
@@ -90,6 +90,9 @@ const EvaluationTrendCard = () => {
         <Button
           type="primary"
           classNames="text-white text-sm font-normal  leading-tight tracking-wide"
+          onClick={() => {
+            history.push('/elder/evaluation-trend');
+          }}
         >
           查看趋势
         </Button>
@@ -121,7 +124,7 @@ const EvaluationRecordList = ({ defaultShowAll = false }) => {
   };
   return (
     <div className="my-[20px]">
-      <div className=" text-xl font-semibold  leading-[30px]">评估记录</div>
+      <div className="text-xl font-semibold  leading-[30px]">评估记录</div>
       <div>共{recordList.length}条记录</div>
       {recordList.map(() => (
         <div className="py-[10px]">

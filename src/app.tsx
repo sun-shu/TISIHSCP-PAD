@@ -3,13 +3,13 @@ import userAPI from '@/api/sys/user';
 import ErrorShowTypeEnum from '@/enums/sys/ErrorShowTypeEnum';
 import ResponseStructure from '@/interfaces/sys/ResponseStructure';
 import '@/patch/preflight.css';
+// 这个插件是为了适配各种Pad型号，根据宽度自动修改html的font-size，从而实现rem的自适应
+// import 'amfe-flexible';
 import { message, notification } from 'antd';
 import Cookies from 'js-cookie';
 import type { RequestConfig } from 'umi';
 
 const loginPath = '/login';
-
-// export default defineApp({});
 
 const authHeaderInterceptor = (url: string, options: RequestConfig) => {
   const authHeader = { 'X-Authorization': Cookies.get('TOKEN') };

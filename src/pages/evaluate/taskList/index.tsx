@@ -1,8 +1,9 @@
 import CustomTag from '@/components/CustomTag';
-import { SearchOutlined } from '@ant-design/icons';
+import { ProfileFilled, SearchOutlined } from '@ant-design/icons';
 import { Affix, Button, ConfigProvider, Input } from 'antd';
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { history } from 'umi';
 
 // 选项卡Tab枚举
 enum TabTypeEnums {
@@ -14,16 +15,13 @@ enum TabTypeEnums {
 }
 
 // 点击切换记录的展示状态按钮
-const MenuGroup = ({ currentTab, setCurrentTab }) => {
+const MenuGroup = ({ currentTab, setCurrentTab, scrollTop }) => {
   return (
     <div className="flex gap-[10px] items-center landscape:flex-col align-middle">
       <Button
         onClick={() => {
           setCurrentTab(TabTypeEnums.ALL);
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-          });
+          scrollTop();
         }}
         className={classNames(
           currentTab === TabTypeEnums.ALL
@@ -37,10 +35,7 @@ const MenuGroup = ({ currentTab, setCurrentTab }) => {
       <Button
         onClick={() => {
           setCurrentTab(TabTypeEnums.PRE_MONTH);
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-          });
+          scrollTop();
         }}
         className={classNames(
           currentTab === TabTypeEnums.PRE_MONTH
@@ -60,10 +55,7 @@ const MenuGroup = ({ currentTab, setCurrentTab }) => {
         )}
         onClick={() => {
           setCurrentTab(TabTypeEnums.CURRENT_MONTH);
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-          });
+          scrollTop();
         }}
       >
         本月待评估
@@ -77,10 +69,7 @@ const MenuGroup = ({ currentTab, setCurrentTab }) => {
         )}
         onClick={() => {
           setCurrentTab(TabTypeEnums.NEXT_MONTH);
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth',
-          });
+          scrollTop();
         }}
       >
         下月待评估
@@ -140,13 +129,13 @@ const ElderListTemplate = ({ title, data }) => {
       </div>
       <div className="justify-start items-start  gap-[10px] flex  flex-wrap">
         {data.map((item) => (
-          <div className="h-[168px] w-[320px] p-5 bg-white rounded justify-start items-center gap-5 flex">
+          <div className="h-[150px] w-[320px] p-5 bg-white rounded justify-start items-center gap-5 flex">
             <img
               className="w-[106px] h-[106px] rounded"
               src="https://via.placeholder.com/128x128"
               width="80px"
             />
-            <div className=" h-32 flex-col justify-between items-start flex">
+            <div className=" flex-col justify-between h-full items-start flex">
               <div className="flex-col justify-start items-start gap-2 flex">
                 <div className="justify-start items-center gap-5 flex">
                   <div className="text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
@@ -158,15 +147,19 @@ const ElderListTemplate = ({ title, data }) => {
                   1号楼-3层-301-1床
                 </div>
               </div>
-              <div className="rounded border border-teal-500 justify-start items-center flex">
-                <div className="w-[99px] h-[30px] pl-1 pr-2 py-2.5 bg-teal-500 rounded justify-start items-center gap-1 flex">
-                  <div className="w-6 h-6 px-[3px] py-px justify-center items-center flex">
-                    <div className="w-[18px] h-[22px] relative"></div>
-                  </div>
-                  <div className="text-white text-sm font-normal font-['PingFang SC'] leading-tight tracking-wide">
-                    开始评估
-                  </div>
-                </div>
+              <div className="text-right w-full">
+                <Button
+                  onClick={() => {
+                    history.push('/evaluate/template-list');
+                  }}
+                  className="px-[10px] py-[4px]"
+                  type="primary"
+                  icon={
+                    <ProfileFilled className="site-form-item-icon  font-bold " />
+                  }
+                >
+                  开始评估
+                </Button>
               </div>
             </div>
           </div>
@@ -208,6 +201,11 @@ const CurrentMonthElderList = () => {
 
 const TaskListPage: React.FC = () => {
   const [currentTab, setCurrentTab] = useState(TabTypeEnums.ALL);
+  const taskListRef = useRef(null);
+
+  const scrollTop = () => {
+    // taskListRef.current.scrollIntoView();
+  };
 
   const showPreMonthElderList =
     currentTab === TabTypeEnums.ALL || currentTab === TabTypeEnums.PRE_MONTH;
@@ -225,14 +223,18 @@ const TaskListPage: React.FC = () => {
       <div className="flex  items-stretch pb-12 justify-center landscape:gap-[20px]">
         <Affix offsetTop={50}>
           <div className="portrait:hidden pt-[120px]  bg-gray-F6 pr-[40px]">
-            <MenuGroup currentTab={currentTab} setCurrentTab={setCurrentTab} />
+            <MenuGroup
+              currentTab={currentTab}
+              setCurrentTab={setCurrentTab}
+              scrollTop={scrollTop}
+            />
           </div>
         </Affix>
 
         <div className=" bg-slate-50 self-stretch flex flex-col justify-center items-center  ">
           <Affix offsetTop={50}>
             <div className="border-b-[1px] border-solid border-bg- pb-[20px]  pt-[10px] bg-gray-F6">
-              <div className="text-3xl font-semibold leading-10  bg-gray-F6 w-full">
+              <div className="text-[28px] font-semibold leading-10  bg-gray-F6 w-full">
                 任务列表
               </div>
               <div className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide pb-[10px]">
@@ -245,13 +247,14 @@ const TaskListPage: React.FC = () => {
                   <MenuGroup
                     currentTab={currentTab}
                     setCurrentTab={setCurrentTab}
+                    scrollTop={scrollTop}
                   />
                 </div>
               </div>
             </div>
           </Affix>
 
-          <div className="pt-[16px] w-[660px]">
+          <div className="pt-[16px] w-[660px]" ref={taskListRef}>
             {showPreMonthElderList && <PreMonthElderList />}
             {showCurrentMonthElderList && <CurrentMonthElderList />}
             {showNextMonthElderList && <NextMonthElderList />}

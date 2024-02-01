@@ -37,7 +37,7 @@ const Login = () => {
         >
           <div className="mb-[100px]">LOGO区域</div>
 
-          <p className="text-primary text-3xl font-bold	mb-[60px]">登录</p>
+          <p className="text-primary text-[28px] font-bold	mb-[60px]">登录</p>
 
           <Form
             name="normal_login"
@@ -49,10 +49,8 @@ const Login = () => {
               <p className="text-primary text-base">账户</p>
               <Form.Item
                 name="username"
-                className='mb-[20px]'
-                rules={[
-                  { required: true, message: '请输入用户名' },
-                ]}
+                className="mb-[20px]"
+                rules={[{ required: true, message: '请输入用户名' }]}
               >
                 <Input
                   bordered={false}
@@ -64,9 +62,7 @@ const Login = () => {
               <p className="text-primary text-base">密码</p>
               <Form.Item
                 name="password"
-                rules={[
-                  { required: true, message: '请输入密码' },
-                ]}
+                rules={[{ required: true, message: '请输入密码' }]}
               >
                 <Input.Password
                   placeholder="密码"
