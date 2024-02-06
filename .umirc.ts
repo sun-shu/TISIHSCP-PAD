@@ -66,6 +66,10 @@ export default defineConfig({
           redirect: '/evaluate/task-list',
         },
         {
+          path: '/evaluate/add',
+          component: 'evaluate/add/index',
+        },
+        {
           path: '/evaluate/template-list',
           component: 'evaluateTemplate/list/index',
         },

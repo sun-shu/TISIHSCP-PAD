@@ -121,7 +121,7 @@ const EditCompositeEvaluatePage = () => {
     <>
       <ElderDetailLayout
         title={
-          <div> 
+          <div>
             <span>综合评估</span>
             <ProgressInfo />
           </div>

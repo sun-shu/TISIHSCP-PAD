@@ -1,6 +1,7 @@
 import { ProfileFilled, SearchOutlined } from '@ant-design/icons';
 import { Affix, Button, ConfigProvider, Input } from 'antd';
 import { history } from 'umi';
+
 const SearchComponent = () => {
   return (
     <>
