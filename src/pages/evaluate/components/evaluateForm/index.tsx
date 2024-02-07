@@ -1,11 +1,13 @@
 // TODO    这里要做的是 渲染元素表单，输入默认值和数据？还是ID（其实关系不大），不关心外界元素 只关心提交
+import ECheckBox from '@/pages/evaluate/components/evaluateForm/ECheckBox';
+import ERadio from '@/pages/evaluate/components/evaluateForm/ERadio';
 import { ConfigProvider, Form } from 'antd';
 import React from 'react';
-import { EInput } from './component';
+import { EInput, ESelect } from './component';
 
 const { ETextArea } = EInput;
-//  在这个层级判断 超过多少个用点选或者多选
 
+// 表单组件的基础结构
 const FormItemBaseContainer = ({ item, children }) => (
   <div>
     <div className="w-[620px] h-[30px] justify-start items-center gap-2.5 inline-flex mb-[10px]  text-black">
@@ -45,6 +47,25 @@ const EvaluateFormTemplates = ({ evaluateTemplate = [] }) => {
       return (
         <FormItemBaseContainer item={item}>
           <ETextArea rows={4} />
+        </FormItemBaseContainer>
+      );
+    },
+    SINGLE_SELECT: (item) => {
+      // 单选多选，点选下拉框
+      return (
+        <FormItemBaseContainer item={item}>
+          {item.options.length > 4 ? <ESelect></ESelect> : <ERadio></ERadio>}
+        </FormItemBaseContainer>
+      );
+    },
+    MULTI_SELECT: (item) => {
+      return (
+        <FormItemBaseContainer item={item}>
+          {item.options.length > 4 ? (
+            <ESelect mode="multiple"></ESelect>
+          ) : (
+            <ECheckBox options={item.options}></ECheckBox>
+          )}
         </FormItemBaseContainer>
       );
     },
@@ -100,9 +121,108 @@ const evaluateFormComponent = ({ evaluateData = {}, defaultData = {} }) => {
       name: 'textarea',
     },
     {
-      type: 'SELECT',
+      type: 'SINGLE_SELECT',
       label: '下拉框',
       name: 'select',
+      options: [
+        {
+          name: 'jack',
+          label: 'Jack',
+        },
+        {
+          name: 'lucy',
+          label: 'Lucy',
+        },
+        {
+          name: 'Yiminghe',
+          label: 'yiminghe',
+        },
+        {
+          name: 'disabled',
+          label: 'Disabled',
+          disabled: true,
+        },
+      ],
+    },
+    {
+      type: 'MULTI_SELECT',
+      label: '多选框',
+      name: 'checkbox',
+      options: [
+        {
+          label: 'jack',
+          value: 'Jack',
+        },
+        {
+          value: 'lucy',
+          label: 'Lucy',
+        },
+        {
+          value: 'Yiminghe',
+          label: 'yiminghe',
+        },
+        {
+          value: 'disabled',
+          label: 'Disabled',
+          disabled: true,
+        },
+      ],
+    },
+    {
+      type: 'SINGLE_SELECT',
+      label: '单选框',
+      name: 'radio',
+      options: [
+        {
+          value: 'jack',
+          label: 'Jack',
+        },
+        {
+          value: 'lucy',
+          label: 'Lucy',
+        },
+        {
+          value: 'Yiminghe',
+          label: 'yiminghe',
+        },
+        {
+          value: 'disabled',
+          label: 'Disabled',
+          disabled: true,
+        },
+        {
+          value: 'jack11',
+          label: 'Jack1',
+        },
+      ],
+    },
+    {
+      type: 'MULTI_SELECT',
+      label: '单选框',
+      name: 'radio',
+      options: [
+        {
+          value: 'jack',
+          label: 'Jack',
+        },
+        {
+          value: 'lucy',
+          label: 'Lucy',
+        },
+        {
+          value: 'Yiminghe',
+          label: 'yiminghe',
+        },
+        {
+          value: 'disabled',
+          label: 'Disabled',
+          disabled: true,
+        },
+        {
+          value: 'jack11',
+          label: 'Jack1',
+        },
+      ],
     },
     {
       type: 'RADIO',
