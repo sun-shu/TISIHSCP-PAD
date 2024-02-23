@@ -1,6 +1,8 @@
 import { Input, Select } from 'antd';
 
 const ESelect = (props) => {
+  const { value, onChange } = props;
+
   return (
     <div className="flex gap-[20px] h-[34px]">
       <Select
@@ -11,10 +13,11 @@ const ESelect = (props) => {
           { value: 'lucy', label: 'Lucy' },
           { value: 'Yiminghe', label: 'yiminghe' },
           { value: 'disabled', label: 'Disabled', disabled: true },
+          { value: 'other', label: '其他' },
         ]}
         {...props}
       />
-      <Input placeholder="补充描述" />
+      {value == 'other' && <Input placeholder="补充描述" />}
     </div>
   );
 };

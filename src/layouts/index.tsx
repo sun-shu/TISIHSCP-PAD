@@ -27,7 +27,7 @@ export default function Layout() {
           >
             LOGO区域
           </div>
-          <ul className="flex flex-1 justify-start text-lg">
+          <ul className="flex flex-1 justify-start text-lg mb-0">
             <li>
               <NavLink
                 strict

@@ -3,9 +3,11 @@ import ECheckBox from '@/pages/evaluate/components/evaluateForm/ECheckBox';
 import ERadio from '@/pages/evaluate/components/evaluateForm/ERadio';
 import { ConfigProvider, Form } from 'antd';
 import React from 'react';
-import { EInput, ESelect } from './component';
+
+import { EInput, ESelect, ETable } from './component';
 
 const { ETextArea } = EInput;
+
 
 // 表单组件的基础结构
 const FormItemBaseContainer = ({ item, children }) => (
@@ -34,7 +36,9 @@ const FormItemBaseContainer = ({ item, children }) => (
   </div>
 );
 const EvaluateFormTemplates = ({ evaluateTemplate = [] }) => {
+//
   console.log(evaluateTemplate, EInput);
+
   const templateConfig = {
     INPUT: (item) => {
       return (
@@ -61,11 +65,14 @@ const EvaluateFormTemplates = ({ evaluateTemplate = [] }) => {
     MULTI_SELECT: (item) => {
       return (
         <FormItemBaseContainer item={item}>
-          {item.options.length > 4 ? (
-            <ESelect mode="multiple"></ESelect>
-          ) : (
-            <ECheckBox options={item.options}></ECheckBox>
-          )}
+          <ECheckBox />
+        </FormItemBaseContainer>
+      );
+    },
+    TABLE: (item) => {
+      return (
+        <FormItemBaseContainer item={item}>
+          <ETable />
         </FormItemBaseContainer>
       );
     },
@@ -79,6 +86,7 @@ const EvaluateFormTemplates = ({ evaluateTemplate = [] }) => {
             colorBorder: '#5E5E5E',
             colorText: '#5E5E5E',
             borderRadius: 4,
+            fontSize: 18,
             colorTextPlaceholder: '#5E5E5E',
             colorBgContainerDisabled: 'none',
           },
@@ -88,7 +96,6 @@ const EvaluateFormTemplates = ({ evaluateTemplate = [] }) => {
               activeBorderColor: 'none',
               paddingInline: 10,
               paddingBlock: 2,
-              fontSize: 18,
             },
             Select: {
               borderRadius: 4,
@@ -231,6 +238,9 @@ const evaluateFormComponent = ({ evaluateData = {}, defaultData = {} }) => {
     },
     {
       type: 'CHECKBOX',
+    },
+    {
+      type: 'TABLE',
     },
   ]);
 
