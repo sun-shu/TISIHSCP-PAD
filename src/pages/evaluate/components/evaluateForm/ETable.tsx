@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Modal, Button, Divider, ConfigProvider } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
+import FormTemplate from './index';
 // 需要先确定好数据结构，然后再进行组件的拆分
 // 1.确定数据结构
 
@@ -82,7 +83,7 @@ const ETableForm = (props) => {
           <div className="w-full h-[0px] border border-gray-D8"></div>
           <div className="mt-[10px]">
 
-
+            <FormTemplate></FormTemplate>
           </div>
         </Modal>
       </ConfigProvider>

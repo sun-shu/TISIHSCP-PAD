@@ -1,6 +1,8 @@
 import CustomTag from '@/components/CustomTag';
 import { Affix, Image } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import ElderApi from '@/api/elder';
 
 const ElderInfoCardCol = () => {
   return (
@@ -60,16 +62,21 @@ const ElderInfoCardRow = (props) => {
   );
 };
 
-const ElderDetailLayout = ({ title = '', children }) => {
-  useEffect(() => {
+const ElderDetailLayout = ({ title = '', children, elderId }) => {
+  const [elderInfo, setElderInfo] = useState({});
+  useEffect(async () => {
     //loading elder data
+    console.log(elderId);
+    const elderInfo = await ElderApi.getElderInfo(elderId);
+    setElderInfo(elderInfo);
   }, []);
+
   return (
     <>
       <div className="flex  items-stretch pb-12 justify-center gap-[20px] px-[70px]">
         <div className="portrait:hidden pt-[20px] w-[200px]  bg-gray-F6">
           <Affix offsetTop={70}>
-            <ElderInfoCardRow />
+            <ElderInfoCardRow elderInfo={elderInfo} />
           </Affix>
         </div>
 
@@ -86,7 +93,7 @@ const ElderDetailLayout = ({ title = '', children }) => {
           <div className="landscape:hidden">
             <Affix offsetTop={120}>
               <div className="bg-gray-F6 py-[20px]">
-                <ElderInfoCardCol />
+                <ElderInfoCardCol elderInfo={elderInfo} />
               </div>
             </Affix>
           </div>

@@ -1,6 +1,6 @@
 import { history } from '@@/core/history';
 import {
-  CaretDownOutlined,
+  CaretDownOutlined, CloseCircleOutlined,
   ProfileFilled,
   SearchOutlined,
   UserOutlined,
@@ -37,11 +37,13 @@ const ListComponent = () => {
             <div className="w-[22.38rem] flex flex-row items-center justify-start gap-[0.63rem]">
               <Avatar shape="square" size={64} icon={<UserOutlined />} />
 
-              <div className="h-[5rem] flex flex-none flex-col items-center justify-between py-[0.63rem] px-[0rem] box-border flex-none">
+              <div
+                className="h-[5rem] flex flex-none flex-col items-center justify-between py-[0.63rem] px-[0rem] box-border flex-none">
                 <span className="relative leading-[1.88rem] font-semibold">
                   郑文锦
                 </span>
-                <div className="relative rounded-[10px] bg-primary-D9 w-full h-[1.5rem] flex flex-row items-center justify-start py-[0rem] px-[0.63rem] box-border text-left text-[0.75rem] text-fg-main-bluegreen font-pingfang-sc">
+                <div
+                  className="relative rounded-[10px] bg-primary-D9 w-full h-[1.5rem] flex flex-row items-center justify-start py-[0rem] px-[0.63rem] box-border text-left text-[0.75rem] text-fg-main-bluegreen font-pingfang-sc">
                   <span className="relative tracking-[0.05em] leading-[1.13rem] text-primary">
                     2级照护
                   </span>
@@ -87,6 +89,11 @@ const ListComponent = () => {
 };
 
 const SearchComponent = () => {
+  const resetFilter = () => {
+    // 重置筛选条件
+    //  重置列表数据
+    console.log('resetFilter');
+  };
   return (
     <>
       <ConfigProvider
@@ -121,7 +128,7 @@ const SearchComponent = () => {
 
           <div className="flex gap-[10px] justify-between">
             <Select
-              defaultValue="lucy"
+              placeholder="楼宇"
               style={{ width: '100%' }}
               suffixIcon={<CaretDownOutlined className="pointer-events-none	" />}
               options={[
@@ -132,7 +139,7 @@ const SearchComponent = () => {
               ]}
             />
             <Select
-              defaultValue="lucy"
+              placeholder="楼层"
               style={{ width: '100%' }}
               suffixIcon={<CaretDownOutlined className="pointer-events-none	" />}
               options={[
@@ -143,7 +150,7 @@ const SearchComponent = () => {
               ]}
             />
             <Select
-              defaultValue="lucy"
+              placeholder="房间号"
               style={{ width: '100%' }}
               suffixIcon={<CaretDownOutlined className="pointer-events-none	" />}
               options={[
@@ -154,7 +161,7 @@ const SearchComponent = () => {
               ]}
             />
             <Select
-              defaultValue="lucy"
+              placeholder="床位"
               style={{ width: '100%' }}
               suffixIcon={<CaretDownOutlined className="pointer-events-none	" />}
               options={[
@@ -164,6 +171,20 @@ const SearchComponent = () => {
                 { value: 'disabled', label: 'Disabled', disabled: true },
               ]}
             />
+            <Select
+              placeholder="护理等级"
+              style={{ width: '100%' }}
+              suffixIcon={<CaretDownOutlined className="pointer-events-none	" />}
+              options={[
+                { value: 'jack', label: 'Jack' },
+                { value: 'lucy', label: 'Lucy' },
+                { value: 'Yiminghe', label: 'yiminghe' },
+                { value: 'disabled', label: 'Disabled', disabled: true },
+              ]}
+            />
+          </div>
+
+          <div className="text-right" onClick={resetFilter}><CloseCircleOutlined className="mr-[8px] mt-[10px]" />清除筛选条件
           </div>
         </div>
       </ConfigProvider>

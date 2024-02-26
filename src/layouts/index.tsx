@@ -2,6 +2,8 @@ import { px2remTransformer, StyleProvider } from '@ant-design/cssinjs';
 import classNames from 'classnames';
 import { history, Link, NavLink, Outlet } from 'umi';
 import styles from './index.less';
+import { Image } from 'antd';
+import Logo from '@/assets/logo.png';
 
 export default function Layout() {
   const px2rem = px2remTransformer({
@@ -14,6 +16,7 @@ export default function Layout() {
 
     return location.path.includes('elder');
   };
+
   return (
     <StyleProvider transformers={[px2rem]}>
       <div
@@ -25,7 +28,7 @@ export default function Layout() {
               history.push('/evaluate/task-list');
             }}
           >
-            LOGO区域
+            <img src={Logo} className="h-[40px]" />
           </div>
           <ul className="flex flex-1 justify-start text-lg mb-0">
             <li>
