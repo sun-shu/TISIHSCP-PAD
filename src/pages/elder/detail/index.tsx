@@ -1,9 +1,10 @@
 import ElderDetailLayout from '@/components/ElderDetailLayout/index';
-import { CaretDownFilled, DeleteFilled } from '@ant-design/icons';
+import { CaretDownFilled } from '@ant-design/icons';
 import { Button } from 'antd';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { history } from 'umi';
+import LookIcon from '@/assets/icon/look.png';
 
 // 加载更多分割线
 const LoadMoreDivider = ({ handleLoadMoreBtnClick }) => {
@@ -58,13 +59,12 @@ const EvaluationRecordCard = ({ reportTitle, reportDate, evaluator }) => {
             history.push('/elder/evaluation-report');
           }}
           type="primary"
-          classNames="text-white text-sm font-normal  leading-tight tracking-wide"
+          className="text-white text-sm flex"
+
+          icon={<img src={LookIcon} width={24} height={24} />}
         >
           查看报告
         </Button>
-        <div className="w-6 h-6 relative">
-          <DeleteFilled />
-        </div>
       </div>
     </div>
   );
@@ -89,10 +89,12 @@ const EvaluationTrendCard = () => {
         </div>
         <Button
           type="primary"
-          classNames="text-white text-sm font-normal  leading-tight tracking-wide"
+          className="text-white text-sm flex"
           onClick={() => {
             history.push('/elder/evaluation-trend');
           }}
+          icon={<img src={LookIcon} width={24} height={24} />}
+
         >
           查看趋势
         </Button>
@@ -184,19 +186,6 @@ const MenuGroup = ({ currentTab, setCurrentTab }) => {
   return (
     <div className="border-b border-solid border-b-[color:var(--BG-,#DBDBDB)] pb-5 flex gap-[10px]">
       <Button
-        onClick={() => {
-          setCurrentTab(TabTypeEnums.ALL);
-        }}
-        className={classNames(
-          currentTab === TabTypeEnums.ALL
-            ? 'text-primary hover:text-primary border-primary'
-            : '',
-          'px-[20px] py-[10px] text-sm leading-5 tracking-wider justify-center items-stretch border bg-white rounded-3xl border-solid h-auto',
-        )}
-      >
-        全部
-      </Button>
-      <Button
         className={classNames(
           currentTab === TabTypeEnums.RECORD
             ? 'text-primary hover:text-primary border-primary'
@@ -235,7 +224,7 @@ enum TabTypeEnums {
 
 // 长者详情
 const ElderDetail = () => {
-  const [currentTab, setCurrentTab] = useState(TabTypeEnums.ALL);
+  const [currentTab, setCurrentTab] = useState(TabTypeEnums.RECORD);
 
   return (
     <>
@@ -244,10 +233,6 @@ const ElderDetail = () => {
           <MenuGroup currentTab={currentTab} setCurrentTab={setCurrentTab} />
 
           <div>
-            <div hidden={currentTab !== TabTypeEnums.ALL}>
-              <EvaluationRecordList defaultShowAll={false} />
-              <EvaluationTrendList defaultShowAll={false} />
-            </div>
 
             <div hidden={currentTab !== TabTypeEnums.RECORD}>
               <EvaluationRecordList defaultShowAll={true} />

@@ -4,6 +4,7 @@ import { Affix, Button, ConfigProvider, Input } from 'antd';
 import classNames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 import { history } from 'umi';
+import EvaluateIcon from '@/assets/icon/evalute-1.png';
 
 // 选项卡Tab枚举
 enum TabTypeEnums {
@@ -79,6 +80,7 @@ const MenuGroup = ({ currentTab, setCurrentTab, scrollTop }) => {
 };
 
 const SearchComponent = () => {
+
   return (
     <>
       <ConfigProvider
@@ -95,7 +97,7 @@ const SearchComponent = () => {
           },
         }}
       >
-        <div className=" min-w-[660px]">
+        <div className="w-full">
           <Input
             prefix={
               <SearchOutlined className="site-form-item-icon mr-[10px]" />
@@ -118,50 +120,71 @@ const SearchComponent = () => {
 
 const ElderListTemplate = ({ title, data }) => {
   return (
-    <div className="  flex-col justify-start items-start gap-2.5 flex mt-[20px]">
+    <div className="  flex-col justify-start items-start gap-[20px] flex mt-[20px]">
       <div className="flex-col justify-start items-start flex">
         <div className="text-zinc-700 text-[28px] font-semibold font-['PingFang SC'] leading-[42px]">
           {title}
         </div>
         <div className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide">
-          2023年12月28日
+          上月有3个评估任务未完成
         </div>
       </div>
       <div className="justify-start items-start  gap-[10px] flex  flex-wrap">
         {data.map((item) => (
-          <div className="h-[150px] w-[320px] p-5 bg-white rounded justify-start items-center gap-5 flex">
-            <img
-              className="w-[106px] h-[106px] rounded"
-              src="https://via.placeholder.com/128x128"
-              width="80px"
-            />
-            <div className=" flex-col justify-between h-full items-start flex">
-              <div className="flex-col justify-start items-start gap-2 flex">
-                <div className="justify-start items-center gap-5 flex">
-                  <div className="text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-                    张毅
+          <div className="h-[206px] landscape:w-[380px] portrait:w-[300px] p-5 bg-white rounded flex-center flex-col">
+            <div className="w-full justify-between items-center gap-5 flex">
+              <img
+                className="w-[104px] h-[104px] rounded"
+                src="https://via.placeholder.com/128x128"
+              />
+              <div className=" flex-1 flex-col justify-between h-full items-start flex">
+                <div className="flex-col justify-between w-full items-start gap-2 flex">
+                  <div className="w-full justify-between items-center gap-5 flex">
+                    <div className="text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                      张毅 <span>78岁</span>
+                    </div>
+                    <div className="portrait:hidden">
+                      <CustomTag text="2级照护" />
+                    </div>
                   </div>
-                  <CustomTag text="2级照护" />
+
+                  <div className="landscape:hidden">
+                    <CustomTag text="2级照护" />
+                  </div>
+                  <div
+                    className="w-full justify-between line-clamp-1 text-zinc-700 text-sm font-semibold font-['PingFang SC'] leading-normal tracking-wide">
+                    1号楼-3层-301-1床
+                  </div>
+
+                  <div
+                    className="text-zinc-700 text-xs  leading-[18px] tracking-wide">入院时间：2023-12-02
+                  </div>
                 </div>
-                <div className="line-clamp-1 text-zinc-700 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">
-                  1号楼-3层-301-1床
-                </div>
-              </div>
-              <div className="text-right w-full">
-                <Button
-                  onClick={() => {
-                    history.push('/evaluate/template-list');
-                  }}
-                  className="px-[10px] py-[4px]"
-                  type="primary"
-                  icon={
-                    <ProfileFilled className="site-form-item-icon  font-bold " />
-                  }
-                >
-                  开始评估
-                </Button>
               </div>
             </div>
+            <div className="flex gap-[10px] border-t border-zinc-300 w-full pt-[10px] mt-[10px] items-center">
+
+              <div>
+                <div className="line-clamp-1 font-bold">评估项目名称评估项目名称评估项目名称</div>
+                <div
+                  className="text-zinc-700 text-xs  font-['PingFang SC'] leading-[18px] tracking-wide">计划日期：12-02
+                </div>
+              </div>
+              <Button
+                onClick={() => {
+                  history.push('/evaluate/template-list');
+                }}
+                className="px-[10px] py-[4px] flex"
+                type="primary"
+                icon={
+                  <img src={EvaluateIcon} className="site-form-item-icon  font-bold " width={24} />
+                }
+              >
+                开始评估
+              </Button>
+            </div>
+
+
           </div>
         ))}
       </div>
@@ -173,7 +196,7 @@ const ElderListTemplate = ({ title, data }) => {
 const PreMonthElderList = () => {
   return (
     <ElderListTemplate
-      title="上月待评估长者列表"
+      title={<span className="text-red-FF">上月待评估长者列表</span>}
       data={[1, 2, 3, 4]}
     ></ElderListTemplate>
   );
@@ -222,7 +245,7 @@ const TaskListPage: React.FC = () => {
     <>
       <div className="flex  items-stretch pb-12 justify-center landscape:gap-[20px]">
         <Affix offsetTop={50}>
-          <div className="portrait:hidden pt-[120px]  bg-gray-F6 pr-[40px]">
+          <div className="portrait:hidden pt-[120px]  bg-gray-F6 pr-[20px]">
             <MenuGroup
               currentTab={currentTab}
               setCurrentTab={setCurrentTab}
@@ -231,13 +254,14 @@ const TaskListPage: React.FC = () => {
           </div>
         </Affix>
 
-        <div className=" bg-slate-50 self-stretch flex flex-col justify-center items-center  ">
-          <Affix offsetTop={50}>
+        <div className="bg-slate-50 self-stretch flex flex-col justify-center items-center  ">
+          <Affix offsetTop={50} className="w-full">
             <div className="border-b-[1px] border-solid border-bg- pb-[20px]  pt-[10px] bg-gray-F6">
               <div className="text-[28px] font-semibold leading-10  bg-gray-F6 w-full">
                 任务列表
               </div>
-              <div className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide pb-[10px]">
+              <div
+                className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide pb-[10px]">
                 本周共有 10位长者待评估
               </div>
 
@@ -254,7 +278,7 @@ const TaskListPage: React.FC = () => {
             </div>
           </Affix>
 
-          <div className="pt-[16px] w-[660px]" ref={taskListRef}>
+          <div className="pt-[16px] portrait:w-[620px] landscape:w-[800px]" ref={taskListRef}>
             {showPreMonthElderList && <PreMonthElderList />}
             {showCurrentMonthElderList && <CurrentMonthElderList />}
             {showNextMonthElderList && <NextMonthElderList />}

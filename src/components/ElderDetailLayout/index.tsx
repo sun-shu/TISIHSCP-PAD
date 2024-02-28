@@ -3,6 +3,7 @@ import { Affix, Image } from 'antd';
 import { useEffect, useState } from 'react';
 
 import ElderApi from '@/api/elder';
+import React from 'react';
 
 const ElderInfoCardCol = () => {
   return (
@@ -16,11 +17,8 @@ const ElderInfoCardCol = () => {
           <div className="text-zinc-700 text-xl font-semibold  leading-[30px]">
             李世海
           </div>
-          <div className="h-6 px-2.5 bg-slate-200 rounded-[10px] justify-start items-center gap-2.5 inline-flex">
-            <div className="text-teal-500 text-xs font-semibold  leading-[18px] tracking-wide">
-              2级照护
-            </div>
-          </div>
+          <CustomTag text="2级照护" />
+
         </div>
         <div className="flex-col justify-start items-start gap-2.5 inline-flex">
           <div className="text-zinc-700 text-base font-semibold  leading-normal tracking-wide">
@@ -74,8 +72,9 @@ const ElderDetailLayout = ({ title = '', children, elderId }) => {
   return (
     <>
       <div className="flex  items-stretch pb-12 justify-center gap-[20px] px-[70px]">
-        <div className="portrait:hidden pt-[20px] w-[200px]  bg-gray-F6">
+        <div className="landscape:block hidden pt-[20px] w-[200px]  bg-gray-F6">
           <Affix offsetTop={70}>
+            {/*横屏-竖向*/}
             <ElderInfoCardRow elderInfo={elderInfo} />
           </Affix>
         </div>
@@ -90,9 +89,10 @@ const ElderDetailLayout = ({ title = '', children, elderId }) => {
             </div>
           </Affix>
 
-          <div className="landscape:hidden">
+          <div className="portrait:block hidden">
             <Affix offsetTop={120}>
               <div className="bg-gray-F6 py-[20px]">
+                {/*竖屏-横向*/}
                 <ElderInfoCardCol elderInfo={elderInfo} />
               </div>
             </Affix>

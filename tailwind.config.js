@@ -17,6 +17,8 @@ module.exports = {
         'gray-D8': '#D8D8D8',
         'gray-D8': '#D8D8D8',
         'red-FF': '#FF7144',
+        'golden-F6': '#F6E5CF',
+        'golden-F4': '#FAD4A6',
       },
       fontSize: {
         xs: '12px',

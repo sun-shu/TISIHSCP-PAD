@@ -3,6 +3,9 @@ import ProgressBar from '@/components/ProgressBar';
 import { history } from '@@/core/history';
 import { ProfileFilled } from '@ant-design/icons';
 import { Button } from 'antd';
+import LookIcon from '@/assets/icon/look.png';
+import FinishIcon from '@/assets/icon/finish.png';
+import EvaluteIcon from '@/assets/icon/evalute-1.png';
 
 const ProgressInfo = () => {
   return (
@@ -17,43 +20,45 @@ const ProgressInfo = () => {
   );
 };
 
-const FilledList = ({ compositeStatus = 1, data = [1, 2, 3, 4] }) => {
+const FilledList = ({ compositeStatus = 2, data = [1, 2, 3, 4] }) => {
   return (
     <>
       {data.map((item) => (
         <div className="h-[170px] p-5 bg-white rounded-[20px] flex-col justify-start items-center inline-flex  w-full">
           <div className="self-stretch h-[100px] flex-col text-justify items-start gap-1 flex">
-            <div className="self-stretch h-[60px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px] line-clamp-2">
+            <div
+              className="self-stretch h-[60px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px] line-clamp-2">
               认知症周边症状认知症周边症状认知症周边症状认知症周边症状
             </div>
             <div className="text-zinc-700 text-lg font-normal font-['PingFang SC'] leading-9">
               共10题
             </div>
+
           </div>
-          <div className="h-[30px] flex-col justify-start items-end gap-2.5 flex w-full">
+          <div className="h-[30px]  justify-between items-center gap-2.5 flex w-full">
+            <div className="text-golden-F4 text-lg ">修改比例70%</div>
             {compositeStatus === 1 ? (
               <Button
-                disabled
-                className="px-[10px] py-[4px]"
+                className="px-[10px] py-[4px] bg-golden-F4 flex text-black"
                 type="primary"
                 onClick={() => {
                   history.push('/evaluate/template-list-composite');
                 }}
                 icon={
-                  <ProfileFilled className="site-form-item-icon  font-bold " />
+                  <img src={FinishIcon} width={24} />
                 }
               >
                 已完成
               </Button>
             ) : (
               <Button
-                className="px-[10px] py-[4px]"
+                className="px-[10px] py-[4px] flex"
                 type="primary"
                 onClick={() => {
                   history.push('/evaluate/template-list-composite');
                 }}
                 icon={
-                  <ProfileFilled className="site-form-item-icon  font-bold " />
+                  <img src={LookIcon} width={24} />
                 }
               >
                 查看
@@ -72,7 +77,8 @@ const NotFilledList = ({ data = [1, 2, 3, 4] }) => {
       {data.map((item) => (
         <div className="h-[170px] p-5 bg-white rounded-[20px] flex-col justify-start items-center inline-flex w-full">
           <div className="self-stretch h-[100px] flex-col text-justify items-start gap-1 flex">
-            <div className="self-stretch h-[60px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px] line-clamp-2">
+            <div
+              className="self-stretch h-[60px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px] line-clamp-2">
               认知症周边症状认知症周边症状认知症周边症状认知症周边症状
             </div>
             <div className="text-zinc-700 text-lg font-normal font-['PingFang SC'] leading-9">
@@ -81,13 +87,13 @@ const NotFilledList = ({ data = [1, 2, 3, 4] }) => {
           </div>
           <div className="h-[30px] flex-col justify-start items-end gap-2.5 flex w-full">
             <Button
-              className="px-[10px] py-[4px]"
+              className="px-[10px] py-[4px] flex"
               type="primary"
               onClick={() => {
                 history.push('/evaluate/template-list-composite');
               }}
               icon={
-                <ProfileFilled className="site-form-item-icon  font-bold " />
+                <img src={EvaluteIcon} width={24} />
               }
             >
               去填写
@@ -112,7 +118,7 @@ const EditCompositeEvaluatePage = () => {
   const taskId = 0;
   const templateId = 0;
   const compositeId = 0;
-  const compositeStatus = 0;
+  const compositeStatus = 1;
   const compositeResult = 0;
 
   const notFilledListData = [1, 2, 3, 4, 5];
