@@ -106,4 +106,6 @@ export default defineConfig({
       unitPrecision: 10,
     }),
   ],
+
+  jsMinifier: "none"
 });

@@ -7,8 +7,14 @@ import '@/patch/preflight.css';
 // import 'amfe-flexible';
 import { message, notification } from 'antd';
 import Cookies from 'js-cookie';
-import type { RequestConfig } from 'umi';
-
+import type { RequestConfig, AxiosResponse } from 'umi';
+type Result<T> = {
+  status: string
+  code: number
+  msg: string
+  data: T
+  description: T
+} & AxiosResponse<T>
 const loginPath = '/login';
 
 const authHeaderInterceptor = (url: string, options: RequestConfig) => {
@@ -107,9 +113,9 @@ export const request: RequestConfig = {
 
   // 响应拦截器
   responseInterceptors: [
-    (response) => {
+    (response: any) => {
       // 拦截响应数据，进行个性化处理 没有权限跳转登录页
-      const { data, status, description } = response.data;
+      const { data, status, description } = response.data as Result<any>;
       console.log('responseInterceptors', response, data, status);
       if (status !== '0') {
         return Promise.reject({
