@@ -79,7 +79,7 @@ export default defineConfig({
         },
         { path: '/evaluate/task-list', component: 'evaluate/taskList/index' },
       ],
-    },
+    }
   ],
   alias: {
     '@': 'src/',

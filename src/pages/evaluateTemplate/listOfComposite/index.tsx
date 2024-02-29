@@ -6,7 +6,7 @@ import { Button } from 'antd';
 import LookIcon from '@/assets/icon/look.png';
 import FinishIcon from '@/assets/icon/finish.png';
 import EvaluteIcon from '@/assets/icon/evalute-1.png';
-
+import useListOfComposite from './useNotFilledList';
 const ProgressInfo = () => {
   return (
     <>
@@ -21,10 +21,11 @@ const ProgressInfo = () => {
 };
 
 const FilledList = ({ compositeStatus = 2, data = [1, 2, 3, 4] }) => {
+  const ListOfCompositeHooks = useListOfComposite()
   return (
     <>
-      {data.map((item) => (
-        <div className="h-[170px] p-5 bg-white rounded-[20px] flex-col justify-start items-center inline-flex  w-full">
+      {data.map((item, index) => (
+        <div className="h-[170px] p-5 bg-white rounded-[20px] flex-col justify-start items-center inline-flex  w-full" key={index}>
           <div className="self-stretch h-[100px] flex-col text-justify items-start gap-1 flex">
             <div
               className="self-stretch h-[60px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px] line-clamp-2">
@@ -41,9 +42,7 @@ const FilledList = ({ compositeStatus = 2, data = [1, 2, 3, 4] }) => {
               <Button
                 className="px-[10px] py-[4px] bg-golden-F4 flex text-black"
                 type="primary"
-                onClick={() => {
-                  history.push('/evaluate/template-list-composite');
-                }}
+                onClick={() => ListOfCompositeHooks.handleButtonClick("finish")}
                 icon={
                   <img src={FinishIcon} width={24} />
                 }
@@ -54,9 +53,7 @@ const FilledList = ({ compositeStatus = 2, data = [1, 2, 3, 4] }) => {
               <Button
                 className="px-[10px] py-[4px] flex"
                 type="primary"
-                onClick={() => {
-                  history.push('/evaluate/template-list-composite');
-                }}
+                onClick={() => ListOfCompositeHooks.handleButtonClick("view")}
                 icon={
                   <img src={LookIcon} width={24} />
                 }
@@ -72,10 +69,11 @@ const FilledList = ({ compositeStatus = 2, data = [1, 2, 3, 4] }) => {
 };
 
 const NotFilledList = ({ data = [1, 2, 3, 4] }) => {
+  const ListOfCompositeHooks = useListOfComposite()
   return (
     <>
-      {data.map((item) => (
-        <div className="h-[170px] p-5 bg-white rounded-[20px] flex-col justify-start items-center inline-flex w-full">
+      {data.map((item, index) => (
+        <div className="h-[170px] p-5 bg-white rounded-[20px] flex-col justify-start items-center inline-flex w-full" key={index}>
           <div className="self-stretch h-[100px] flex-col text-justify items-start gap-1 flex">
             <div
               className="self-stretch h-[60px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px] line-clamp-2">
@@ -89,9 +87,7 @@ const NotFilledList = ({ data = [1, 2, 3, 4] }) => {
             <Button
               className="px-[10px] py-[4px] flex"
               type="primary"
-              onClick={() => {
-                history.push('/evaluate/template-list-composite');
-              }}
+              onClick={() => ListOfCompositeHooks.handleButtonClick("write")}
               icon={
                 <img src={EvaluteIcon} width={24} />
               }
