@@ -4,7 +4,9 @@ import { CloseCircleOutlined } from '@ant-design/icons';
 import React from 'react';
 import Medication from './Medication';
 import Disease from './Disease';
+// 弹窗类型
 type ModalType = "view" | "create"
+// 弹窗按钮类型
 type ButtonType = "del" | "save" | "close"
 // 需要先确定好数据结构，然后再进行组件的拆分
 // 1.确定数据结构
@@ -25,6 +27,7 @@ const templeteDatdTmp = {
 };
 
 const dataTmp = [
+  // status 0 删除 1 查看 2 新增
   {
     id: 1,
     name: '疾病名称',
@@ -33,6 +36,7 @@ const dataTmp = [
     department: '科室',
     doctor: '主治医师',
     accompany: '陪同人',
+    status: 0
   },
   {
     id: 2,
@@ -42,7 +46,29 @@ const dataTmp = [
     department: '科室',
     doctor: '主治医师',
     accompany: '陪同人',
-  }];
+    status: 1
+  },
+  {
+    id: 3,
+    name: '疾病名称',
+    time: '就医时间',
+    hospital: '医院',
+    department: '科室',
+    doctor: '主治医师',
+    accompany: '陪同人',
+    status: 2
+  },
+  {
+    id: 4,
+    name: '疾病名称',
+    time: '就医时间',
+    hospital: '医院',
+    department: '科室',
+    doctor: '主治医师',
+    accompany: '陪同人',
+    status: 1
+  }
+];
 
 
 const ETableForm = (props) => {
@@ -160,6 +186,19 @@ const ETable = (props) => {
   };
 
   console.log('value', value);
+  /**
+   * 获取列表按钮文本辅助函数
+   * @param status 列表按钮文本
+   * @returns 
+   */
+  const getBtnText = (status: number) => {
+    if (status === 1) {
+      return "查看"
+    }
+    if (status === 2) {
+      return "新增"
+    }
+  }
   return (
     <>
       {/* 面板选项卡表单 */}
@@ -177,27 +216,32 @@ const ETable = (props) => {
       {/* 面板选项列表数据 */}
       <div className="grid grid-cols-2 gap-[20px] items-center">
         {
-          value.map((item, index) => (
-            <div
-              key={item.id} onClick={() => {
-              openETableForm(item, "view");
-            }}
-              className="w-60 h-[170px] px-5 pt-2.5 pb-5 bg-slate-50 rounded-[20px] flex-col justify-start items-start gap-2.5 inline-flex">
-              <div
-                className="w-[200px] text-zinc-600 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">{(index + 1).toString().padStart(2, '0')}
-              </div>
-              <div
-                className="w-[200px] text-zinc-600 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">主要疾病的名称主要疾病的名称主要疾病的名称
-              </div>
-              <div
-                className="w-[200px] text-zinc-600 text-sm font-normal font-['PingFang SC'] leading-tight tracking-wide">就医时间：2023年10月24日
-              </div>
-              <div
-                className="w-[200px] text-teal-500 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide">查看
-              </div>
-            </div>
-
-          ))
+          value.map((item, index) => {
+            if (item.status !== 0) {
+              return (
+                <div
+                  key={item.id} onClick={() => {
+                  openETableForm(item, "view");
+                }}
+                  className="w-60 h-[170px] px-5 pt-2.5 pb-5 bg-slate-50 rounded-[20px] flex-col justify-start items-start gap-2.5 inline-flex">
+                  <div
+                    className="w-[200px] text-zinc-600 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">{(index + 1).toString().padStart(2, '0')}
+                  </div>
+                  <div
+                    className="w-[200px] text-zinc-600 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">主要疾病的名称主要疾病的名称主要疾病的名称
+                  </div>
+                  <div
+                    className="w-[200px] text-zinc-600 text-sm font-normal font-['PingFang SC'] leading-tight tracking-wide">就医时间：2023年10月24日
+                  </div>
+                  <div
+                    className="w-[200px] text-teal-500 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide">{
+                      item.status === 1 ? "查看" : "编辑" 
+                    }
+                  </div>
+                </div>
+              )
+            }
+          })
         }
 
         {
