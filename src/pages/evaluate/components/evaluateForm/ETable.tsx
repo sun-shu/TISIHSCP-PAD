@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, Button, Divider, ConfigProvider } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import React from 'react';
@@ -73,7 +73,7 @@ const dataTmp = [
 
 const ETableForm = (props) => {
   // 面板卡弹窗表单
-  const { data, onSubmit, disabled, title, type, children, templateData, setFormVisible, open } = props;
+  const { data, onSubmit, disabled, title, type, children, templateData, setFormVisible, setData, open } = props;
   const handleClick = (btnType: ButtonType) => {
     if (disabled) return;
     //   参数校验
@@ -81,11 +81,26 @@ const ETableForm = (props) => {
       // 获取数据
       // 调用接口删除
       // onSubmit(data);
+      // 模拟列表数据移除
+      const resData = data.filter((item, index) => index !== data.length - 1)
+      setData(resData)
     }
     if (btnType === "save") {
       // 获取数据
       if (type === "create") {
         // 调用新增数据接口
+        const res = {
+          id: data[data.length - 1].id + 1,
+          name: '疾病名称',
+          time: '就医时间',
+          hospital: '医院',
+          department: '科室',
+          doctor: '主治医师',
+          accompany: '陪同人',
+          status: 2
+        }
+        const resData = [...data, res]
+        setData(resData)
       } else {
         // 不调用接口
       }
@@ -144,6 +159,11 @@ const ETable = (props) => {
   const [formVisible, setFormVisible] = useState(false);
   const [ETableFormTitle, setETableFormTitle] = useState("")
   const [currentType, setCurrentType] = useState("")
+  const [data, setData] = useState(dataTmp)
+  useEffect(() => {
+    console.log("出发了", data)
+    setData(data)
+  }, [data.length])
   //  点击查看按钮
   const handleClick = () => {
     //...加载数据
@@ -211,12 +231,14 @@ const ETable = (props) => {
         templateData={templateData} 
         children={currentType === "create" ? <Disease/> : <Medication/>}
         setFormVisible={setFormVisible}
+        setData={setData}
+        data={data}
         onSubmit={handleSubmit} 
       />
       {/* 面板选项列表数据 */}
       <div className="grid grid-cols-2 gap-[20px] items-center">
         {
-          value.map((item, index) => {
+          data.map((item, index) => {
             if (item.status !== 0) {
               return (
                 <div
@@ -254,7 +276,6 @@ const ETable = (props) => {
 
               <div>
                 +
-
               </div>
 
               <div

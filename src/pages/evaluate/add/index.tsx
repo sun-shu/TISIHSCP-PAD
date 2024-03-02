@@ -1,7 +1,12 @@
+import { useLocation, useOutlet } from 'umi';
 import ProgressBar from '@/components/ProgressBar';
 import EvaluateForm from '@/pages/evaluate/components/evaluateForm';
 
-const addPage = () => {
+const addPage = (props) => {
+  console.log(props, "props")
+  const location = useLocation()
+  const outlet = useOutlet()
+  console.log(outlet, "outlet")
   return (
     <div className="max-w-[620px] m-auto py-[20px]">
       <div className="text-[28px] font-semibold leading-10  bg-gray-F6 w-full">
@@ -13,7 +18,7 @@ const addPage = () => {
       <ProgressBar processRate={60} />
       <div className="text-right border-b-[1px] py-[10px]">※ 为必填项</div>
       <div className="mt-[20px]">
-        <EvaluateForm />
+        <EvaluateForm evaluateData={props.data} />
       </div>
     </div>
   );

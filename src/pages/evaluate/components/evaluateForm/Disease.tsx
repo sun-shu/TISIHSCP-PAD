@@ -1,9 +1,10 @@
 import React from 'react'
+import EInput from './EInput'
 
 const Disease = () => {
     return (
         <div
-            className="w-[620px] h-[652px] px-[60px] py-5 bg-white rounded flex-col justify-start items-start gap-2.5 inline-flex">
+            className="w-[420px] h-[652px] px-[60px] py-5 bg-white rounded flex-col justify-start items-start gap-2.5 inline-flex">
             {/* <div className="w-[500px] justify-between items-center inline-flex">
                 <div className="text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
                     主要疾病-03
@@ -15,18 +16,18 @@ const Disease = () => {
                     />
                 </div>
             </div> */}
-            <div className="w-[500px] h-[0px] border border-zinc-300"></div>
+            <div className="w-[300px] h-[0px] border border-zinc-300"></div>
             <div className="flex-col justify-center items-center gap-5 flex">
                 <div className="flex-col justify-center items-center gap-2.5 flex">
                     <div className="h-[494px] relative">
                         <div
-                            className="w-[500px] h-[74px] left-0 top-0 absolute flex-col justify-start items-start gap-1 inline-flex">
-                            <div className="w-[500px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                            className="w-[300px] h-[74px] left-0 top-0 absolute flex-col justify-start items-start gap-1 inline-flex">
+                            <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
                                 疾病名称
                             </div>
-                            <div className="w-[500px] h-10 justify-center items-center inline-flex">
+                            <div className="w-[300px] h-10 justify-center items-center inline-flex">
                                 <div
-                                    className="w-[500px] h-10 px-2.5 py-0.5 bg-white rounded border border-zinc-600 justify-start items-center gap-2.5 inline-flex">
+                                    className="w-[300px] h-10 px-2.5 py-0.5 bg-white rounded border border-zinc-600 justify-start items-center gap-2.5 inline-flex">
                                     <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
                                         | 请填写
                                     </div>
@@ -34,14 +35,14 @@ const Disease = () => {
                             </div>
                         </div>
                         <div
-                            className="w-[500px] h-[74px] left-0 top-[84px] absolute flex-col justify-start items-start gap-1 inline-flex">
+                            className="w-[300px] h-[74px] left-0 top-[84px] absolute flex-col justify-start items-start gap-1 inline-flex">
                             <div className="flex-col justify-start items-start gap-1 flex">
-                                <div className="w-[500px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                                <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
                                     就医时间
                                 </div>
                             </div>
                             <div
-                                className="w-[500px] h-10 px-2.5 bg-white rounded border border-teal-500 justify-between items-center inline-flex">
+                                className="w-[300px] h-10 px-2.5 bg-white rounded border border-teal-500 justify-between items-center inline-flex">
                                 <div className="grow shrink basis-0 h-9 justify-between items-center flex">
                                     <div className="text-zinc-600 text-lg font-semibold font-['PingFang SC'] leading-9">
                                         选择后字段
@@ -51,14 +52,14 @@ const Disease = () => {
                             </div>
                         </div>
                         <div
-                            className="w-[500px] h-[74px] left-0 top-[168px] absolute flex-col justify-start items-start gap-1 inline-flex">
+                            className="w-[300px] h-[74px] left-0 top-[168px] absolute flex-col justify-start items-start gap-1 inline-flex">
                             <div className="flex-col justify-start items-start gap-1 flex">
-                                <div className="w-[500px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                                <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
                                     医院
                                 </div>
                             </div>
                             <div
-                                className="w-[500px] h-10 px-2.5 py-2 bg-white rounded border border-zinc-600 justify-start items-center gap-[62px] inline-flex">
+                                className="w-[300px] h-10 px-2.5 py-2 bg-white rounded border border-zinc-600 justify-start items-center gap-[62px] inline-flex">
                                 <div className="grow shrink basis-0 h-9 justify-between items-center flex">
                                     <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
                                         请选择
@@ -68,14 +69,14 @@ const Disease = () => {
                             </div>
                         </div>
                         <div
-                            className="w-[500px] h-[74px] left-0 top-[252px] absolute flex-col justify-start items-start gap-1 inline-flex">
+                            className="w-[300px] h-[74px] left-0 top-[252px] absolute flex-col justify-start items-start gap-1 inline-flex">
                             <div className="flex-col justify-start items-start gap-1 flex">
-                                <div className="w-[500px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                                <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
                                     科室
                                 </div>
                             </div>
                             <div
-                                className="w-[500px] h-10 px-2.5 py-2 bg-white rounded border border-zinc-600 justify-start items-center gap-[62px] inline-flex">
+                                className="w-[300px] h-10 px-2.5 py-2 bg-white rounded border border-zinc-600 justify-start items-center gap-[62px] inline-flex">
                                 <div className="grow shrink basis-0 h-9 justify-between items-center flex">
                                     <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
                                         请选择
@@ -85,13 +86,13 @@ const Disease = () => {
                             </div>
                         </div>
                         <div
-                            className="w-[500px] h-[74px] left-0 top-[336px] absolute flex-col justify-start items-start gap-1 inline-flex">
-                            <div className="w-[500px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                            className="w-[300px] h-[74px] left-0 top-[336px] absolute flex-col justify-start items-start gap-1 inline-flex">
+                            <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
                                 主治医师
                             </div>
-                            <div className="w-[500px] h-10 justify-center items-center inline-flex">
+                            <div className="w-[300px] h-10 justify-center items-center inline-flex">
                                 <div
-                                    className="w-[500px] h-10 px-2.5 py-0.5 bg-white rounded border border-zinc-600 justify-start items-center gap-2.5 inline-flex">
+                                    className="w-[300px] h-10 px-2.5 py-0.5 bg-white rounded border border-zinc-600 justify-start items-center gap-2.5 inline-flex">
                                     <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
                                         | 请填写
                                     </div>
@@ -99,13 +100,13 @@ const Disease = () => {
                             </div>
                         </div>
                         <div
-                            className="w-[500px] h-[74px] left-0 top-[420px] absolute flex-col justify-start items-start gap-1 inline-flex">
-                            <div className="w-[500px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                            className="w-[300px] h-[74px] left-0 top-[420px] absolute flex-col justify-start items-start gap-1 inline-flex">
+                            <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
                                 陪同人
                             </div>
-                            <div className="w-[500px] h-10 justify-center items-center inline-flex">
+                            <div className="w-[300px] h-10 justify-center items-center inline-flex">
                                 <div
-                                    className="w-[500px] h-10 px-2.5 py-0.5 bg-white rounded border border-zinc-600 justify-start items-center gap-2.5 inline-flex">
+                                    className="w-[300px] h-10 px-2.5 py-0.5 bg-white rounded border border-zinc-600 justify-start items-center gap-2.5 inline-flex">
                                     <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
                                         | 请填写
                                     </div>

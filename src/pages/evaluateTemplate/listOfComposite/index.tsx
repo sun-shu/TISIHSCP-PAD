@@ -7,6 +7,7 @@ import LookIcon from '@/assets/icon/look.png';
 import FinishIcon from '@/assets/icon/finish.png';
 import EvaluteIcon from '@/assets/icon/evalute-1.png';
 import useListOfComposite from './useNotFilledList';
+import { useState } from 'react';
 const ProgressInfo = () => {
   return (
     <>
@@ -21,7 +22,9 @@ const ProgressInfo = () => {
 };
 
 const FilledList = ({ compositeStatus = 2, data = [1, 2, 3, 4] }) => {
+  
   const ListOfCompositeHooks = useListOfComposite()
+  
   return (
     <>
       {data.map((item, index) => (
@@ -42,7 +45,7 @@ const FilledList = ({ compositeStatus = 2, data = [1, 2, 3, 4] }) => {
               <Button
                 className="px-[10px] py-[4px] bg-golden-F4 flex text-black"
                 type="primary"
-                onClick={() => ListOfCompositeHooks.handleButtonClick("finish")}
+                onClick={() => ListOfCompositeHooks.handleButtonClick("finish", data)}
                 icon={
                   <img src={FinishIcon} width={24} />
                 }
@@ -53,7 +56,7 @@ const FilledList = ({ compositeStatus = 2, data = [1, 2, 3, 4] }) => {
               <Button
                 className="px-[10px] py-[4px] flex"
                 type="primary"
-                onClick={() => ListOfCompositeHooks.handleButtonClick("view")}
+                onClick={() => ListOfCompositeHooks.handleButtonClick("view", data)}
                 icon={
                   <img src={LookIcon} width={24} />
                 }

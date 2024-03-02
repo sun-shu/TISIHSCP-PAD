@@ -3,14 +3,15 @@ import ECheckBox from '@/pages/evaluate/components/evaluateForm/ECheckBox';
 import ERadio from '@/pages/evaluate/components/evaluateForm/ERadio';
 import { ConfigProvider, Form } from 'antd';
 import React from 'react';
+import _ from "lodash"
 
 import { EInput, ESelect, ETable } from './component';
 
 const { ETextArea } = EInput;
-
+// 剩余数据填充逻辑
 
 // 表单组件的基础结构
-const FormItemBaseContainer = ({ item, children }) => (
+const FormItemBaseContainer = ({ item, index, children }) => (
   <div>
     <div className="w-[620px] h-[30px] justify-start items-center gap-2.5 inline-flex mb-[10px]  text-black">
       <div className="w-6 h-6 p-2.5 font-bold text-[18px] justify-center items-center gap-2.5 flex">
@@ -19,7 +20,7 @@ const FormItemBaseContainer = ({ item, children }) => (
 
       <div className="justify-start items-center gap-2.5 flex">
         <div className="text-right text-zinc-700 text-xl font-normal font-['PingFang SC'] leading-[30px]">
-          01
+          {index}
         </div>
         <div className="text-zinc-700 text-xl font-normal font-['PingFang SC'] leading-[30px]">
           单选-点选（建议选项≤4时使用）
@@ -35,43 +36,54 @@ const FormItemBaseContainer = ({ item, children }) => (
     </div>
   </div>
 );
-const EvaluateFormTemplates = ({ evaluateTemplate = [] }) => {
+const EvaluateFormTemplates = ({ evaluateTemplate = [], initData, setEvaluateTemplate }) => {
 //
-  console.log(evaluateTemplate, EInput);
-
+  console.log(evaluateTemplate, "====");
+  const onChange = (e) => {
+    const resData = _.cloneDeep(initData)
+    // 1 2为option A B效果隐藏
+    if (e.target.value === 1 || e.target.value === 2) {
+      const res1 = resData.filter((item, index) => index !== 3)
+      setEvaluateTemplate(res1)
+    }
+    // 3 4效果增加
+    if (e.target.value === 3 || e.target.value === 4) {
+      setEvaluateTemplate([...evaluateTemplate, resData[2]])
+    }
+  }
   const templateConfig = {
-    INPUT: (item) => {
+    INPUT: (item, index) => {
       return (
-        <FormItemBaseContainer item={item}>
+        <FormItemBaseContainer item={item} index={index}>
           <EInput type="text" />
         </FormItemBaseContainer>
       );
     },
-    TEXTAREA: (item) => {
+    TEXTAREA: (item, index) => {
       return (
-        <FormItemBaseContainer item={item}>
+        <FormItemBaseContainer item={item} index={index}>
           <ETextArea rows={4} />
         </FormItemBaseContainer>
       );
     },
-    SINGLE_SELECT: (item) => {
+    SINGLE_SELECT: (item, index) => {
       // 单选多选，点选下拉框
       return (
-        <FormItemBaseContainer item={item}>
-          {item.options.length > 4 ? <ESelect></ESelect> : <ERadio></ERadio>}
+        <FormItemBaseContainer item={item} index={index}>
+          {item.options.length > 4 ? <ESelect></ESelect> : <ERadio onChange={onChange}></ERadio>}
         </FormItemBaseContainer>
       );
     },
-    MULTI_SELECT: (item) => {
+    MULTI_SELECT: (item, index) => {
       return (
-        <FormItemBaseContainer item={item}>
+        <FormItemBaseContainer item={item} index={index}>
           <ECheckBox />
         </FormItemBaseContainer>
       );
     },
-    TABLE: (item) => {
+    TABLE: (item, index) => {
       return (
-        <FormItemBaseContainer item={item}>
+        <FormItemBaseContainer item={item} index={index}>
           <ETable />
         </FormItemBaseContainer>
       );
@@ -103,9 +115,9 @@ const EvaluateFormTemplates = ({ evaluateTemplate = [] }) => {
           },
         }}
       >
-        {evaluateTemplate.map((item) => {
+        {evaluateTemplate.map((item, index) => {
           return (
-            <div className="mt-[20px]">{templateConfig[item.type]?.(item)}</div>
+            <div className="mt-[20px]" key={index}>{templateConfig[item.type]?.(item, index)}</div>
           );
         })}
       </ConfigProvider>
@@ -115,7 +127,9 @@ const EvaluateFormTemplates = ({ evaluateTemplate = [] }) => {
 
 const evaluateFormComponent = ({ evaluateData = {}, defaultData = {} }) => {
   const [form] = Form.useForm();
-
+  if (evaluateData) {
+    console.log(evaluateData, "evaluateData")
+  }
   const [evaluateTemplate, setEvaluateTemplate] = React.useState([
     {
       type: 'INPUT',
@@ -247,7 +261,7 @@ const evaluateFormComponent = ({ evaluateData = {}, defaultData = {} }) => {
   return (
     <div>
       <Form form={form} colon={false}>
-        <EvaluateFormTemplates evaluateTemplate={evaluateTemplate} />
+        <EvaluateFormTemplates evaluateTemplate={evaluateTemplate} initData={evaluateTemplate} setEvaluateTemplate={setEvaluateTemplate} />
       </Form>
     </div>
   );
