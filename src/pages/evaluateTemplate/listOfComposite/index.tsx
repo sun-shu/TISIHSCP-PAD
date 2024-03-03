@@ -1,13 +1,13 @@
 import ElderDetailLayout from '@/components/ElderDetailLayout';
 import ProgressBar from '@/components/ProgressBar';
-import { history } from '@@/core/history';
 import { ProfileFilled } from '@ant-design/icons';
 import { Button } from 'antd';
 import LookIcon from '@/assets/icon/look.png';
 import FinishIcon from '@/assets/icon/finish.png';
 import EvaluteIcon from '@/assets/icon/evalute-1.png';
 import useListOfComposite from './useNotFilledList';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { history } from 'umi';
 const ProgressInfo = () => {
   return (
     <>
@@ -122,6 +122,14 @@ const EditCompositeEvaluatePage = () => {
 
   const notFilledListData = [1, 2, 3, 4, 5];
   const filledListData = [5, 6, 7, 8];
+  const [disabled, setDisabled] = useState(false)
+  useEffect(() => {
+    setDisabled(!(notFilledListData.length === 0))
+  }, [notFilledListData.length])
+  // 生成报告按钮跳转
+  const handleClick = () => {
+    history.push("/elder/detail")
+  }
   return (
     <>
       <ElderDetailLayout
@@ -131,6 +139,7 @@ const EditCompositeEvaluatePage = () => {
             <ProgressInfo />
           </div>
         }
+        classname="relative"
       >
         <div className="w-[620px] ">
           <div className="mb-[40px] grid grid-cols-2 gap-[40px]">
@@ -143,6 +152,16 @@ const EditCompositeEvaluatePage = () => {
               compositeStatus={compositeStatus}
             />
           </div>
+        </div>
+        <div className="w-[620px] mt-[20px] flex items-center justify-end">
+          <Button
+              className="px-[10px] py-[4px] flex"
+              type="primary"
+              disabled={disabled}
+              onClick={handleClick}
+            >
+              生成报告
+            </Button>
         </div>
       </ElderDetailLayout>
     </>

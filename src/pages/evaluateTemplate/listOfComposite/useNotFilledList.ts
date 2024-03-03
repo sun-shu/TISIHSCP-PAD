@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { history } from '@@/core/history';
+import { history } from 'umi';
 type CompType = "write" | "view" | "finish"
 const useListOfComposite = () => {
     const [data, setData] = useState({})
@@ -11,21 +11,24 @@ const useListOfComposite = () => {
         setData({btnType: compType, data})
         switch (compType) {
             case "finish":
-                // history.
                 // history.push("/evaluate/add", data)
-                history.push(`/evaluate/add?btnType=${compType}`)
+                history.push("/evaluate/add", {btnType: compType})
+                // history.push(`/evaluate/add?btnType=${compType}`)
                 break;
             case "view":
                 // history.push("/evaluate/add", data)
-                history.push(`/evaluate/add?btnType=${compType}`) 
+                history.push("/evaluate/add", {btnType: compType})
+                // history.push(`/evaluate/add?btnType=${compType}`) 
                 break;
             case "write":
                 // history.push("/evaluate/add", data)
-                history.push(`/evaluate/add?btnType=${compType}`)
+                history.push("/evaluate/add", {btnType: compType})
+                // history.push(`/evaluate/add?btnType=${compType}`)
                 break;
             default:
                 // history.push("/evaluate/add", data)
-                history.push(`/evaluate/add?btnType=${compType}`)
+                history.push("/evaluate/add", {btnType: "write"})
+                // history.push(`/evaluate/add?btnType=${compType}`)
                 break;
         }
     }
