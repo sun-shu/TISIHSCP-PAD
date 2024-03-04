@@ -1,10 +1,12 @@
 import CustomTag from '@/components/CustomTag';
-import { ProfileFilled, SearchOutlined } from '@ant-design/icons';
+import { CloseCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import { Affix, Button, ConfigProvider, Input } from 'antd';
 import classNames from 'classnames';
-import { useEffect, useRef, useState } from 'react';
-import { history } from 'umi';
-import EvaluateIcon from '@/assets/icon/evalute-1.png';
+import { ReactNode, useEffect, useRef, useState } from 'react';
+import { history, useRequest } from 'umi';
+import { CustomerTaskRecordPadItemDTO, getTaskList } from '@/api/task';
+import dayjs from 'dayjs';
+import EmptyDataContainer from '@/components/exception/EmptyDataContainer/index';
 
 // 选项卡Tab枚举
 enum TabTypeEnums {
@@ -16,13 +18,12 @@ enum TabTypeEnums {
 }
 
 // 点击切换记录的展示状态按钮
-const MenuGroup = ({ currentTab, setCurrentTab, scrollTop }) => {
+const MenuGroup = ({ currentTab, setCurrentTab }) => {
   return (
     <div className="flex gap-[10px] items-center landscape:flex-col align-middle">
       <Button
         onClick={() => {
           setCurrentTab(TabTypeEnums.ALL);
-          scrollTop();
         }}
         className={classNames(
           currentTab === TabTypeEnums.ALL
@@ -36,7 +37,6 @@ const MenuGroup = ({ currentTab, setCurrentTab, scrollTop }) => {
       <Button
         onClick={() => {
           setCurrentTab(TabTypeEnums.PRE_MONTH);
-          scrollTop();
         }}
         className={classNames(
           currentTab === TabTypeEnums.PRE_MONTH
@@ -56,7 +56,6 @@ const MenuGroup = ({ currentTab, setCurrentTab, scrollTop }) => {
         )}
         onClick={() => {
           setCurrentTab(TabTypeEnums.CURRENT_MONTH);
-          scrollTop();
         }}
       >
         本月待评估
@@ -70,7 +69,6 @@ const MenuGroup = ({ currentTab, setCurrentTab, scrollTop }) => {
         )}
         onClick={() => {
           setCurrentTab(TabTypeEnums.NEXT_MONTH);
-          scrollTop();
         }}
       >
         下月待评估
@@ -79,7 +77,8 @@ const MenuGroup = ({ currentTab, setCurrentTab, scrollTop }) => {
   );
 };
 
-const SearchComponent = () => {
+const SearchComponent = ({ searchElder }) => {
+  const [keyword, setKeyword] = useState('');
 
   return (
     <>
@@ -102,10 +101,19 @@ const SearchComponent = () => {
             prefix={
               <SearchOutlined className="site-form-item-icon mr-[10px]" />
             }
+            onChange={(e) => {
+              setKeyword(e.target.value);
+            }}
             placeholder="搜索"
-            allowClear
+            allowClear={{
+              clearIcon: <CloseCircleOutlined onClick={() => {
+                searchElder('');
+              }} />,
+            }}
             suffix={
-              <Button type="primary" className="rounded-3xl">
+              <Button type="primary" className="rounded-3xl" onClick={() => {
+                searchElder(keyword);
+              }}>
                 搜索
               </Button>
             }
@@ -118,7 +126,18 @@ const SearchComponent = () => {
   );
 };
 
-const ElderListTemplate = ({ title, data }) => {
+
+const ElderListTemplate = ({ title, data = [], countDescription }: {
+  title: string | ReactNode,
+  data?: CustomerTaskRecordPadItemDTO[] | [],
+  countDescription: string | ReactNode,
+  [key: string]: any
+}) => {
+
+  const handleClickGoToEvaluePage = (templateCode: string) => {
+    history.push(`/evaluate/add/${templateCode}`);
+  };
+
   return (
     <div className="  flex-col justify-start items-start gap-[20px] flex mt-[20px]">
       <div className="flex-col justify-start items-start flex">
@@ -126,109 +145,109 @@ const ElderListTemplate = ({ title, data }) => {
           {title}
         </div>
         <div className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide">
-          上月有3个评估任务未完成
+          {countDescription}
         </div>
       </div>
-      <div className="justify-start items-start  gap-[10px] flex  flex-wrap">
-        {data.map((item) => (
-          <div className="h-[206px] landscape:w-[380px] portrait:w-[300px] p-5 bg-white rounded flex-center flex-col">
-            <div className="w-full justify-between items-center gap-5 flex">
-              <img
-                className="w-[104px] h-[104px] rounded"
-                src="https://via.placeholder.com/128x128"
-              />
-              <div className=" flex-1 flex-col justify-between h-full items-start flex">
-                <div className="flex-col justify-between w-full items-start gap-2 flex">
-                  <div className="w-full justify-between items-center gap-5 flex">
-                    <div className="text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-                      张毅 <span>78岁</span>
+      <EmptyDataContainer data={data} emptyClassName="h-[100px] w-full ">
+        <div className="justify-start items-start  gap-[10px] flex  flex-wrap">
+          {data.map(({
+                       imageUrl,
+                       name,
+                       id,
+                       nurseGrade,
+                       templateName,
+                       age,
+                       checkInTime,
+                       taskExecuteDate,
+                       templateCode,
+                     }) => (
+            <div className=" landscape:w-[380px] portrait:w-[300px] p-5 bg-white rounded flex-center flex-col"
+                 onClick={() => {
+                   handleClickGoToEvaluePage(templateCode);
+                 }}>
+              <div className="w-full justify-between items-center gap-5 flex">
+                <img
+                  className="w-[104px] h-[104px] rounded"
+                  src={imageUrl}
+                />
+                <div className=" flex-1 flex-col justify-between h-full items-start flex">
+                  <div className="flex-col justify-between w-full items-start gap-2 flex">
+                    <div className="w-full justify-between items-center gap-5 flex">
+                      <div className="text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                        {name} <span>{age}岁</span>
+                      </div>
+                      <div className="portrait:hidden">
+                        <CustomTag text="2级照护" />
+                      </div>
                     </div>
-                    <div className="portrait:hidden">
+
+                    <div className="landscape:hidden">
                       <CustomTag text="2级照护" />
                     </div>
-                  </div>
+                    <div
+                      className="w-full justify-between line-clamp-1 text-zinc-700 text-sm font-semibold font-['PingFang SC'] leading-normal tracking-wide">
+                      1号楼-3层-301-1床
+                    </div>
 
-                  <div className="landscape:hidden">
-                    <CustomTag text="2级照护" />
-                  </div>
-                  <div
-                    className="w-full justify-between line-clamp-1 text-zinc-700 text-sm font-semibold font-['PingFang SC'] leading-normal tracking-wide">
-                    1号楼-3层-301-1床
-                  </div>
-
-                  <div
-                    className="text-zinc-700 text-xs  leading-[18px] tracking-wide">入院时间：2023-12-02
+                    <div
+                      className="text-zinc-700 text-xs  leading-[18px] tracking-wide">入院时间：{
+                      dayjs(checkInTime).format('YYYY-MM-DD')
+                    }
+                    </div>
                   </div>
                 </div>
               </div>
+
+
             </div>
-            <div className="flex gap-[10px] border-t border-zinc-300 w-full pt-[10px] mt-[10px] items-center">
+          ))}
+        </div>
+      </EmptyDataContainer>
 
-              <div>
-                <div className="line-clamp-1 font-bold">评估项目名称评估项目名称评估项目名称</div>
-                <div
-                  className="text-zinc-700 text-xs  font-['PingFang SC'] leading-[18px] tracking-wide">计划日期：12-02
-                </div>
-              </div>
-              <Button
-                onClick={() => {
-                  history.push('/evaluate/template-list');
-                }}
-                className="px-[10px] py-[4px] flex"
-                type="primary"
-                icon={
-                  <img src={EvaluateIcon} className="site-form-item-icon  font-bold " width={24} />
-                }
-              >
-                开始评估
-              </Button>
-            </div>
-
-
-          </div>
-        ))}
-      </div>
     </div>
   );
 };
 
 // 上月待评估长者列表
-const PreMonthElderList = () => {
+const PreMonthElderList = ({ data = [] }) => {
   return (
     <ElderListTemplate
       title={<span className="text-red-FF">上月待评估长者列表</span>}
-      data={[1, 2, 3, 4]}
+      countDescription={data.length > 0 ? <span>上月共有{data.length}位长者待评估</span> : ''}
+      data={data}
     ></ElderListTemplate>
   );
 };
 
 // 下月待评估长者列表
-const NextMonthElderList = () => {
+const NextMonthElderList = ({ data = [] }) => {
   return (
+
     <ElderListTemplate
       title="下月待评估长者列表"
-      data={[1, 2, 3, 4]}
+      countDescription={data.length > 0 ? <span>下月共有{data.length}位长者待评估</span> : ''}
+      data={data}
     ></ElderListTemplate>
+
+
   );
 };
 
 // 本月待评估长者列表
-const CurrentMonthElderList = () => {
+const CurrentMonthElderList = ({ data = [] }) => {
   return (
     <ElderListTemplate
       title="本月待评估长者列表"
-      data={[1, 2, 3, 4]}
+      countDescription={data.length > 0 ? <span>本月共有{data.length}位长者待评估</span> : ''}
+      data={data}
     ></ElderListTemplate>
   );
 };
 
-const TaskListPage: React.FC = () => {
+const TaskListPage = () => {
   const [currentTab, setCurrentTab] = useState(TabTypeEnums.ALL);
   const taskListRef = useRef(null);
 
-  const scrollTop = () => {
-    // taskListRef.current.scrollIntoView();
-  };
 
   const showPreMonthElderList =
     currentTab === TabTypeEnums.ALL || currentTab === TabTypeEnums.PRE_MONTH;
@@ -238,23 +257,32 @@ const TaskListPage: React.FC = () => {
   const showNextMonthElderList =
     currentTab === TabTypeEnums.ALL || currentTab === TabTypeEnums.NEXT_MONTH;
 
-  useEffect(() => {
-    //loading elder data
-  }, []);
+  const { data: taskList = {}, error, loading, run } = useRequest((keyword = '') => {
+    return getTaskList({
+      name: keyword,
+    });
+  });
+
+  const searchElder = (keyword: string = '') => {
+    console.log('搜索', keyword);
+    run(keyword);
+  };
+  console.log('data', taskList);
+
+
   return (
     <>
-      <div className="flex  items-stretch pb-12 justify-center landscape:gap-[20px]">
+      <div className="flex  items-stretch pb-12 justify-center landscape:gap-[20px]" key={currentTab}>
         <Affix offsetTop={50}>
           <div className="portrait:hidden pt-[120px]  bg-gray-F6 pr-[20px]">
             <MenuGroup
               currentTab={currentTab}
               setCurrentTab={setCurrentTab}
-              scrollTop={scrollTop}
             />
           </div>
         </Affix>
 
-        <div className="bg-slate-50 self-stretch flex flex-col justify-center items-center  ">
+        <div className="bg-slate-50 self-stretch flex flex-col justify-center items-center h-auto  ">
           <Affix offsetTop={50} className="w-full">
             <div className="border-b-[1px] border-solid border-bg- pb-[20px]  pt-[10px] bg-gray-F6">
               <div className="text-[28px] font-semibold leading-10  bg-gray-F6 w-full">
@@ -265,13 +293,12 @@ const TaskListPage: React.FC = () => {
                 本周共有 10位长者待评估
               </div>
 
-              <SearchComponent />
+              <SearchComponent searchElder={searchElder} />
               <div className="landscape:hidden">
                 <div className="bg-gray-F6 py-[5px]">
                   <MenuGroup
                     currentTab={currentTab}
                     setCurrentTab={setCurrentTab}
-                    scrollTop={scrollTop}
                   />
                 </div>
               </div>
@@ -279,9 +306,10 @@ const TaskListPage: React.FC = () => {
           </Affix>
 
           <div className="pt-[16px] portrait:w-[620px] landscape:w-[800px]" ref={taskListRef}>
-            {showPreMonthElderList && <PreMonthElderList />}
-            {showCurrentMonthElderList && <CurrentMonthElderList />}
-            {showNextMonthElderList && <NextMonthElderList />}
+            {showPreMonthElderList && <PreMonthElderList data={taskList.lastMonth} key="PreMonthElderList" />}
+            {showCurrentMonthElderList &&
+              <CurrentMonthElderList data={taskList.currentMonth} key="CurrentMonthElderList" />}
+            {showNextMonthElderList && <NextMonthElderList data={taskList.nextMonth} key="NextMonthElderList" />}
           </div>
         </div>
       </div>
