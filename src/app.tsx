@@ -148,7 +148,7 @@ export async function getInitialState() {
 
       return true;
     } catch (error) {
-      history.push('/login');
+      // history.push('/login');
     }
 
     return false;

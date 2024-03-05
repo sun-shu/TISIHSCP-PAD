@@ -1,6 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, Button, Divider, ConfigProvider } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
+import React from 'react';
+import Medication from './Medication';
+import Disease from './Disease';
+// 弹窗类型
+type ModalType = "view" | "create"
+// 弹窗按钮类型
+type ButtonType = "del" | "save" | "close"
 // 需要先确定好数据结构，然后再进行组件的拆分
 // 1.确定数据结构
 
@@ -20,6 +27,7 @@ const templeteDatdTmp = {
 };
 
 const dataTmp = [
+  // status 0 删除 1 查看 2 新增
   {
     id: 1,
     name: '疾病名称',
@@ -28,6 +36,7 @@ const dataTmp = [
     department: '科室',
     doctor: '主治医师',
     accompany: '陪同人',
+    status: 0
   },
   {
     id: 2,
@@ -37,19 +46,71 @@ const dataTmp = [
     department: '科室',
     doctor: '主治医师',
     accompany: '陪同人',
-  }];
+    status: 1
+  },
+  {
+    id: 3,
+    name: '疾病名称',
+    time: '就医时间',
+    hospital: '医院',
+    department: '科室',
+    doctor: '主治医师',
+    accompany: '陪同人',
+    status: 2
+  },
+  {
+    id: 4,
+    name: '疾病名称',
+    time: '就医时间',
+    hospital: '医院',
+    department: '科室',
+    doctor: '主治医师',
+    accompany: '陪同人',
+    status: 1
+  }
+];
 
 
 const ETableForm = (props) => {
-  const { data, onSubmit, disabled, value, onChange, templateData, open } = props;
-
-  const handleClick = () => {
+  // 面板卡弹窗表单
+  const { data, onSubmit, disabled, title, type, children, templateData, setFormVisible, setData, open } = props;
+  const handleClick = (btnType: ButtonType) => {
     if (disabled) return;
     //   参数校验
-
-    onSubmit(data);
+    if (btnType === "del") {
+      // 获取数据
+      // 调用接口删除
+      // onSubmit(data);
+      // 模拟列表数据移除
+      const resData = data.filter((item, index) => index !== data.length - 1)
+      setData(resData)
+    }
+    if (btnType === "save") {
+      // 获取数据
+      if (type === "create") {
+        // 调用新增数据接口
+        const res = {
+          id: data[data.length - 1].id + 1,
+          name: '疾病名称',
+          time: '就医时间',
+          hospital: '医院',
+          department: '科室',
+          doctor: '主治医师',
+          accompany: '陪同人',
+          status: 2
+        }
+        const resData = [...data, res]
+        setData(resData)
+      } else {
+        // 不调用接口
+      }
+    }
+    if (btnType === "close") {
+      // 清空表单
+    }
+    // 执行弹窗关闭
+    setFormVisible(false)
   };
-
   return (
     <>
       <ConfigProvider theme={{
@@ -62,7 +123,7 @@ const ETableForm = (props) => {
       >
         <Modal
           open={open}
-          title="当前用药情况-03"
+          title={title}
           closeIcon={<CloseCircleOutlined />}
           classNames={{
             footer: 'grid grid-cols-2 justify-between',
@@ -70,166 +131,21 @@ const ETableForm = (props) => {
           }}
           footer={[
 
-            <Button key="back" className="text-sm py-[14px]  h-auto" type="primary" ghost>
+            <Button key="back" className="text-sm py-[14px] h-auto" type="primary" ghost onClick={() => handleClick("del")}>
               删除
             </Button>,
-            <Button key="submit" className="text-sm py-[14px]   h-auto" type="primary">
+            <Button key="submit" className="text-sm py-[14px] h-auto" type="primary" onClick={() => handleClick("save")}>
               保存
             </Button>,
           ]}
+          onCancel={() => handleClick("close")}
         >
-
-          <div className="w-full h-[0px] border border-gray-D8"></div>
+          {children}
+          {/* <div className="w-full h-[0px] border border-gray-D8"></div>
           <div className="mt-[10px]">
-          </div>
+          </div> */}
         </Modal>
       </ConfigProvider>
-
-
-      <div
-        className="w-[620px] h-[652px] px-[60px] py-5 bg-white rounded flex-col justify-start items-start gap-2.5 inline-flex">
-        <div className="w-[500px] justify-between items-center inline-flex">
-          <div className="text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-            主要疾病-03
-          </div>
-          <div className="w-6 h-6 relative">
-            <img
-              className="w-[22px] h-[22px] left-[1px] top-[1px] absolute"
-              src="https://via.placeholder.com/22x22"
-            />
-          </div>
-        </div>
-        <div className="w-[500px] h-[0px] border border-zinc-300"></div>
-        <div className="flex-col justify-center items-center gap-5 flex">
-          <div className="flex-col justify-center items-center gap-2.5 flex">
-            <div className="h-[494px] relative">
-              <div
-                className="w-[500px] h-[74px] left-0 top-0 absolute flex-col justify-start items-start gap-1 inline-flex">
-                <div className="w-[500px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-                  疾病名称
-                </div>
-                <div className="w-[500px] h-10 justify-center items-center inline-flex">
-                  <div
-                    className="w-[500px] h-10 px-2.5 py-0.5 bg-white rounded border border-zinc-600 justify-start items-center gap-2.5 inline-flex">
-                    <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
-                      | 请填写
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="w-[500px] h-[74px] left-0 top-[84px] absolute flex-col justify-start items-start gap-1 inline-flex">
-                <div className="flex-col justify-start items-start gap-1 flex">
-                  <div className="w-[500px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-                    就医时间
-                  </div>
-                </div>
-                <div
-                  className="w-[500px] h-10 px-2.5 bg-white rounded border border-teal-500 justify-between items-center inline-flex">
-                  <div className="grow shrink basis-0 h-9 justify-between items-center flex">
-                    <div className="text-zinc-600 text-lg font-semibold font-['PingFang SC'] leading-9">
-                      选择后字段
-                    </div>
-                    <div className="w-6 h-6 px-1.5 py-2 justify-center items-center flex" />
-                  </div>
-                </div>
-              </div>
-              <div
-                className="w-[500px] h-[74px] left-0 top-[168px] absolute flex-col justify-start items-start gap-1 inline-flex">
-                <div className="flex-col justify-start items-start gap-1 flex">
-                  <div className="w-[500px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-                    医院
-                  </div>
-                </div>
-                <div
-                  className="w-[500px] h-10 px-2.5 py-2 bg-white rounded border border-zinc-600 justify-start items-center gap-[62px] inline-flex">
-                  <div className="grow shrink basis-0 h-9 justify-between items-center flex">
-                    <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
-                      请选择
-                    </div>
-                    <div className="w-6 h-6 px-1.5 py-2 justify-center items-center flex" />
-                  </div>
-                </div>
-              </div>
-              <div
-                className="w-[500px] h-[74px] left-0 top-[252px] absolute flex-col justify-start items-start gap-1 inline-flex">
-                <div className="flex-col justify-start items-start gap-1 flex">
-                  <div className="w-[500px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-                    科室
-                  </div>
-                </div>
-                <div
-                  className="w-[500px] h-10 px-2.5 py-2 bg-white rounded border border-zinc-600 justify-start items-center gap-[62px] inline-flex">
-                  <div className="grow shrink basis-0 h-9 justify-between items-center flex">
-                    <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
-                      请选择
-                    </div>
-                    <div className="w-6 h-6 px-1.5 py-2 justify-center items-center flex" />
-                  </div>
-                </div>
-              </div>
-              <div
-                className="w-[500px] h-[74px] left-0 top-[336px] absolute flex-col justify-start items-start gap-1 inline-flex">
-                <div className="w-[500px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-                  主治医师
-                </div>
-                <div className="w-[500px] h-10 justify-center items-center inline-flex">
-                  <div
-                    className="w-[500px] h-10 px-2.5 py-0.5 bg-white rounded border border-zinc-600 justify-start items-center gap-2.5 inline-flex">
-                    <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
-                      | 请填写
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="w-[500px] h-[74px] left-0 top-[420px] absolute flex-col justify-start items-start gap-1 inline-flex">
-                <div className="w-[500px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-                  陪同人
-                </div>
-                <div className="w-[500px] h-10 justify-center items-center inline-flex">
-                  <div
-                    className="w-[500px] h-10 px-2.5 py-0.5 bg-white rounded border border-zinc-600 justify-start items-center gap-2.5 inline-flex">
-                    <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
-                      | 请填写
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="justify-center items-center gap-5 inline-flex">
-            <div className="bg-white justify-center items-center flex">
-              <div className="h-12 bg-white justify-start items-start flex">
-                <div
-                  className="grow shrink basis-0 h-12 px-5 py-3.5 rounded border border-teal-500 justify-center items-center gap-10 flex">
-                  <div className="grow shrink basis-0 h-5 justify-center items-center gap-2.5 flex">
-                    <div
-                      className="grow shrink basis-0 text-center text-teal-500 text-sm font-normal font-['PingFang SC'] leading-tight tracking-wide">
-                      删除
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className="rounded justify-center items-center flex"
-              onClick={handleClick}
-            >
-              <div className="w-60 h-12 px-5 py-3.5 bg-teal-500 rounded justify-center items-center gap-10 flex">
-                <div className="grow shrink basis-0 h-5 justify-center items-center gap-2.5 flex">
-                  <div
-                    className="grow shrink basis-0 text-center text-white text-sm font-normal font-['PingFang SC'] leading-tight tracking-wide">
-                    保存
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
     </>
   );
 };
@@ -237,10 +153,17 @@ const ETableForm = (props) => {
 const ETable = (props) => {
   const { disabled = false } = props;
   const { value = dataTmp, onChange, templateData = templeteDatdTmp } = props;
-
+  // value 是当前面板卡列表数据
   const [currentSelectData, setCurrentSelectData] = useState({});
   const [selectDataIndex, setSelectDataIndex] = useState(0);
   const [formVisible, setFormVisible] = useState(false);
+  const [ETableFormTitle, setETableFormTitle] = useState("")
+  const [currentType, setCurrentType] = useState("")
+  const [data, setData] = useState(dataTmp)
+  useEffect(() => {
+    console.log("出发了", data)
+    setData(data)
+  }, [data.length])
   //  点击查看按钮
   const handleClick = () => {
     //...加载数据
@@ -265,43 +188,82 @@ const ETable = (props) => {
   };
 
 
-  const openETableForm = (data) => {
+  const openETableForm = (data, type: ModalType) => {
+    console.log(data)
     //...加载数据
     //...打开ETableForm
-    setFormVisible(true);
-    setCurrentSelectData({ data });
+    // setFormVisible(true);
+    // setCurrentSelectData({ data });
+    // 设置弹窗表单标题
+    setCurrentType(type)
+    if (type === "create") {
+      setETableFormTitle("主要疾病-03")
+    } else {
+      setETableFormTitle("当前用药情况-03")
+      setCurrentSelectData({ ...data })
+    }
+    setFormVisible(true)
   };
 
   console.log('value', value);
+  /**
+   * 获取列表按钮文本辅助函数
+   * @param status 列表按钮文本
+   * @returns 
+   */
+  const getBtnText = (status: number) => {
+    if (status === 1) {
+      return "查看"
+    }
+    if (status === 2) {
+      return "新增"
+    }
+  }
   return (
     <>
-
-      <ETableForm open={formVisible} defultValue={currentSelectData} disabled={disabled} onSubmit={handleSubmit}
-                  templateData={templateData} />
-
+      {/* 面板选项卡表单 */}
+      <ETableForm 
+        open={formVisible} 
+        defultValue={currentSelectData} 
+        type={currentType} 
+        title={ETableFormTitle} 
+        disabled={disabled} 
+        templateData={templateData} 
+        children={currentType === "create" ? <Disease/> : <Medication/>}
+        setFormVisible={setFormVisible}
+        setData={setData}
+        data={data}
+        onSubmit={handleSubmit} 
+      />
+      {/* 面板选项列表数据 */}
       <div className="grid grid-cols-2 gap-[20px] items-center">
         {
-          value.map((item, index) => (
-            <div
-              key={item.id} onClick={() => {
-              openETableForm(item);
-            }}
-              className="w-60 h-[170px] px-5 pt-2.5 pb-5 bg-slate-50 rounded-[20px] flex-col justify-start items-start gap-2.5 inline-flex">
-              <div
-                className="w-[200px] text-zinc-600 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">{(index + 1).toString().padStart(2, '0')}
-              </div>
-              <div
-                className="w-[200px] text-zinc-600 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">主要疾病的名称主要疾病的名称主要疾病的名称
-              </div>
-              <div
-                className="w-[200px] text-zinc-600 text-sm font-normal font-['PingFang SC'] leading-tight tracking-wide">就医时间：2023年10月24日
-              </div>
-              <div
-                className="w-[200px] text-teal-500 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide">查看
-              </div>
-            </div>
-
-          ))
+          data.map((item, index) => {
+            if (item.status !== 0) {
+              return (
+                <div
+                  key={item.id} onClick={() => {
+                  openETableForm(item, "view");
+                }}
+                  className="w-60 h-[170px] px-5 pt-2.5 pb-5 bg-slate-50 rounded-[20px] flex-col justify-start items-start gap-2.5 inline-flex">
+                  <div
+                    className="w-[200px] text-zinc-600 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">{(index + 1).toString().padStart(2, '0')}
+                  </div>
+                  <div
+                    className="w-[200px] text-zinc-600 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">主要疾病的名称主要疾病的名称主要疾病的名称
+                  </div>
+                  <div
+                    className="w-[200px] text-zinc-600 text-sm font-normal font-['PingFang SC'] leading-tight tracking-wide">就医时间：2023年10月24日
+                  </div>
+                  <div
+                    className="w-[200px] text-teal-500 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide">{
+                      item.status === 1 ? "查看" : "编辑" 
+                    }
+                  </div>
+                </div>
+              )
+            }
+          })
         }
 
         {
@@ -309,12 +271,11 @@ const ETable = (props) => {
             <div
               className=" border border-teal-500 flex-center flex-col bg-gray-F6 px-[20px] py-[10px] rounded-[20px] min-h-[170px]"
               onClick={() => {
-                openETableForm({});
+                openETableForm({}, "create");
               }}>
 
               <div>
                 +
-
               </div>
 
               <div

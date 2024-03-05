@@ -70,13 +70,14 @@ export default defineConfig({
           component: 'evaluate/add/index',
         },
         {
+          path: '/evaluate/add-of-composite/:templateCode',
+          component: 'evaluate/addOfComposite/index',
+        },
+        {
           path: '/evaluate/template-list',
           component: 'evaluateTemplate/list/index',
         },
-        {
-          path: '/evaluate/template-list-composite',
-          component: 'evaluateTemplate/listOfComposite/index',
-        },
+
         { path: '/evaluate/task-list', component: 'evaluate/taskList/index' },
       ],
     },

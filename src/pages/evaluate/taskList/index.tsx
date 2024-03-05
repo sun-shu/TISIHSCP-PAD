@@ -8,6 +8,7 @@ import { CustomerTaskRecordPadItemDTO, getTaskList } from '@/api/task';
 import dayjs from 'dayjs';
 import EmptyDataContainer from '@/components/exception/EmptyDataContainer/index';
 import { TaskTypeEnum } from '@/enums/TaskTypeEnum';
+import { EvluateRelativeTypeEnum } from '@/enums/EvluateRelativeTypeEnum';
 
 // 选项卡Tab枚举
 enum TabTypeEnums {
@@ -136,8 +137,11 @@ const ElderListTemplate = ({ title, data = [], countDescription }: {
 }) => {
 
   const handleClickGoToEvaluePage = (id, taskType: TaskTypeEnum, templateCode: string) => {
-    const nextPath = taskType === TaskTypeEnum.EVALUATE ? `/evaluate/template-list-composite/${templateCode}?taskId=${id}` : `/evaluate/add/${templateCode}?taskId=${id}`;
-    history.push(nextPath);
+    const nextPath = taskType === TaskTypeEnum.COMPREHENSIVE_EVALUATION ? `/evaluate/add-of-composite/${templateCode}` : `/evaluate/add/${templateCode}`;
+    history.push({
+      pathname: nextPath,
+      search: `?relativeId=${id}&relativeType=${EvluateRelativeTypeEnum.TASK}`,
+    });
   };
 
   return (

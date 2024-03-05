@@ -1,7 +1,7 @@
 import { Input, Radio, Space } from 'antd';
 
 const ERadio = (props) => {
-  const { value, onChange } = props;
+  const { value, form, onChange } = props;
   return (
     <div>
       <Radio.Group {...props} className="w-full">

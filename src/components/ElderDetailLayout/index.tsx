@@ -2,7 +2,7 @@ import CustomTag from '@/components/CustomTag';
 import { Affix, Image } from 'antd';
 import { useEffect, useState } from 'react';
 
-import ElderApi from '@/api/elder';
+// import ElderApi from '@/api/elder';
 import React from 'react';
 
 const ElderInfoCardCol = () => {
@@ -62,12 +62,12 @@ const ElderInfoCardRow = (props) => {
 
 const ElderDetailLayout = ({ title = '', children, elderId }) => {
   const [elderInfo, setElderInfo] = useState({});
-  useEffect(async () => {
-    //loading elder data
-    console.log(elderId);
-    const elderInfo = await ElderApi.getElderInfo(elderId);
-    setElderInfo(elderInfo);
-  }, []);
+  // useEffect(async () => {
+  //   //loading elder data
+  //   console.log(elderId);
+  //   const elderInfo = await ElderApi.getElderInfo(elderId);
+  //   setElderInfo(elderInfo);
+  // }, []);
 
   return (
     <>
