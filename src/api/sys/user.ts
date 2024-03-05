@@ -1,8 +1,24 @@
 import ErrorShowTypeEnum from '@/enums/sys/ErrorShowTypeEnum';
 import { request } from 'umi';
 
-const login = async (data, options?: { [key: string]: any }) => {
-  const loginRes = request('/hcsp-gateway/umApi/v1/um/login', {
+interface LoginParams {
+  username: string;
+  password: string;
+}
+
+interface UserInfo {
+  userId: number;
+  accessToken: string;
+  firstLogin: string;
+  peopleShowToken: string;
+  tenantName: string;
+  tenantAliasName: string;
+  tenantIcon: string;
+  actTel: string;
+}
+
+const login = async (data: LoginParams, options?: { [key: string]: any }): Promise<UserInfo> => {
+  const loginRes = request('/hcsp-gateway/umApi/v1/pad/login', {
     method: 'POST',
     errorShowType: ErrorShowTypeEnum.ERROR_MESSAGE,
     data,
@@ -15,8 +31,8 @@ const login = async (data, options?: { [key: string]: any }) => {
 const getUserInfo = async (options?: { [key: string]: any }) => {
   return request('/hcsp-gateway/umApi/v1/user', {
     method: 'GET',
-    params:{
-      lang:'zh'
+    params: {
+      lang: 'zh',
     },
     ...(options || {}),
   });

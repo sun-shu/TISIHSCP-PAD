@@ -66,7 +66,7 @@ export default defineConfig({
           redirect: '/evaluate/task-list',
         },
         {
-          path: '/evaluate/add',
+          path: '/evaluate/add/:templateCode',
           component: 'evaluate/add/index',
         },
         {
@@ -92,7 +92,7 @@ export default defineConfig({
       pathRewrite: { '^/api': '' },
     },
     '/hcsp-gateway': {
-      target: 'http://test-shcsp.tisi.com.cn/hcsp-gateway/',
+      target: 'https://dev-shcsp.tisi.com.cn/hcsp-gateway',
       changeOrigin: true,
       pathRewrite: { '^/hcsp-gateway': '' },
     },
@@ -107,5 +107,5 @@ export default defineConfig({
     }),
   ],
 
-  jsMinifier: "none"
+  jsMinifier: 'none',
 });

@@ -3,7 +3,7 @@ import ECheckBox from '@/pages/evaluate/components/evaluateForm/ECheckBox';
 import ERadio from '@/pages/evaluate/components/evaluateForm/ERadio';
 import { ConfigProvider, Form, Button } from 'antd';
 import React, { useState } from 'react';
-import _ from "lodash"
+import _ from 'lodash';
 
 import { EInput, ESelect, ETable } from './component';
 import { useParams, useLocation, history } from 'umi';
@@ -12,27 +12,10 @@ import { useParams, useLocation, history } from 'umi';
 const { ETextArea } = EInput;
 
 // 剩余数据填充逻辑
-const titleNum = 0
+const titleNum = 0;
 // 表单组件的基础结构
 const FormItemBaseContainer = ({ item, index, form = {}, children }) => {
-  const location = useLocation();
-  console.log(location.state, "location.state")
-  switch (location.state.btnType) {
-    case "view":
-    case "finish":
-      // 数据回填
-      form.setFieldsValue({
-        input: "输入框数据回填",
-        radio: [2],
-        select: "jack"
-      })
-      break;
-    case "write":
-      
-      break;
-    default:
-      break;
-  }
+
   // const [titleNum, setTitleNum] = useState(0)
   return (
     <div>
@@ -40,18 +23,18 @@ const FormItemBaseContainer = ({ item, index, form = {}, children }) => {
         <div className="w-6 h-6 p-2.5 font-bold text-[18px] justify-center items-center gap-2.5 flex">
           ※
         </div>
-  
+
         <div className="justify-start items-center gap-2.5 flex">
           <div className="text-right text-zinc-700 text-xl font-normal font-['PingFang SC'] leading-[30px]">
             {/* { index < 5 ? <div>{ index + 1 }</div> : <div>{ titleNum + 1 }</div> } */}
-            { index + 1 }
+            {index + 1}
           </div>
           <div className="text-zinc-700 text-xl font-normal font-['PingFang SC'] leading-[30px]">
             单选-点选（建议选项≤4时使用）
           </div>
         </div>
       </div>
-      
+
       <div className="px-[60px]  bg-white flex-center rounded-[4px]">
         <div className="w-full my-[20px]">
           <Form.Item name={item.name} noStyle>
@@ -60,33 +43,33 @@ const FormItemBaseContainer = ({ item, index, form = {}, children }) => {
         </div>
       </div>
     </div>
-  )
+  );
 };
 const EvaluateFormTemplates = ({ evaluateTemplate = [], initData, form = {}, setEvaluateTemplate }) => {
 //
-  console.log(evaluateTemplate, "====");
+  console.log(evaluateTemplate, '====');
   const location = useLocation();
   const onChange = (e) => {
-    const resData = _.cloneDeep(initData)
+    const resData = _.cloneDeep(initData);
     // 1 2为option A B效果隐藏
     if (e.target.value === 1 || e.target.value === 2) {
       const res = evaluateTemplate.map((item, index) => {
-        item.isShow = index !== 3
-        return item
-      })
+        item.isShow = index !== 3;
+        return item;
+      });
       // const res1 = resData.filter((item, index) => index !== 3)
-      setEvaluateTemplate(res)
+      setEvaluateTemplate(res);
     }
     // 3 4效果增加
     if (e.target.value === 3 || e.target.value === 4) {
       const res = evaluateTemplate.map((item, index) => {
-        item.isShow = true
-        return item
-      })
-      setEvaluateTemplate(res)
+        item.isShow = true;
+        return item;
+      });
+      setEvaluateTemplate(res);
       // setEvaluateTemplate([...evaluateTemplate, resData[2]])
     }
-  }
+  };
   const templateConfig = {
     INPUT: (item, index) => {
       return (
@@ -106,7 +89,8 @@ const EvaluateFormTemplates = ({ evaluateTemplate = [], initData, form = {}, set
       // 单选多选，点选下拉框
       return (
         <FormItemBaseContainer item={item} index={index} form={form}>
-          {item.options.length > 4 ? <ESelect form={form}></ESelect> : <ERadio onChange={onChange} form={form}></ERadio>}
+          {item.options.length > 4 ? <ESelect form={form}></ESelect> :
+            <ERadio onChange={onChange} form={form}></ERadio>}
         </FormItemBaseContainer>
       );
     },
@@ -125,14 +109,7 @@ const EvaluateFormTemplates = ({ evaluateTemplate = [], initData, form = {}, set
       );
     },
   };
-  // 提交并返回点击
-  const handleSaveClick = () => {
-    history.replace("/evaluate/template-list-composite")
-  }
-  // 继续填写点击 
-  const handleContinueClick = () => {
 
-  }
   return (
     <div>
       <ConfigProvider
@@ -161,39 +138,33 @@ const EvaluateFormTemplates = ({ evaluateTemplate = [], initData, form = {}, set
         {evaluateTemplate.map((item, index) => {
           return (
             <>
-              {item.isShow ? <div className="mt-[20px]" key={index}>{templateConfig[item.type]?.(item, index)}</div> : <></>}
+              {item.isShow ?
+                <div className="mt-[20px]" key={index}>{templateConfig[item.type]?.(item, index)}</div> : <></>}
             </>
           );
         })}
       </ConfigProvider>
-      {/* 表单提交按钮 */}
-      <div className="fixed bottom-0 left-0 w-full flex items-center justify-center bg-white p-5">
-          {location.state.btnType === "write" ? <div>
-            <Button type='primary' className='mr-10' onClick={handleSaveClick}>提交并返回</Button>
-            <Button onClick={handleContinueClick}>继续填写</Button>
-          </div> : <div></div>}
-        </div>
+
     </div>
   );
 };
 
-const evaluateFormComponent = ({ evaluateData = {}, defaultData = {} }) => {
-  const [form] = Form.useForm();
-  if (evaluateData) {
-    console.log(evaluateData, "evaluateData")
-  }
+// form在外面操作，这里是纯表单
+const evaluateFormComponent = ({ form, initialValues, disabled, templateCode }) => {
+
+  //根据templateCode拉取模板数据
   const [evaluateTemplate, setEvaluateTemplate] = React.useState([
     {
       type: 'INPUT',
       label: '输入框',
       name: 'input',
-      isShow: true
+      isShow: true,
     },
     {
       type: 'TEXTAREA',
       label: '文本域',
       name: 'textarea',
-      isShow: true
+      isShow: true,
     },
     {
       type: 'SINGLE_SELECT',
@@ -218,7 +189,7 @@ const evaluateFormComponent = ({ evaluateData = {}, defaultData = {} }) => {
           disabled: true,
         },
       ],
-      isShow: true
+      isShow: true,
     },
     {
       type: 'MULTI_SELECT',
@@ -243,7 +214,7 @@ const evaluateFormComponent = ({ evaluateData = {}, defaultData = {} }) => {
           disabled: true,
         },
       ],
-      isShow: true
+      isShow: true,
     },
     {
       type: 'SINGLE_SELECT',
@@ -272,7 +243,7 @@ const evaluateFormComponent = ({ evaluateData = {}, defaultData = {} }) => {
           label: 'Jack1',
         },
       ],
-      isShow: true
+      isShow: true,
     },
     {
       type: 'MULTI_SELECT',
@@ -301,28 +272,29 @@ const evaluateFormComponent = ({ evaluateData = {}, defaultData = {} }) => {
           label: 'Jack1',
         },
       ],
-      isShow: true
+      isShow: true,
     },
     {
       type: 'RADIO',
       label: '单选框',
       name: 'radio',
-      isShow: true
+      isShow: true,
     },
     {
       type: 'CHECKBOX',
-      isShow: true
+      isShow: true,
     },
     {
       type: 'TABLE',
-      isShow: true
+      isShow: true,
     },
   ]);
 
   return (
     <div>
-      <Form form={form} colon={false}>
-        <EvaluateFormTemplates evaluateTemplate={evaluateTemplate} initData={evaluateTemplate} form={form} setEvaluateTemplate={setEvaluateTemplate} />
+      <Form form={form} colon={false} initialValues={initialValues} disabled={disabled}>
+        <EvaluateFormTemplates evaluateTemplate={evaluateTemplate} initData={evaluateTemplate} form={form}
+                               setEvaluateTemplate={setEvaluateTemplate} />
       </Form>
     </div>
   );

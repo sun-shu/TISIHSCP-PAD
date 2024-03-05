@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import React from 'react';
 import { useModel } from 'umi';
 import styles from './index.less';
+import Logo from '@/assets/logo.png';
 
 const Login = () => {
   const { login } = useModel('userModel');
@@ -34,7 +35,7 @@ const Login = () => {
       <div
         className={classNames(
           styles.login_page,
-          'flex-center  w-screen h-screen bg-[url(\'@/assets/background/login-bg.png\')] bg-no-repeat	bg-center',
+          'flex-center  w-screen h-screen bg-[url(@/assets/background/login-bg.png)] bg-no-repeat	bg-center',
         )}
       >
         <Card
@@ -42,7 +43,9 @@ const Login = () => {
           bodyStyle={{ padding: '60px 80px' }}
           className="rounded-[60px]"
         >
-          <div className="mb-[100px]">LOGO区域</div>
+          <div className="mb-[100px]">
+            <img src={Logo} className="h-[40px]" />
+          </div>
 
           <p className="text-primary text-[28px] font-bold	mb-[60px]">登录</p>
 
