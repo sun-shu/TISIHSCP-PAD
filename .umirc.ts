@@ -96,6 +96,12 @@ export default defineConfig({
       changeOrigin: true,
       pathRewrite: { '^/hcsp-gateway': '' },
     },
+    // 本地mock
+    "/local": {
+      // target: "http://localhost:8080/",
+      // hangeOrigin: true,
+      pathRewrite: { '^/local': '' },
+    }
   },
   tailwindcss: {},
 

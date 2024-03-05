@@ -9,6 +9,7 @@ import { message, notification } from 'antd';
 import Cookies from 'js-cookie';
 import { history } from 'umi';
 import type { RequestConfig, AxiosResponse } from 'umi';
+// import mock from "mock"
 
 type Result<T> = {
   status: string

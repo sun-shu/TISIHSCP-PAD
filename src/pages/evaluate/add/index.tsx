@@ -49,9 +49,9 @@ const addPage = () => {
       </div>
 
       {/* 表单提交按钮 */}
-      <div className="fixed bottom-0 left-0 w-full flex items-center justify-center bg-white p-5">
-        <div>
-          <Button type="primary" className="mr-10" onClick={handleSaveClick}>提交并返回</Button>
+      <div className="fixed bottom-0 left-0 w-full flex items-center justify-center bg-white">
+        <div className="w-full">
+          <Button type="primary" className="" onClick={handleSaveClick}>提交并返回</Button>
           <Button onClick={handleContinueClick}>继续填写</Button>
         </div>
       </div>

@@ -2,7 +2,7 @@
 import ECheckBox from '@/pages/evaluate/components/evaluateForm/ECheckBox';
 import ERadio from '@/pages/evaluate/components/evaluateForm/ERadio';
 import { ConfigProvider, Form, Button } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 
 import { EInput, ESelect, ETable } from './component';
@@ -10,9 +10,6 @@ import { useParams, useLocation, history } from 'umi';
 
 
 const { ETextArea } = EInput;
-
-// 剩余数据填充逻辑
-const titleNum = 0;
 // 表单组件的基础结构
 const FormItemBaseContainer = ({ item, index, form = {}, children }) => {
 
@@ -45,28 +42,37 @@ const FormItemBaseContainer = ({ item, index, form = {}, children }) => {
     </div>
   );
 };
-const EvaluateFormTemplates = ({ evaluateTemplate = [], initData, form = {}, setEvaluateTemplate }) => {
-//
+const EvaluateFormTemplates = ({ evaluateTemplate = [], initData, form = {}, setTempData, setEvaluateTemplate }) => {
+  // const [tempData, setTempData] = useState([])
   console.log(evaluateTemplate, '====');
-  const location = useLocation();
   const onChange = (e) => {
-    const resData = _.cloneDeep(initData);
+    // const resData = _.cloneDeep(initData);
+    // setTempData(_.cloneDeep(initData))
+    console.log(initData, evaluateTemplate, "evaluateTemplate");
     // 1 2为option A B效果隐藏
     if (e.target.value === 1 || e.target.value === 2) {
-      const res = evaluateTemplate.map((item, index) => {
+      // 将数据处理并存在临时变量
+      const res = initData.map((item, index) => {
         item.isShow = index !== 3;
         return item;
       });
-      // const res1 = resData.filter((item, index) => index !== 3)
-      setEvaluateTemplate(res);
+      // setTempData(res);
+      setTempData(res)
+      const res1 = evaluateTemplate.filter((item, index) => index !== 3)
+      setEvaluateTemplate(res1);
     }
     // 3 4效果增加
     if (e.target.value === 3 || e.target.value === 4) {
-      const res = evaluateTemplate.map((item, index) => {
+      const res = initData.map((item, index) => {
         item.isShow = true;
         return item;
       });
-      setEvaluateTemplate(res);
+      // setTempData(res)
+      setTempData(res)
+
+      setEvaluateTemplate([...initData]);
+      // console.log(res, "追加");
+      // setEvaluateTemplate(res);
       // setEvaluateTemplate([...evaluateTemplate, resData[2]])
     }
   };
@@ -289,12 +295,15 @@ const evaluateFormComponent = ({ form, initialValues, disabled, templateCode }) 
       isShow: true,
     },
   ]);
-
+  const [tempData, setTempData] = useState([])
+  useEffect(() => {
+    setTempData(evaluateTemplate)
+  }, [])
   return (
     <div>
       <Form form={form} colon={false} initialValues={initialValues} disabled={disabled}>
-        <EvaluateFormTemplates evaluateTemplate={evaluateTemplate} initData={evaluateTemplate} form={form}
-                               setEvaluateTemplate={setEvaluateTemplate} />
+        <EvaluateFormTemplates evaluateTemplate={evaluateTemplate} initData={tempData} form={form}
+                               setEvaluateTemplate={setEvaluateTemplate} setTempData={setTempData} />
       </Form>
     </div>
   );
