@@ -7,6 +7,7 @@ import { history, useRequest } from 'umi';
 import { CustomerTaskRecordPadItemDTO, getTaskList } from '@/api/task';
 import dayjs from 'dayjs';
 import EmptyDataContainer from '@/components/exception/EmptyDataContainer/index';
+import { TaskTypeEnum } from '@/enums/TaskTypeEnum';
 
 // 选项卡Tab枚举
 enum TabTypeEnums {
@@ -134,8 +135,9 @@ const ElderListTemplate = ({ title, data = [], countDescription }: {
   [key: string]: any
 }) => {
 
-  const handleClickGoToEvaluePage = (templateCode: string) => {
-    history.push(`/evaluate/add/${templateCode}`);
+  const handleClickGoToEvaluePage = (id, taskType: TaskTypeEnum, templateCode: string) => {
+    const nextPath = taskType === TaskTypeEnum.EVALUATE ? `/evaluate/template-list-composite/${templateCode}?taskId=${id}` : `/evaluate/add/${templateCode}?taskId=${id}`;
+    history.push(nextPath);
   };
 
   return (
@@ -160,10 +162,11 @@ const ElderListTemplate = ({ title, data = [], countDescription }: {
                        checkInTime,
                        taskExecuteDate,
                        templateCode,
+                       taskType,
                      }) => (
             <div className=" landscape:w-[380px] portrait:w-[300px] p-5 bg-white rounded flex-center flex-col"
                  onClick={() => {
-                   handleClickGoToEvaluePage(templateCode);
+                   handleClickGoToEvaluePage(id, taskType, templateCode);
                  }}>
               <div className="w-full justify-between items-center gap-5 flex">
                 <img
@@ -306,10 +309,10 @@ const TaskListPage = () => {
           </Affix>
 
           <div className="pt-[16px] portrait:w-[620px] landscape:w-[800px]" ref={taskListRef}>
-            {showPreMonthElderList && <PreMonthElderList data={taskList.lastMonth} key="PreMonthElderList" />}
+            {showPreMonthElderList && <PreMonthElderList data={taskList.lastMonth} />}
             {showCurrentMonthElderList &&
-              <CurrentMonthElderList data={taskList.currentMonth} key="CurrentMonthElderList" />}
-            {showNextMonthElderList && <NextMonthElderList data={taskList.nextMonth} key="NextMonthElderList" />}
+              <CurrentMonthElderList data={taskList.currentMonth} />}
+            {showNextMonthElderList && <NextMonthElderList data={taskList.nextMonth} />}
           </div>
         </div>
       </div>

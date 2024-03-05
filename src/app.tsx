@@ -7,7 +7,9 @@ import '@/patch/preflight.css';
 // import 'amfe-flexible';
 import { message, notification } from 'antd';
 import Cookies from 'js-cookie';
+import { history } from 'umi';
 import type { RequestConfig, AxiosResponse } from 'umi';
+
 type Result<T> = {
   status: string
   code: number
@@ -146,7 +148,7 @@ export async function getInitialState() {
 
       return true;
     } catch (error) {
-      // history.push('/login');
+      history.push('/login');
     }
 
     return false;

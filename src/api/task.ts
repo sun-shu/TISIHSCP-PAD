@@ -69,6 +69,11 @@ export interface CustomerTaskRecordPadItemDTO {
    */
   templateName?: string;
 
+  /**
+   * 任务类型
+   */
+  taskType?: string;
+
   [property: string]: any;
 }
 

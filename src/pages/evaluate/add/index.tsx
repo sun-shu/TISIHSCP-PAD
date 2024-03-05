@@ -12,7 +12,7 @@ const addPage = () => {
   const { data: templateData = {}, error, loading, run }: {
     data: TemplateDataResultDTO,
     [property: string]: any
-  } = useRequest((keyword = '') => {
+  } = useRequest(() => {
     return getEvaluateTemplateData({
       templateCode: templateCode,
     });

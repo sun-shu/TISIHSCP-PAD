@@ -1,8 +1,4 @@
 //elementDataType
-// :
-// [{code: "01", name: "数字(包括小数)", enName: "number", jpName: "数字(小数を含む)"},…]
-// 0
-// :
 // {code: "01", name: "数字(包括小数)", enName: "number", jpName: "数字(小数を含む)"}
 // 1
 // :
