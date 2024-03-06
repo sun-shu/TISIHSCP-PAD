@@ -6,22 +6,29 @@ import React, { useState } from 'react';
 import _ from 'lodash';
 
 import { EInput, ESelect, ETable } from './component';
-import { useParams, useLocation, history } from 'umi';
-
+import { useRequest, useLocation, history } from 'umi';
+import { ElementTypeEnum } from '@/enums/ElementTypeEnum';
+import { ElementDataTypeEnum } from '@/enums/ElementDataTypeEnum';
+import {
+  CustomerComposeInfoResDTO, getCustomerComposeInfo, GetCustomerComposeInfoRequest,
+  getEvaluateTemplateData,
+  TemplateDataResultDTO,
+  TemplateResDTO,
+} from '@/api/evaluateTemplate';
+import { EvluateRelativeTypeEnum } from '@/enums/EvluateRelativeTypeEnum';
+import { ElementRequireFlgEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementRequireFlgEnum';
 
 const { ETextArea } = EInput;
 
 // 剩余数据填充逻辑
 const titleNum = 0;
 // 表单组件的基础结构
-const FormItemBaseContainer = ({ item, index, form = {}, children }) => {
-
-  // const [titleNum, setTitleNum] = useState(0)
+const FormItemBaseContainer = ({ item, index, form = {}, children, formItemProps = {} }) => {
   return (
     <div>
       <div className="w-[620px] h-[30px] justify-start items-center gap-2.5 inline-flex mb-[10px]  text-black">
         <div className="w-6 h-6 p-2.5 font-bold text-[18px] justify-center items-center gap-2.5 flex">
-          ※
+          {item.elementRequireFlg === ElementRequireFlgEnum.YES && '※'}
         </div>
 
         <div className="justify-start items-center gap-2.5 flex">
@@ -30,30 +37,34 @@ const FormItemBaseContainer = ({ item, index, form = {}, children }) => {
             {index + 1}
           </div>
           <div className="text-zinc-700 text-xl font-normal font-['PingFang SC'] leading-[30px]">
-            单选-点选（建议选项≤4时使用）
+            {item.elementName}
           </div>
         </div>
       </div>
 
       <div className="px-[60px]  bg-white flex-center rounded-[4px]">
         <div className="w-full my-[20px]">
-          <Form.Item name={item.name} noStyle>
+          <Form.Item name={item.id} noStyle {...formItemProps}>
             {children}
           </Form.Item>
+
         </div>
       </div>
     </div>
   );
 };
-const EvaluateFormTemplates = ({ evaluateTemplate = [], initData, form = {}, setEvaluateTemplate }) => {
+
+const EvaluateFormTemplates = ({ elementList = [], initData, form = {}, setEvaluateTemplate }: {
+  elementList: TemplateResDTO[]
+}) => {
 //
-  console.log(evaluateTemplate, '====');
+  console.log('elementList', elementList, '====');
   const location = useLocation();
   const onChange = (e) => {
     const resData = _.cloneDeep(initData);
     // 1 2为option A B效果隐藏
     if (e.target.value === 1 || e.target.value === 2) {
-      const res = evaluateTemplate.map((item, index) => {
+      const res = elementList.map((item, index) => {
         item.isShow = index !== 3;
         return item;
       });
@@ -62,52 +73,103 @@ const EvaluateFormTemplates = ({ evaluateTemplate = [], initData, form = {}, set
     }
     // 3 4效果增加
     if (e.target.value === 3 || e.target.value === 4) {
-      const res = evaluateTemplate.map((item, index) => {
+      const res = elementList.map((item, index) => {
         item.isShow = true;
         return item;
       });
       setEvaluateTemplate(res);
-      // setEvaluateTemplate([...evaluateTemplate, resData[2]])
+      // setEvaluateTemplate([...elementList, resData[2]])
     }
   };
+
   const templateConfig = {
-    INPUT: (item, index) => {
+    [ElementTypeEnum.TEXT]: ({ elementDataType, ...item }: {
+      elementDataType: ElementDataTypeEnum, [key: string]: any
+    }, index) => {
+      switch (elementDataType) {
+        case ElementDataTypeEnum.NUMBER:
+          return (
+            <FormItemBaseContainer item={item} index={index} form={form}>
+              <EInput type="number" form={form} maxLength={item?.elementMaxLength} />
+            </FormItemBaseContainer>
+          );
+        case ElementDataTypeEnum.TEXT:
+          return (
+            <FormItemBaseContainer item={item} index={index} form={form}>
+              <EInput type="text" form={form} maxLength={item?.elementMaxLength} />
+            </FormItemBaseContainer>
+          );
+      }
+    },
+    [ElementTypeEnum.TEXTAREA]: (item, index) => {
       return (
         <FormItemBaseContainer item={item} index={index} form={form}>
-          <EInput type="text" form={form} />
+          <ETextArea rows={4} form={form} maxLength={item?.elementMaxLength} />
         </FormItemBaseContainer>
       );
     },
-    TEXTAREA: (item, index) => {
-      return (
-        <FormItemBaseContainer item={item} index={index} form={form}>
-          <ETextArea rows={4} form={form} />
-        </FormItemBaseContainer>
-      );
-    },
-    SINGLE_SELECT: (item, index) => {
+    [ElementTypeEnum.SINGLE_SELECT]: (item, index) => {
+      console.log('item', item, '====');
       // 单选多选，点选下拉框
+      const options = item?.optionList.map((option) => ({
+        label: option.optionName,
+        value: option.id,
+        optionType: option.optionType,
+      }));
       return (
         <FormItemBaseContainer item={item} index={index} form={form}>
-          {item.options.length > 4 ? <ESelect form={form}></ESelect> :
-            <ERadio onChange={onChange} form={form}></ERadio>}
+
+          {item.optionList.length > 4 ? <ESelect form={form} options={options} /> :
+            <ERadio form={form} options={options}></ERadio>}
         </FormItemBaseContainer>
       );
     },
-    MULTI_SELECT: (item, index) => {
+    [ElementTypeEnum.MULTI_SELECT]: (item, index) => {
+      console.log('MULTI_SELECT item', item, '====');
+      const options = item?.optionList.map((option) => ({
+        label: option.optionName,
+        value: option.id,
+        optionType: option.optionType,
+      }));
       return (
-        <FormItemBaseContainer item={item} index={index} form={form}>
-          <ECheckBox form={form} />
+        <FormItemBaseContainer item={item} index={index} form={form} formItemProps={{ valuePropName: 'checked' }}>
+          <ECheckBox form={form} options={options} />
         </FormItemBaseContainer>
       );
     },
-    TABLE: (item, index) => {
-      return (
-        <FormItemBaseContainer item={item} index={index} form={form}>
-          <ETable form={form} />
-        </FormItemBaseContainer>
-      );
-    },
+    //
+    // [ElementTypeEnum.TABLE]: (item, index) => {
+    //   return (
+    //     <FormItemBaseContainer item={item} index={index} form={form}>
+    //       <ETable form={form} />
+    //     </FormItemBaseContainer>
+    //   );
+    // },
+    // [ElementTypeEnum.DATE]: ({ elementDataType, ...item }: {
+    //   elementDataType: ElementDataTypeEnum, [key: string]: any
+    // }, index) => {
+    //   switch (elementDataType) {
+    //     case ElementDataTypeEnum.YEAR_MONTH_DAY:
+    //       return (
+    //         <FormItemBaseContainer item={item} index={index} form={form}>
+    //
+    //         </FormItemBaseContainer>
+    //       );
+    //
+    //     case ElementDataTypeEnum.DATE_TIME:
+    //       return (
+    //         <FormItemBaseContainer item={item} index={index} form={form}>
+    //
+    //         </FormItemBaseContainer>
+    //       );
+    //     case ElementDataTypeEnum.HOUR_MINUTE:
+    //       return (
+    //         <FormItemBaseContainer item={item} index={index} form={form}>
+    //
+    //         </FormItemBaseContainer>
+    //       );
+    //   }
+    // },
   };
 
   return (
@@ -135,168 +197,48 @@ const EvaluateFormTemplates = ({ evaluateTemplate = [], initData, form = {}, set
           },
         }}
       >
-        {evaluateTemplate.map((item, index) => {
+        {elementList.map((item, index) => {
           return (
             <>
-              {item.isShow ?
-                <div className="mt-[20px]" key={index}>{templateConfig[item.type]?.(item, index)}</div> : <></>}
+              {!item.elementIsShow ?
+                <div className="mt-[20px]" key={index}>{templateConfig[item.elementType]?.(item, index)}</div> : <></>}
             </>
           );
         })}
       </ConfigProvider>
-
     </div>
   );
 };
 
 // form在外面操作，这里是纯表单
-const evaluateFormComponent = ({ form, initialValues, disabled, templateCode }) => {
+const EvaluateFormComponent = ({ form, initialValues, disabled, templateCode }: {
+  templateCode: string;
+  [key: string]: any;
+}) => {
 
-  //根据templateCode拉取模板数据
-  const [evaluateTemplate, setEvaluateTemplate] = React.useState([
-    {
-      type: 'INPUT',
-      label: '输入框',
-      name: 'input',
-      isShow: true,
+  const { data: evaluateTemplateData = {}, error, loading, run }: {
+    data: TemplateDataResultDTO;
+    error: any;
+    loading: boolean;
+    run: any;
+  } = useRequest(() => getEvaluateTemplateData({
+    templateCode,
+  }), {
+    ready: !!templateCode,
+    onSuccess: (result, params) => {
+      console.log('result', result);
     },
-    {
-      type: 'TEXTAREA',
-      label: '文本域',
-      name: 'textarea',
-      isShow: true,
-    },
-    {
-      type: 'SINGLE_SELECT',
-      label: '下拉框',
-      name: 'select',
-      options: [
-        {
-          name: 'jack',
-          label: 'Jack',
-        },
-        {
-          name: 'lucy',
-          label: 'Lucy',
-        },
-        {
-          name: 'Yiminghe',
-          label: 'yiminghe',
-        },
-        {
-          name: 'disabled',
-          label: 'Disabled',
-          disabled: true,
-        },
-      ],
-      isShow: true,
-    },
-    {
-      type: 'MULTI_SELECT',
-      label: '多选框',
-      name: 'checkbox',
-      options: [
-        {
-          label: 'jack',
-          value: 'Jack',
-        },
-        {
-          value: 'lucy',
-          label: 'Lucy',
-        },
-        {
-          value: 'Yiminghe',
-          label: 'yiminghe',
-        },
-        {
-          value: 'disabled',
-          label: 'Disabled',
-          disabled: true,
-        },
-      ],
-      isShow: true,
-    },
-    {
-      type: 'SINGLE_SELECT',
-      label: '单选框',
-      name: 'radio',
-      options: [
-        {
-          value: 'jack',
-          label: 'Jack',
-        },
-        {
-          value: 'lucy',
-          label: 'Lucy',
-        },
-        {
-          value: 'Yiminghe',
-          label: 'yiminghe',
-        },
-        {
-          value: 'disabled',
-          label: 'Disabled',
-          disabled: true,
-        },
-        {
-          value: 'jack11',
-          label: 'Jack1',
-        },
-      ],
-      isShow: true,
-    },
-    {
-      type: 'MULTI_SELECT',
-      label: '单选框',
-      name: 'radio',
-      options: [
-        {
-          value: 'jack',
-          label: 'Jack',
-        },
-        {
-          value: 'lucy',
-          label: 'Lucy',
-        },
-        {
-          value: 'Yiminghe',
-          label: 'yiminghe',
-        },
-        {
-          value: 'disabled',
-          label: 'Disabled',
-          disabled: true,
-        },
-        {
-          value: 'jack11',
-          label: 'Jack1',
-        },
-      ],
-      isShow: true,
-    },
-    {
-      type: 'RADIO',
-      label: '单选框',
-      name: 'radio',
-      isShow: true,
-    },
-    {
-      type: 'CHECKBOX',
-      isShow: true,
-    },
-    {
-      type: 'TABLE',
-      isShow: true,
-    },
-  ]);
+  });
 
+
+  console.log('evaluateTemplateData', evaluateTemplateData, '====');
   return (
     <div>
       <Form form={form} colon={false} initialValues={initialValues} disabled={disabled}>
-        <EvaluateFormTemplates evaluateTemplate={evaluateTemplate} initData={evaluateTemplate} form={form}
-                               setEvaluateTemplate={setEvaluateTemplate} />
+        <EvaluateFormTemplates elementList={evaluateTemplateData.resDTO?.elementList}
+        />
       </Form>
     </div>
   );
 };
-export default evaluateFormComponent;
+export default EvaluateFormComponent;

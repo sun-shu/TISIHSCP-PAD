@@ -14,6 +14,7 @@ const addPage = () => {
   const [form] = Form.useForm();
 
 
+  // 这里拉取默认值，
   const { data: templateData = {}, error, loading, run }: {
     data: TemplateDataResultDTO,
     [property: string]: any
@@ -36,17 +37,20 @@ const addPage = () => {
 
   return (
     <div className="max-w-[620px] m-auto py-[20px]">
-      <div className="text-[28px] font-semibold leading-10  bg-gray-F6 w-full">
-        {templateData.resDTO?.templateName}
+      <div className="mb-[90px]">
+        <div className="text-[28px] font-semibold leading-10  bg-gray-F6 w-full">
+          {templateData.resDTO?.templateName}
+        </div>
+        <div className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide pt-[10px]">
+          已完成 10 / 20
+        </div>
+        <ProgressBar processRate={60} />
+        <div className="text-right border-b-[1px] py-[10px]">※ 为必填项</div>
+        <div className="mt-[20px]">
+          <EvaluateForm form={form} templateCode={templateCode} />
+        </div>
       </div>
-      <div className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide pt-[10px]">
-        已完成 10 / 20
-      </div>
-      <ProgressBar processRate={60} />
-      <div className="text-right border-b-[1px] py-[10px]">※ 为必填项</div>
-      <div className="mt-[20px]">
-        <EvaluateForm elementList={templateData?.resDTO?.elementList} form={form} />
-      </div>
+
 
       {/* 表单提交按钮 */}
       <div className="fixed bottom-0 left-0 w-full flex items-center justify-center bg-white p-5">

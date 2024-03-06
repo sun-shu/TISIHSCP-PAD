@@ -343,7 +343,7 @@ export interface GetEvaluateTemplateDataRequest {
   templateClass?: string;
   /**
    * 模版code
-   */
+   */_;
   templateCode?: string;
   /**
    * 描述

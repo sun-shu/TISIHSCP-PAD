@@ -1,9 +1,11 @@
 import { CloseCircleOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
+import { forwardRef } from 'react';
 
 const { TextArea } = Input;
 
-const EInput = () => {
+const EInput = (props) => {
+  console.log(props, 'EInput props');
   return (
     <Input
       placeholder={'请填写'}
@@ -18,11 +20,12 @@ const EInput = () => {
           />
         ),
       }}
+      {...props}
     />
   );
 };
 
-const ETextArea = () => {
+const ETextArea = (props) => {
   return (
     <TextArea
       placeholder={'请填写'}
@@ -37,7 +40,7 @@ const ETextArea = () => {
           letterSpacing: '0.6px',
         },
       }}
-      maxLength={100}
+
       allowClear={{
         clearIcon: (
           <CloseCircleOutlined
@@ -49,6 +52,7 @@ const ETextArea = () => {
           />
         ),
       }}
+      {...props}
     />
   );
 };
