@@ -1,33 +1,52 @@
-import { Input, Radio, Space } from 'antd';
+import { Checkbox, Input, Radio, Space } from 'antd';
+import React from 'react';
+import { OptionTypeEnum } from '@/pages/evaluate/components/evaluateForm/enums/OptionTypeEnum';
 
 const ERadio = (props) => {
-  const { value, form, onChange } = props;
+  const { value = {}, onChange, options } = props;
+
+  console.log(props, 'props');
+  const handleOnChange = (e, option) => {
+    const selectedOption = options.find(option => option.value === e.target.value);
+    console.log(e, ' handleOnChange value');
+    onChange({
+      value: e.target.value,
+      optionType: selectedOption.optionType,
+    });
+  };
   return (
     <div>
-      <Radio.Group {...props} className="w-full">
+      <Radio.Group className="w-full" onChange={handleOnChange} value={value.value}>
         <Space direction="vertical" className="w-full">
-          <Radio value={1}>Option A</Radio>
-          <Radio value={2}>Option B</Radio>
-          <Radio value={3}>Option C</Radio>
-          <Radio value={4} className="w-full flex flex-1 relative">
-            <span>
-              其他
-              {value === 4 ? (
-                <>
-                  ：
-                  <Input
-                    style={{
-                      width: '80%',
-                      marginLeft: 10,
-                      borderBottom: '1px solid #323746',
-                    }}
-                    variant="borderless"
-                    className=" absolute rounded-none flex-1"
-                  />
-                </>
-              ) : null}
-            </span>
-          </Radio>
+          {
+            options?.map((item) => {
+              console.log(item, 'item');
+              if (item.optionType === OptionTypeEnum.OTHER) {
+                return (
+                  <Radio value={item.value} className="w-full flex flex-1 relative">
+                      <span>
+                        其他
+                        {value.optionType === OptionTypeEnum.OTHER ? (
+                          <>
+                            ：
+                            <Input
+                              style={{
+                                width: '80%',
+                                marginLeft: 10,
+                                borderBottom: '1px solid #323746',
+                              }}
+                              variant="borderless"
+                              className=" absolute rounded-none flex-1"
+                            />
+                          </>
+                        ) : null}
+                      </span>
+                  </Radio>);
+              }
+              return <Radio value={item.value}>{item.label}</Radio>;
+            })
+          }
+
         </Space>
       </Radio.Group>
     </div>

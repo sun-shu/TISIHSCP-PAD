@@ -3,10 +3,11 @@
 - 全局环境
 
 > node版本 >= 18.19.1
-> 
+>
 > 全局安装 umi pnpm
 >
-> 
+>
+
 - clone项目
 
 > [项目地址](https://github.com/sun-shu/TISIHSCP-PAD.git)
@@ -19,6 +20,6 @@
 
 > pnpm install
 
-- 项目运行 
+- 项目运行
 
 > pnpm dev
