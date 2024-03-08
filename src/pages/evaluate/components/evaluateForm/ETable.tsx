@@ -1,116 +1,191 @@
 import { useEffect, useState } from 'react';
-import { Modal, Button, Divider, ConfigProvider } from 'antd';
+import { Modal, Button, Divider, ConfigProvider, Form } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import React from 'react';
 import Medication from './Medication';
 import Disease from './Disease';
+import { ElementTypeEnum } from '@/enums/ElementTypeEnum';
+import { ElementDataTypeEnum } from '@/enums/ElementDataTypeEnum';
+import { EDateTime, EInput, ESelect } from '@/pages/evaluate/components/evaluateForm/component';
+import ERadio from '@/pages/evaluate/components/evaluateForm/ERadio';
+import ECheckBox from '@/pages/evaluate/components/evaluateForm/ECheckBox';
+import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
+import { OptionDataType } from '@/pages/evaluate/components/evaluateForm/enums/OptionDataTypeEnum';
+import { OptionDataTypeEnum } from './enums/OptionDataTypeEnum';
+import { OptionControlTypeEnum } from './enums/OptionControlTypeEnum';
+import { ElementRequireFlgEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementRequireFlgEnum';
 // 弹窗类型
-type ModalType = "view" | "create"
+type ModalType = 'view' | 'create'
 // 弹窗按钮类型
-type ButtonType = "del" | "save" | "close"
+type ButtonType = 'del' | 'save' | 'close'
 // 需要先确定好数据结构，然后再进行组件的拆分
 // 1.确定数据结构
 
-const templeteDatdTmp = {
-  name: {
-    id: 1,
-    type: 'INPUT',
-    label: '输入框',
-    name: 'input',
-  },
-  time: {
-    id: 2,
-    type: 'TEXTAREA',
-    label: '文本域',
-    name: 'textarea',
-  },
-};
+const { EDateTimePicker, ETimePicker } = EDateTime;
+const { ETextArea } = EInput;
+// 表单组件的基础结构
+const FormItemBaseContainer = ({ item, form = {}, children, formItemProps = {} }) => {
+  return (
+    <div>
+      <div
+        className="w-[620px] font-semibold h-[30px] justify-start items-center gap-2.5 inline-flex mb-[10px]  text-black">
+        {item.optionRequireFlg === ElementRequireFlgEnum.YES &&
+          <div className="w-6 font-bold h-6 p-2.5  text-xl justify-center items-center gap-2.5 flex">
+            ※
+          </div>}
 
-const dataTmp = [
-  // status 0 删除 1 查看 2 新增
-  {
-    id: 1,
-    name: '疾病名称',
-    time: '就医时间',
-    hospital: '医院',
-    department: '科室',
-    doctor: '主治医师',
-    accompany: '陪同人',
-    status: 0
-  },
-  {
-    id: 2,
-    name: '疾病名称',
-    time: '就医时间',
-    hospital: '医院',
-    department: '科室',
-    doctor: '主治医师',
-    accompany: '陪同人',
-    status: 1
-  },
-  {
-    id: 3,
-    name: '疾病名称',
-    time: '就医时间',
-    hospital: '医院',
-    department: '科室',
-    doctor: '主治医师',
-    accompany: '陪同人',
-    status: 2
-  },
-  {
-    id: 4,
-    name: '疾病名称',
-    time: '就医时间',
-    hospital: '医院',
-    department: '科室',
-    doctor: '主治医师',
-    accompany: '陪同人',
-    status: 1
-  }
-];
+        <div className="justify-start items-center gap-2.5 flex">
+          <div className="text-zinc-700 text-xl  font-['PingFang SC'] leading-[30px] font-bold">
+            {item.optionName}
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-white  rounded-[4px]">
+        <div className="w-full ">
+          <Form.Item name={item.id} noStyle {...formItemProps}>
+            {children}
+          </Form.Item>
+
+        </div>
+      </div>
+    </div>
+  );
+};
 
 
 const ETableForm = (props) => {
+  const [form] = Form.useForm();
   // 面板卡弹窗表单
-  const { data, onSubmit, disabled, title, type, children, templateData, setFormVisible, setData, open } = props;
-  const handleClick = (btnType: ButtonType) => {
-    if (disabled) return;
-    //   参数校验
-    if (btnType === "del") {
-      // 获取数据
-      // 调用接口删除
-      // onSubmit(data);
-      // 模拟列表数据移除
-      const resData = data.filter((item, index) => index !== data.length - 1)
-      setData(resData)
-    }
-    if (btnType === "save") {
-      // 获取数据
-      if (type === "create") {
-        // 调用新增数据接口
-        const res = {
-          id: data[data.length - 1].id + 1,
-          name: '疾病名称',
-          time: '就医时间',
-          hospital: '医院',
-          department: '科室',
-          doctor: '主治医师',
-          accompany: '陪同人',
-          status: 2
-        }
-        const resData = [...data, res]
-        setData(resData)
-      } else {
-        // 不调用接口
-      }
-    }
-    if (btnType === "close") {
-      // 清空表单
-    }
-    // 执行弹窗关闭
-    setFormVisible(false)
+  const { data, onSubmit, disabled, title, type, defultValue, item, setFormVisible, setData, open } = props;
+  const handleDeleteBtnClick = () => {
+    // 删除数据
+    // onSubmit(data);
+    // 模拟列表数据移除
+    const resData = data.filter((item, index) => index !== data.length - 1);
+    setData(resData);
+    setFormVisible(false);
+
   };
+  const handleSaveBtnClick = () => {
+
+    //没有数据的时候，直接新增一条数据
+    if (Object.keys(defultValue).length === 0) {
+      // 调用新增数据接口
+      const res = {};
+      const resData = [...data, res];
+      setData(resData);
+    }
+    // 有数据的时候，直接修改数据
+    else {
+      //修改数据， 找到源数组中的这一条数据，并修改
+      const resData = data.map((item, index) => {
+        if (item.id === data[data.length - 1].id) {
+          return {
+            ...item,
+
+          };
+        }
+        return item;
+      });
+
+      setData(resData);
+    }
+
+    // 执行弹窗关闭
+    setFormVisible(false);
+  };
+  const handleCloseBtnClick = () => {
+    // 清空表单
+    setFormVisible(false);
+  };
+
+
+  const templateConfig = {
+    [OptionControlTypeEnum.TEXT]: ({ optionDataType, ...item }: {
+      elementDataType: ElementDataTypeEnum, [key: string]: any
+    }, index) => {
+      switch (optionDataType) {
+        case OptionDataTypeEnum.NUMBER:
+          return (
+            <FormItemBaseContainer item={item} index={index} form={form}>
+              <EInput type="number" form={form} maxLength={item?.optionMaxLength}
+                      placeHolder={item.optionPlaceholder} />
+            </FormItemBaseContainer>
+          );
+        case OptionDataTypeEnum.TEXT:
+          return (
+            <FormItemBaseContainer item={item} index={index} form={form}>
+              <EInput type="text" form={form} maxLength={item?.elementMaxLength} />
+            </FormItemBaseContainer>
+          );
+      }
+    },
+    [OptionControlTypeEnum.TEXTAREA]: (item, index) => {
+      return (
+        <FormItemBaseContainer item={item} index={index} form={form}>
+          <ETextArea rows={4} form={form} maxLength={item?.elementMaxLength} />
+        </FormItemBaseContainer>
+      );
+    },
+    [OptionControlTypeEnum.SINGLE_SELECT]: (item, index) => {
+      console.log('item', item, '====');
+      // 单选多选，点选下拉框
+      const options = item?.optionList.map((option) => ({
+        label: option.optionName,
+        value: option.id,
+        ...option,
+      }));
+      return (
+        <FormItemBaseContainer item={item} index={index} form={form}>
+
+          {item.optionList.length > 4 ?
+            <ESelect form={form} options={options} changeElementVisible={changeElementVisible} /> :
+            <ERadio form={form} options={options} changeElementVisible={changeElementVisible}></ERadio>}
+        </FormItemBaseContainer>
+      );
+    },
+    [OptionControlTypeEnum.MULTI_SELECT]: (item, index) => {
+      console.log('MULTI_SELECT item', item, '====');
+      const options = item?.optionList.map((option) => ({
+        label: option.optionName,
+        value: option.id,
+        ...option,
+      }));
+      return (
+        <FormItemBaseContainer item={item} index={index} form={form} formItemProps={{ valuePropName: 'checked' }}>
+          <ECheckBox form={form} options={options} changeElementVisible={changeElementVisible} />
+        </FormItemBaseContainer>
+      );
+    },
+
+    [OptionControlTypeEnum.DATE]: ({ elementDataType, ...item }: {
+      elementDataType: ElementDataTypeEnum, [key: string]: any
+    }, index) => {
+      switch (elementDataType) {
+        case OptionDataTypeEnum.YEAR_MONTH_DAY:
+          return (
+            <FormItemBaseContainer item={item} index={index} form={form}>
+              <EDateTime />
+            </FormItemBaseContainer>
+          );
+
+        case OptionDataTypeEnum.DATE_TIME:
+          return (
+            <FormItemBaseContainer item={item} index={index} form={form}>
+              <EDateTimePicker />
+            </FormItemBaseContainer>
+          );
+        case OptionDataTypeEnum.HOUR_MINUTE:
+          return (
+            <FormItemBaseContainer item={item} index={index} form={form}>
+              <ETimePicker />
+            </FormItemBaseContainer>
+          );
+      }
+    },
+  };
+
   return (
     <>
       <ConfigProvider theme={{
@@ -131,19 +206,48 @@ const ETableForm = (props) => {
           }}
           footer={[
 
-            <Button key="back" className="text-sm py-[14px] h-auto" type="primary" ghost onClick={() => handleClick("del")}>
+            <Button key="back" className="text-sm py-[14px] h-auto" type="primary" ghost
+                    onClick={() => handleDeleteBtnClick()}>
               删除
             </Button>,
-            <Button key="submit" className="text-sm py-[14px] h-auto" type="primary" onClick={() => handleClick("save")}>
+            <Button key="submit" className="text-sm py-[14px] h-auto" type="primary"
+                    onClick={() => handleSaveBtnClick()}>
               保存
             </Button>,
           ]}
-          onCancel={() => handleClick("close")}
+          onCancel={() => handleCloseBtnClick()}
         >
-          {children}
-          {/* <div className="w-full h-[0px] border border-gray-D8"></div>
-          <div className="mt-[10px]">
-          </div> */}
+          <ConfigProvider
+            theme={{
+              token: {
+                colorBorder: '#5E5E5E',
+                colorText: '#5E5E5E',
+                borderRadius: 4,
+                fontSize: 18,
+                colorTextPlaceholder: '#5E5E5E',
+                colorBgContainerDisabled: 'none',
+              },
+              components: {
+                Input: {
+                  activeShadow: 'none',
+                  activeBorderColor: 'none',
+                  paddingInline: 10,
+                  paddingBlock: 2,
+                },
+                Select: {
+                  borderRadius: 4,
+                },
+              },
+            }}
+          >
+            {item?.optionList.map((item, index) => {
+              return (
+                <>
+                  <div className="mt-[20px]" key={index}>{templateConfig[item.optionControlType]?.(item, index)}</div>
+                </>
+              );
+            })}
+          </ConfigProvider>
         </Modal>
       </ConfigProvider>
     </>
@@ -152,18 +256,14 @@ const ETableForm = (props) => {
 
 const ETable = (props) => {
   const { disabled = false } = props;
-  const { value = dataTmp, onChange, templateData = templeteDatdTmp } = props;
+  const { value, onChange, item = item, title } = props;
   // value 是当前面板卡列表数据
   const [currentSelectData, setCurrentSelectData] = useState({});
   const [selectDataIndex, setSelectDataIndex] = useState(0);
   const [formVisible, setFormVisible] = useState(false);
-  const [ETableFormTitle, setETableFormTitle] = useState("")
-  const [currentType, setCurrentType] = useState("")
-  const [data, setData] = useState(dataTmp)
-  useEffect(() => {
-    console.log("出发了", data)
-    setData(data)
-  }, [data.length])
+  const [currentType, setCurrentType] = useState('');
+  const [data, setData] = useState([]);
+
   //  点击查看按钮
   const handleClick = () => {
     //...加载数据
@@ -188,52 +288,40 @@ const ETable = (props) => {
   };
 
 
-  const openETableForm = (data, type: ModalType) => {
-    console.log(data)
-    //...加载数据
-    //...打开ETableForm
-    // setFormVisible(true);
-    // setCurrentSelectData({ data });
-    // 设置弹窗表单标题
-    setCurrentType(type)
-    if (type === "create") {
-      setETableFormTitle("主要疾病-03")
-    } else {
-      setETableFormTitle("当前用药情况-03")
-      setCurrentSelectData({ ...data })
-    }
-    setFormVisible(true)
+  const openETableForm = (item) => {
+    setCurrentSelectData({ ...item });
+    setFormVisible(true);
   };
 
   console.log('value', value);
   /**
    * 获取列表按钮文本辅助函数
    * @param status 列表按钮文本
-   * @returns 
+   * @returns
    */
   const getBtnText = (status: number) => {
     if (status === 1) {
-      return "查看"
+      return '查看';
     }
     if (status === 2) {
-      return "新增"
+      return '新增';
     }
-  }
+  };
   return (
     <>
       {/* 面板选项卡表单 */}
-      <ETableForm 
-        open={formVisible} 
-        defultValue={currentSelectData} 
-        type={currentType} 
-        title={ETableFormTitle} 
-        disabled={disabled} 
-        templateData={templateData} 
-        children={currentType === "create" ? <Disease/> : <Medication/>}
+      <ETableForm
+        open={formVisible}
+        defultValue={currentSelectData}
+        type={currentType}
+        title={title}
+        disabled={disabled}
+        item={item}
+        children={currentType === 'create' ? <Disease /> : <Medication />}
         setFormVisible={setFormVisible}
         setData={setData}
         data={data}
-        onSubmit={handleSubmit} 
+        onSubmit={handleSubmit}
       />
       {/* 面板选项列表数据 */}
       <div className="grid grid-cols-2 gap-[20px] items-center">
@@ -243,25 +331,27 @@ const ETable = (props) => {
               return (
                 <div
                   key={item.id} onClick={() => {
-                  openETableForm(item, "view");
+                  openETableForm({
+                    ...item, index,
+                  });
                 }}
                   className="w-60 h-[170px] px-5 pt-2.5 pb-5 bg-slate-50 rounded-[20px] flex-col justify-start items-start gap-2.5 inline-flex">
                   <div
                     className="w-[200px] text-zinc-600 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">{(index + 1).toString().padStart(2, '0')}
                   </div>
                   <div
-                    className="w-[200px] text-zinc-600 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">主要疾病的名称主要疾病的名称主要疾病的名称
+                    className="w-[200px] text-zinc-600 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">{item.title}
                   </div>
                   <div
                     className="w-[200px] text-zinc-600 text-sm font-normal font-['PingFang SC'] leading-tight tracking-wide">就医时间：2023年10月24日
                   </div>
                   <div
                     className="w-[200px] text-teal-500 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide">{
-                      item.status === 1 ? "查看" : "编辑" 
-                    }
+                    item.status === 1 ? '查看' : '编辑'
+                  }
                   </div>
                 </div>
-              )
+              );
             }
           })
         }
@@ -271,7 +361,7 @@ const ETable = (props) => {
             <div
               className=" border border-teal-500 flex-center flex-col bg-gray-F6 px-[20px] py-[10px] rounded-[20px] min-h-[170px]"
               onClick={() => {
-                openETableForm({}, "create");
+                openETableForm({});
               }}>
 
               <div>

@@ -1,21 +1,26 @@
 import { Checkbox, Input, Space } from 'antd';
 import React from 'react';
 import { OptionTypeEnum } from '@/pages/evaluate/components/evaluateForm/enums/OptionTypeEnum';
+import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
 
 const ECheckBox = (props) => {
-  console.log(props, 'ECheckBox props');
-  const { checked = [], onChange, options } = props;
+  const { checked = [], onChange, options, changeElementVisible } = props;
 
   const handleOnChange = (newValue) => {
-    console.log(newValue, ' handleOnChange value');
     onChange(newValue.map(item => {
       const selectedOption = options.find(option => option.value.toString() == item);
-      console.log(selectedOption, 'selectedOption');
       return {
         value: item,
         optionType: selectedOption?.optionType,
       };
     }));
+  };
+
+  const handleOneItemChange = (e) => {
+    const selectedOption = options.find(option => option.value.toString() == e.target.value);
+    if ([ElementVisibleEnum.HIDE, ElementVisibleEnum.SHOW].includes(selectedOption.optionIsShow) && selectedOption.nextElementId) {
+      changeElementVisible(selectedOption.nextElementId, selectedOption.optionIsShow);
+    }
   };
 
   return (
@@ -26,7 +31,9 @@ const ECheckBox = (props) => {
 
           {options?.map((item) => {
             if (item.optionType === OptionTypeEnum.OTHER) {
-              return (<Checkbox value={item.value.toString()} className="w-full flex flex-1 relative" key={item.value}>
+              return (<Checkbox value={item.value.toString()} onChange={handleOneItemChange}
+                                className="w-full flex flex-1 relative"
+                                key={item.value}>
                         <span>
                           其他
                           {checked.some(item => item.optionType === OptionTypeEnum.OTHER) ? (

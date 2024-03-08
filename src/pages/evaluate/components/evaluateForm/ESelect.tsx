@@ -1,9 +1,10 @@
 import { Input, Select } from 'antd';
 import { forwardRef } from 'react';
 import { OptionTypeEnum } from '@/pages/evaluate/components/evaluateForm/enums/OptionTypeEnum';
+import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
 
 const ESelect = ({ selectProps, ...props }) => {
-  const { value = {}, onChange, optionType, options } = props;
+  const { value = {}, onChange, optionType, options, changeElementVisible } = props;
 
   const handleOnChange = (value, option) => {
     console.log(value, option, 'value');
@@ -11,6 +12,11 @@ const ESelect = ({ selectProps, ...props }) => {
       value,
       optionType: option.optionType,
     });
+
+    console.log(option, 'option.optionIsShow');
+    if ([ElementVisibleEnum.HIDE, ElementVisibleEnum.SHOW].includes(option.optionIsShow) && option.nextElementId) {
+      changeElementVisible(option.nextElementId, option.optionIsShow);
+    }
   };
 
   return (
@@ -24,7 +30,7 @@ const ESelect = ({ selectProps, ...props }) => {
         value={value.value}
       >{
         options.map((item) => {
-          return <Select.Option value={item.value} optionType={item.optionType}>{item.label}</Select.Option>;
+          return <Select.Option value={item.value} {...item}>{item.label}</Select.Option>;
         })
       }
 

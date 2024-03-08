@@ -1,18 +1,22 @@
-const OneSectionComponent = () => {
+const OneSection = ({ title }) => {
+  console.log(title, 'title');
   return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="text-2xl font-bold text-gray-800">评价</div>
+    <div className="flex flex-col ">
+      <div className="text-2xl font-bold text-gray-800">{title}</div>
+    </div>
+  );
+};
+const TwoSection = ({ title }) => {
+  return (
+    <div className="flex flex-col ">
+      <div className="text-1xl font-bold text-gray-800">{title}</div>
     </div>
   );
 };
 
-const ETitle = () => {
-  return (
-    <div className="flex flex-col items-center justify-center">
-      <div className="text-2xl font-bold text-gray-800">评价</div>
-    </div>
-  );
-};
 
-ETitle.H1 = OneSectionComponent;
+const ETitle = {
+  OneSection,
+  TwoSection,
+};
 export default ETitle;

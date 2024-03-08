@@ -1,9 +1,10 @@
 import { Checkbox, Input, Radio, Space } from 'antd';
 import React from 'react';
 import { OptionTypeEnum } from '@/pages/evaluate/components/evaluateForm/enums/OptionTypeEnum';
+import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
 
 const ERadio = (props) => {
-  const { value = {}, onChange, options } = props;
+  const { value = {}, onChange, options, changeElementVisible } = props;
 
   console.log(props, 'props');
   const handleOnChange = (e, option) => {
@@ -13,6 +14,10 @@ const ERadio = (props) => {
       value: e.target.value,
       optionType: selectedOption.optionType,
     });
+ 
+    if ([ElementVisibleEnum.HIDE, ElementVisibleEnum.SHOW].includes(selectedOption.optionIsShow) && selectedOption.nextElementId) {
+      changeElementVisible(selectedOption.nextElementId, selectedOption.optionIsShow);
+    }
   };
   return (
     <div>
