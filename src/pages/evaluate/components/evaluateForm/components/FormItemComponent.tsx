@@ -61,6 +61,7 @@ const FormItemBaseContainer = ({ item, form = {}, children, formItemProps = {} }
       <div className="px-[60px]  bg-white flex-center rounded-[4px]">
         <div className="w-full my-[20px]">
           <Form.Item name={item.id} noStyle {...formItemProps}
+                     b={111}
                      rules={item.elementRequireFlg === ElementRequireFlgEnum.YES ? [{
                        required: true,
                        message: '必填项',
@@ -103,15 +104,16 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
     switch (elementDataType) {
       case ElementDataTypeEnum.NUMBER:
         return (
-          <FormItemBaseContainer item={item} key={index} form={form} formItemProps={formItemProps}>
-            <EInput type="number" form={form} maxLength={item?.elementMaxLength}
-                    placeHolder={item.elementPlaceholder} />
+          <FormItemBaseContainer item={item} key={item.id} form={form} formItemProps={formItemProps}>
+            <EInput componentProps={{
+              type: 'number',
+            }} form={form} item={item} />
           </FormItemBaseContainer>
         );
       case ElementDataTypeEnum.TEXT:
         return (
-          <FormItemBaseContainer item={item} key={index} form={form}>
-            <EInput type="text" form={form} maxLength={item?.elementMaxLength} />
+          <FormItemBaseContainer item={item} key={item.id} form={form}>
+            <EInput type="text" form={form} item={item} />
           </FormItemBaseContainer>
         );
     }
@@ -123,24 +125,24 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
       case ElementDataTypeEnum.YEAR_MONTH_DAY:
         const DateTimeElement = EDateTime; // 引入对应组件
         return (
-          <FormItemBaseContainer item={item} key={index} form={form}>
-            <DateTimeElement />
+          <FormItemBaseContainer item={item} key={item.id} form={form}>
+            <DateTimeElement item={item} />
           </FormItemBaseContainer>
         );
 
       case ElementDataTypeEnum.DATE_TIME:
         const DateTimePickerElement = EDateTimePicker;
         return (
-          <FormItemBaseContainer item={item} key={index} form={form}>
-            <DateTimePickerElement />
+          <FormItemBaseContainer item={item} key={item.id} form={form}>
+            <DateTimePickerElement item={item} />
           </FormItemBaseContainer>
         );
 
       case ElementDataTypeEnum.HOUR_MINUTE:
         const TimePickerElement = ETimePicker;
         return (
-          <FormItemBaseContainer item={item} key={index} form={form}>
-            <TimePickerElement />
+          <FormItemBaseContainer item={item} key={item.id} form={form}>
+            <TimePickerElement item={item} />
           </FormItemBaseContainer>
         );
     }
@@ -149,8 +151,8 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   // 文本域组件
   const createTextareaComponent = (item: TemplateElementResDTO, index) => {
     return (
-      <FormItemBaseContainer item={item} key={index} form={form}>
-        <ETextArea rows={4} form={form} maxLength={item?.elementMaxLength} />
+      <FormItemBaseContainer item={item} key={item.id} form={form}>
+        <ETextArea rows={4} form={form} item={item} />
       </FormItemBaseContainer>
     );
   };
@@ -158,11 +160,11 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   // 单选组件
   const createSingleSelectComponent = (item: TemplateElementResDTO, index) => {
     return (
-      <FormItemBaseContainer item={item} key={index} form={form}>
+      <FormItemBaseContainer item={item} key={item.id} form={form}>
 
         {item.optionList.length > 4 ?
-          <ESelect form={form} options={options} changeElementVisible={changeElementVisible} /> :
-          <ERadio form={form} options={options} changeElementVisible={changeElementVisible}></ERadio>}
+          <ESelect options={options} changeElementVisible={changeElementVisible} form={form} item={item} /> :
+          <ERadio options={options} changeElementVisible={changeElementVisible} form={form} item={item} />}
       </FormItemBaseContainer>
     );
   };
@@ -170,8 +172,8 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   // 多选组件
   const createMultiSelectComponent = (item: TemplateElementResDTO, index) => {
     return (
-      <FormItemBaseContainer item={item} key={index} form={form} formItemProps={{ valuePropName: 'checked' }}>
-        <ECheckBox form={form} options={options} changeElementVisible={changeElementVisible} />
+      <FormItemBaseContainer item={item} form={form} formItemProps={{ valuePropName: 'checked' }}>
+        <ECheckBox form={form} item={item} options={options} changeElementVisible={changeElementVisible} />
       </FormItemBaseContainer>
     );
   };
@@ -195,7 +197,7 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   // 表格组件
   const createTableComponent = (item: TemplateElementResDTO, index) => {
     return (
-      <FormItemBaseContainer item={item} key={index} form={form} title={item.elementName}>
+      <FormItemBaseContainer item={item} key={item.id} form={form} title={item.elementName}>
         <ETable form={form} item={item} />
       </FormItemBaseContainer>
     );
@@ -216,9 +218,9 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
 
   return (
     <>
-      <div className="mt-[20px]" key={index}>{templateConfig[item.elementType]?.(item, index)}</div>
+      <div className="mt-[20px]" key={item.id}>{templateConfig[item.elementType]?.(item, index)}</div>
     </>
   );
 };
 
-export default FormItemComponent;
+export default React.memo(FormItemComponent);

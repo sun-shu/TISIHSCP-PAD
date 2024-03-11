@@ -6,10 +6,10 @@ import * as addComposeResultInterface from './addComposeResult.interface';
 export const addResult = async (data: addResultInterface.Request = {}, options?: {
   [key: string]: any
 }): Promise<addResultInterface.QAResultDataDTO> => {
-  const res = request('', {
+  const res = request('/hcsp-gateway/evaluateApi/v1/QAResult/addResult', {
     method: 'POST',
     errorShowType: ErrorShowTypeEnum.ERROR_MESSAGE,
-    params: data,
+    data: data,
     ...(options || {}),
   });
 

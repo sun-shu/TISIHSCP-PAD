@@ -1,19 +1,31 @@
 import { Checkbox, Input, Space } from 'antd';
 import React from 'react';
+
 import { OptionTypeEnum } from '@/pages/evaluate/components/evaluateForm/enums/OptionTypeEnum';
 import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
 
+// 这个组件有一个问题，显隐的时候，选择的值直接丢失了，需要重新选择一次
+//TODO :需要做的尝试 把之前的代码恢复回来 看看是否是因为修改了数据结构导致的问题(已經測試了，之前就是這樣的)
 const ECheckBox = (props) => {
-  const { checked = [], onChange, options, changeElementVisible } = props;
+  const { checked = {}, onChange, options, changeElementVisible, item: config } = props;
 
+  const otherOptionId = options.find(option => option.optionType === OptionTypeEnum.OTHER)?.value?.toString();
+  console.log(checked, 'checked');
   const handleOnChange = (newValue) => {
-    onChange(newValue.map(item => {
-      const selectedOption = options.find(option => option.value.toString() == item);
-      return {
-        value: item,
-        optionType: selectedOption?.optionType,
-      };
-    }));
+
+    console.log(newValue, 'newValue data');
+    const hasOther = newValue.some(item => item === otherOptionId);
+
+    const data = {
+      ...checked,
+      optionValues: newValue.join(','),
+      elementId: config.id,
+      hasOther,
+      answer: hasOther ? checked.answer : '',
+    };
+
+    console.log(data, 'data', checked?.optionValues?.split(','));
+    onChange(data);
   };
 
   const handleOneItemChange = (e) => {
@@ -23,9 +35,16 @@ const ECheckBox = (props) => {
     }
   };
 
+  const handleOtherTextChange = (e) => {
+    onChange({
+      ...checked,
+      answer: e.target.value,
+    });
+  };
+
   return (
     <div>
-      <Checkbox.Group className="w-full" onChange={handleOnChange} checked={checked.map(item => item.value)}>
+      <Checkbox.Group className="w-full" onChange={handleOnChange} checked={checked?.optionValues?.split(',')}>
         <Space direction="vertical" className="w-full">
 
 
@@ -33,10 +52,10 @@ const ECheckBox = (props) => {
             if (item.optionType === OptionTypeEnum.OTHER) {
               return (<Checkbox value={item.value.toString()} onChange={handleOneItemChange}
                                 className="w-full flex flex-1 relative"
-                                key={item.value}>
+              >
                         <span>
                           其他
-                          {checked.some(item => item.optionType === OptionTypeEnum.OTHER) ? (
+                          {checked.hasOther ? (
                             <> ：
                               <Input
                                 style={{
@@ -44,6 +63,7 @@ const ECheckBox = (props) => {
                                   marginLeft: 10,
                                   borderBottom: '1px solid #323746',
                                 }}
+                                onChange={handleOtherTextChange}
                                 variant="borderless"
                                 className=" absolute rounded-none flex-1"
                               />
@@ -53,7 +73,8 @@ const ECheckBox = (props) => {
               </Checkbox>);
             }
 
-            return <Checkbox value={item.value.toString()} key={item.value}>{item.label} </Checkbox>;
+            return <Checkbox value={item.value.toString()} onChange={handleOneItemChange}
+            >{item.label} </Checkbox>;
           })}
         </Space>
       </Checkbox.Group>
@@ -61,4 +82,4 @@ const ECheckBox = (props) => {
   );
 };
 
-export default ECheckBox;
+export default React.memo(ECheckBox);

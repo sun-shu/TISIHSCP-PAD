@@ -106,7 +106,8 @@ const EvaluateFormComponent = ({ form, initialValues, disabled, templateCode }: 
       </div>
       <ProgressBar processRate={fillCount / needFillCount} />
       <div className="text-right border-b-[1px] py-[10px]">※ 为必填项</div>
-      <Form form={form} colon={false} initialValues={initialValues} disabled={disabled} onFieldsChange={onFieldsChange}>
+      <Form scrollToFirstError form={form} colon={false} initialValues={initialValues}
+            disabled={disabled} onFieldsChange={onFieldsChange}>
         {elementList &&
           <EvaluateFormTemplates elementList={elementList} form={form}
                                  setElementList={setElementList}

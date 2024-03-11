@@ -4,24 +4,36 @@ import { OptionTypeEnum } from '@/pages/evaluate/components/evaluateForm/enums/O
 import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
 
 const ERadio = (props) => {
-  const { value = {}, onChange, options, changeElementVisible } = props;
-
-  console.log(props, 'props');
-  const handleOnChange = (e, option) => {
+  const { value = {}, onChange, options, changeElementVisible, item: config } = props;
+  const handleOnChange = (e) => {
     const selectedOption = options.find(option => option.value === e.target.value);
-    console.log(e, ' handleOnChange value');
-    onChange({
-      value: e.target.value,
+
+    const newValue = {
+      optionValues: e.target.value,
+      answer: config.optionType === OptionTypeEnum.OTHER ? value.answer : '',
+      elementId: config.id,
       optionType: selectedOption.optionType,
-    });
- 
+    };
+
+    onChange(newValue);
+
     if ([ElementVisibleEnum.HIDE, ElementVisibleEnum.SHOW].includes(selectedOption.optionIsShow) && selectedOption.nextElementId) {
       changeElementVisible(selectedOption.nextElementId, selectedOption.optionIsShow);
     }
   };
+
+  const handleOtherTextChange = (e) => {
+    onChange({
+      optionValues: value.optionValues,
+      answer: e.target.value,
+      elementId: config.id,
+      optionType: value.optionType,
+    });
+  };
+
   return (
     <div>
-      <Radio.Group className="w-full" onChange={handleOnChange} value={value.value}>
+      <Radio.Group className="w-full" onChange={handleOnChange} value={value?.optionValues}>
         <Space direction="vertical" className="w-full">
           {
             options?.map((item) => {
@@ -35,6 +47,8 @@ const ERadio = (props) => {
                           <>
                             ：
                             <Input
+                              value={value.answer}
+                              onChange={handleOtherTextChange}
                               style={{
                                 width: '80%',
                                 marginLeft: 10,

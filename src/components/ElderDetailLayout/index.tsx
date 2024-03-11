@@ -5,7 +5,14 @@ import { useEffect, useState } from 'react';
 // import ElderApi from '@/api/elder';
 import React from 'react';
 
-const ElderInfoCardCol = () => {
+import useLoadCustomer from './useLoadCustomer';
+import { CustomerWechatDTO } from '@/api/customer/getCustomerWechat.interface';
+
+const ElderInfoCardCol = (props: {
+  data: CustomerWechatDTO
+}) => {
+  const { data } = props;
+
   return (
     <>
       <div className="w-[620px] h-[100px] px-5 py-2.5 bg-white rounded justify-start items-center gap-10 inline-flex">
@@ -14,15 +21,15 @@ const ElderInfoCardCol = () => {
           src="https://via.placeholder.com/80x80"
         />
         <div className="h-20 py-2.5 flex-col justify-between items-center inline-flex">
-          <div className="text-zinc-700 text-xl font-semibold  leading-[30px]">
-            李世海
+          <div className="text-zinc-700 text-xl font-semibold  leading-[30px] line-clamp-1">
+            {data?.name}
           </div>
           <CustomTag text="2级照护" />
 
         </div>
         <div className="flex-col justify-start items-start gap-2.5 inline-flex">
-          <div className="text-zinc-700 text-base font-semibold  leading-normal tracking-wide">
-            1号楼-3层-301-1床
+          <div className="text-zinc-700 text-base font-semibold  leading-normal tracking-wide line-clamp-3">
+            {data?.bedName}
           </div>
         </div>
       </div>
@@ -31,7 +38,12 @@ const ElderInfoCardCol = () => {
 };
 
 // 长者信息卡片-横屏
-const ElderInfoCardRow = (props) => {
+const ElderInfoCardRow = (props: {
+  data: CustomerWechatDTO
+}) => {
+
+  const { data } = props;
+
   return (
     <>
       <div className="items-center rounded bg-white flex w-full flex-col  mx-auto p-5  w-[200px] ">
@@ -42,40 +54,36 @@ const ElderInfoCardRow = (props) => {
           alt="description"
         />
         <span className="justify-between items-stretch self-stretch flex gap-4 mt-2.5">
-          <div className=" text-center text-xl font-semibold leading-8">
-            字段
+          <div className=" text-center text-xl font-semibold leading-8 line-clamp-1">
+            {data?.name}
           </div>
           <CustomTag text="2级照护" />
         </span>
-        <div className=" text-base font-semibold leading-6 tracking-wider self-stretch  mt-2.5">
-          1号楼-3层-301-1床
+        <div className=" text-base font-semibold leading-6 tracking-wider self-stretch  mt-2.5 line-clamp-3">
+          {data?.bedName}
         </div>
-        <div className=" text-sm leading-5 tracking-wider self-stretch  mt-2.5">
-          本次评估开始时间：
-        </div>
+        {/*<div className=" text-sm leading-5 tracking-wider self-stretch  mt-2.5">*/}
+        {/*  本次评估开始时间：*/}
+        {/*</div>*/}
 
-        <div className="text-left w-full">2023-12-02</div>
+        {/*<div className="text-left w-full">2023-12-02</div>*/}
       </div>
     </>
   );
 };
 
-const ElderDetailLayout = ({ title = '', children, elderId }) => {
-  const [elderInfo, setElderInfo] = useState({});
-  // useEffect(async () => {
-  //   //loading elder data
-  //   console.log(elderId);
-  //   const elderInfo = await ElderApi.getElderInfo(elderId);
-  //   setElderInfo(elderInfo);
-  // }, []);
+const ElderDetailLayout = ({ title = '', children, customerId }) => {
+  const { data = {}, loading } = useLoadCustomer(customerId);
 
+
+  console.log('ElderDetailLayout', data, loading);
   return (
     <>
       <div className="flex  items-stretch pb-12 justify-center gap-[20px] px-[70px]">
         <div className="landscape:block hidden pt-[20px] w-[200px]  bg-gray-F6">
           <Affix offsetTop={70}>
             {/*横屏-竖向*/}
-            <ElderInfoCardRow elderInfo={elderInfo} />
+            <ElderInfoCardRow data={data} />
           </Affix>
         </div>
 
@@ -93,7 +101,7 @@ const ElderDetailLayout = ({ title = '', children, elderId }) => {
             <Affix offsetTop={120}>
               <div className="bg-gray-F6 py-[20px]">
                 {/*竖屏-横向*/}
-                <ElderInfoCardCol elderInfo={elderInfo} />
+                <ElderInfoCardCol data={data} />
               </div>
             </Affix>
           </div>

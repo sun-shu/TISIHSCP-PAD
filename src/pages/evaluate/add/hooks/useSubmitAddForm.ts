@@ -3,6 +3,7 @@
 //类型定义/枚举
 import { FormInstance } from 'antd';
 import { TemplateDataResultDTO } from '@/api/evaluateTemplate/seeTemplateData.interface';
+import { EvluateRelativeTypeEnum } from '@/enums/EvluateRelativeTypeEnum';
 
 //接口
 import { addResult } from '@/api/evalute/index';
@@ -19,37 +20,57 @@ import { useRequest } from '@@/exports';
 
 //常量
 
-const useSubmitAddForm = (form: FormInstance) => {
+interface UseSubmitAddFormProps {
+  form: FormInstance,
+  params: {
+    templateCode: string,
+    templateComposeCode: string,
+    relativeId: string,
+    relativeType: string,
+  },
+
+}
+
+const useSubmitAddForm = (form: FormInstance, params) => {
+  console.log('useSubmitAddForm', params);
   const { loading, run } = useRequest(addResult, {
     manual: true,
   });
 
-  const handleFormData = () => {
-    const values = form.getFieldsValue();
+  const submitAddForm = async () => {
+    const values = await form.validateFields();
 
-    console.log('handleFormData', values);
+    console.log('submitAddForm', values);
+    const sourceParmas = params.relativeType === EvluateRelativeTypeEnum.TASK ? {
+      customerTaskRecordId: params.relativeId,
+    } : {
+      customerId: params.relativeId,
+    };
 
-    run({});
-    return {};
+    const data = {
+      templateCode: params.templateCode,
+      templateComposeCode: params.templateComposeCode,
+      resultDataList: Object.entries(values).map(([key, value]) => {
+        return value;
+      }).filter(item => item),
+      ...sourceParmas,
+    };
 
-    //这里处理form
+
+    console.log('submitAddForm', data);
+    run(data);
   };
 
-  const submitAddForm = () => {
-    const data = handleFormData();
-
-  };
 
 //提交并返回
-  const submitAddFormReturn = (values: any) => {
-    submitAddForm();
-    console.log('submitAddForm', values);
+  const submitAddFormReturn = async (values: any) => {
+    await submitAddForm();
     // history.replace('/evaluate/add-of-composite');
   };
 
   //提交并继续
-  const submitAddFormContinue = () => {
-    submitAddForm();
+  const submitAddFormContinue = async () => {
+    await submitAddForm();
 
     //这里处理formconsole.log('submitAddFormContinue');
     // history.replace('/evaluate/add/next');

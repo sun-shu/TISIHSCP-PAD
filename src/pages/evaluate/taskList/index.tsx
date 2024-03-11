@@ -4,7 +4,8 @@ import { Affix, Button, ConfigProvider, Input } from 'antd';
 import classNames from 'classnames';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { history, useRequest } from 'umi';
-import { CustomerTaskRecordPadItemDTO, getTaskList } from '@/api/task';
+import { CustomerTaskRecordPadItemDTO } from '@/api/task/getTaskList.interface';
+import { getTaskList } from '@/api/task';
 import dayjs from 'dayjs';
 import EmptyDataContainer from '@/components/exception/EmptyDataContainer/index';
 import { TaskTypeEnum } from '@/enums/TaskTypeEnum';
@@ -136,11 +137,11 @@ const ElderListTemplate = ({ title, data = [], countDescription }: {
   [key: string]: any
 }) => {
 
-  const handleClickGoToEvaluePage = (id, taskType: TaskTypeEnum, templateCode: string) => {
+  const handleClickGoToEvaluePage = (id, customerId, taskType: TaskTypeEnum, templateCode: string) => {
     const nextPath = taskType === TaskTypeEnum.COMPREHENSIVE_EVALUATION ? `/evaluate/add-of-composite/${templateCode}` : `/evaluate/add/${templateCode}`;
     history.push({
       pathname: nextPath,
-      search: `?relativeId=${id}&relativeType=${EvluateRelativeTypeEnum.TASK}`,
+      search: `?relativeId=${id}&relativeType=${EvluateRelativeTypeEnum.TASK}&customerId=${customerId}`,
     });
   };
 
@@ -167,10 +168,11 @@ const ElderListTemplate = ({ title, data = [], countDescription }: {
                        taskExecuteDate,
                        templateCode,
                        taskType,
+                       customerId,
                      }) => (
             <div className=" landscape:w-[380px] portrait:w-[300px] p-5 bg-white rounded flex-center flex-col"
                  onClick={() => {
-                   handleClickGoToEvaluePage(id, taskType, templateCode);
+                   handleClickGoToEvaluePage(id, customerId, taskType, templateCode);
                  }}>
               <div className="w-full justify-between items-center gap-5 flex">
                 <img

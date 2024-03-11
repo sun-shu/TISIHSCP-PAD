@@ -14,4 +14,3 @@ export const getCustomerWechat = async (customerId: string, options?: { [key: st
   return res;
 };
 
- 

@@ -5,10 +5,19 @@ import { forwardRef } from 'react';
 const { TextArea } = Input;
 
 const EInput = (props) => {
-  console.log(props, 'EInput props');
+  const { value, onChange, item: config = {}, componentProps } = props;
+
+  const handleChange = (e) => {
+    onChange({
+      answer: e.target.value,
+      elementId: config.id,
+      optionType: config.elementType,
+      optionValues: [],
+    });
+  };
+
   return (
     <Input
-      placeholder={'请填写'}
       allowClear={{
         clearIcon: (
           <CloseCircleOutlined
@@ -20,15 +29,29 @@ const EInput = (props) => {
           />
         ),
       }}
-      {...props}
+      maxLength={config?.elementMaxLength}
+      placeholder={config.elementPlaceholder}
+      onChange={handleChange}
+      value={value?.answer}
+      {...componentProps}
     />
   );
 };
 
 const ETextArea = (props) => {
+  const { value, onChange, item: config = {} } = props;
+
+  const handleChange = (e) => {
+    onChange({
+      answer: e.target.value,
+      elementId: config.id,
+      optionType: config.elementType,
+      optionValues: [],
+    });
+  };
+
   return (
     <TextArea
-      placeholder={'请填写'}
       autoSize={{ minRows: 3, maxRows: 5 }}
       showCount
       styles={{
@@ -52,7 +75,10 @@ const ETextArea = (props) => {
           />
         ),
       }}
-      {...props}
+      maxLength={config?.elementMaxLength}
+      placeholder={config.elementPlaceholder}
+      onChange={handleChange}
+      value={value?.answer}
     />
   );
 };

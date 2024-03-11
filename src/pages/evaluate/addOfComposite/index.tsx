@@ -19,7 +19,6 @@ import EvaluteIcon from '@/assets/icon/evalute-1.png';
 import ElderDetailLayout from '@/components/ElderDetailLayout';
 
 //hooks
-import useListOfComposite from './useNotFilledList';
 import useLoadTemplateData from './hooks/useLoadTemplateData';
 
 //工具
@@ -42,7 +41,6 @@ const ProgressInfo = ({ completeCount = 0, totalCount }) => {
 
 const FilledList = ({ compositeStatus = EvaluationStatusEnum.FINISHED, data = [] }) => {
 
-  const ListOfCompositeHooks = useListOfComposite();
 
   return (
     <>
@@ -65,7 +63,6 @@ const FilledList = ({ compositeStatus = EvaluationStatusEnum.FINISHED, data = []
               <Button
                 className="px-[10px] py-[4px] bg-golden-F4 flex text-black"
                 type="primary"
-                onClick={() => ListOfCompositeHooks.handleButtonClick('finish', data)}
                 icon={
                   <img src={FinishIcon} width={24} />
                 }
@@ -76,7 +73,6 @@ const FilledList = ({ compositeStatus = EvaluationStatusEnum.FINISHED, data = []
               <Button
                 className="px-[10px] py-[4px] flex"
                 type="primary"
-                onClick={() => ListOfCompositeHooks.handleButtonClick('view', data)}
                 icon={
                   <img src={LookIcon} width={24} />
                 }
@@ -91,12 +87,20 @@ const FilledList = ({ compositeStatus = EvaluationStatusEnum.FINISHED, data = []
   );
 };
 
-const NotFilledList = ({ data = [] }) => {
+interface NotFilledListProps {
+  data: CustomerComposeResultResDTO[];
+  locationParams: {
+    templateComposeCode?: string;
+    relativeId?: string[];
+    relativeType?: string[];
+  };
+}
+
+const NotFilledList = ({ data, locationParams = {} }: NotFilledListProps) => {
   const handleGoToAddPageBtnClick = (templateCode: string) => {
-    history.push('/evaluate/add/' + templateCode);
+    history.push('/evaluate/add/' + templateCode + '?relativeId=' + locationParams.relativeId + '&relativeType=' + locationParams.relativeType + '&templateComposeCode=' + locationParams.templateComposeCode);
   };
 
-  const ListOfCompositeHooks = useListOfComposite();
   return (
     <>
       {data.map(({ templateName, questionsCount, templateCode }: CustomerComposeResultResDTO, index) => (
@@ -134,14 +138,18 @@ const EditCompositeEvaluatePage = (props) => {
   const { templateCode: templateComposeCode } = params;
 
   const [searchParams] = useSearchParams();
-  const relativeId = searchParams.getAll('relativeId');
-  const relativeType = searchParams.getAll('relativeType');
+  const relativeId = searchParams.get('relativeId');
+  const relativeType = searchParams.get('relativeType');
+  const customerId = searchParams.get('customerId');
 
-  const { filledListData, notFilledListData, templateData } = useLoadTemplateData({
+  const locationParams = {
     templateComposeCode,
     relativeId,
     relativeType,
-  });
+    customerId,
+  };
+
+  const { filledListData, notFilledListData, templateData } = useLoadTemplateData(locationParams);
 
   const disabled = !(notFilledListData.length === 0);
 
@@ -153,6 +161,7 @@ const EditCompositeEvaluatePage = (props) => {
   return (
     <>
       <ElderDetailLayout
+        customerId={customerId}
         title={
           <div>
             <span>综合评估</span>
@@ -163,7 +172,7 @@ const EditCompositeEvaluatePage = (props) => {
       >
         <div className="w-[620px] ">
           <div className="mb-[40px] grid grid-cols-2 gap-[40px]">
-            <NotFilledList data={notFilledListData} />
+            <NotFilledList data={notFilledListData} locationParams={locationParams} />
           </div>
 
           <div className=" grid grid-cols-2 gap-[40px]">

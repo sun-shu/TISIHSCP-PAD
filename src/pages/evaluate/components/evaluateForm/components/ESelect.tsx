@@ -4,12 +4,14 @@ import { OptionTypeEnum } from '@/pages/evaluate/components/evaluateForm/enums/O
 import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
 
 const ESelect = ({ selectProps, ...props }) => {
-  const { value = {}, onChange, options, changeElementVisible } = props;
+  const { value = {}, onChange, options, changeElementVisible, item: config } = props;
 
   const handleOnChange = (value, option) => {
     console.log(value, option, 'value');
     onChange({
-      value,
+      optionValues: value.value,
+      answer: config.optionType === OptionTypeEnum.OTHER ? value.answer : '',
+      elementId: config.id,
       optionType: option.optionType,
     });
 
@@ -19,15 +21,23 @@ const ESelect = ({ selectProps, ...props }) => {
     }
   };
 
+  const handleOtherTextChange = (e) => {
+    onChange({
+      optionValues: value.optionValues,
+      answer: e.target.value,
+      elementId: config.id,
+      optionType: value.optionType,
+    });
+  };
+
   return (
     <div className="flex gap-[20px] h-[34px]">
       <Select
         className="w-[140px]"
-        defaultValue="lucy"
         {...selectProps}
         onChange={handleOnChange}
         labelInValue
-        value={value.value}
+        value={value?.optionValues}
       >{
         options.map((item) => {
           return <Select.Option value={item.value} {...item}>{item.label}</Select.Option>;
@@ -36,7 +46,7 @@ const ESelect = ({ selectProps, ...props }) => {
 
 
       </Select>
-      {value.optionType == OptionTypeEnum.OTHER && <Input placeholder="补充描述" />}
+      {value.optionType == OptionTypeEnum.OTHER && <Input onChange={handleOtherTextChange} />}
     </div>
   );
 };
