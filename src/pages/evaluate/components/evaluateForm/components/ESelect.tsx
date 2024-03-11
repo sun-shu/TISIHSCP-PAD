@@ -4,7 +4,7 @@ import { OptionTypeEnum } from '@/pages/evaluate/components/evaluateForm/enums/O
 import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
 
 const ESelect = ({ selectProps, ...props }) => {
-  const { value = {}, onChange, optionType, options, changeElementVisible } = props;
+  const { value = {}, onChange, options, changeElementVisible } = props;
 
   const handleOnChange = (value, option) => {
     console.log(value, option, 'value');

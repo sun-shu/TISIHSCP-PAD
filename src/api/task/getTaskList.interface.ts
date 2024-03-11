@@ -1,9 +1,3 @@
-// /hcsp-gateway/planApi/customerTask/getCustomerCarePlanPad
-
-import ErrorShowTypeEnum from '@/enums/sys/ErrorShowTypeEnum';
-import { request } from 'umi';
-
-
 /**
  * CustomerTaskRecordPadDTO
  */
@@ -105,24 +99,3 @@ interface GetTaskRequest {
 
   [property: string]: any;
 }
-
-export const getTaskList = async (data: GetTaskRequest = {}, options?: {
-  [key: string]: any
-}): Promise<CustomerTaskRecordPadDTO> => {
-  // const res = await request("/local/getTaskList", {
-  //   method: 'GET',
-  //   errorShowType: ErrorShowTypeEnum.ERROR_MESSAGE,
-  //   params: data,
-  //   ...(options || {}),
-  // })
-  const res = request('/hcsp-gateway/planApi/v1/customerTask/getCustomerCarePlanPad', {
-    method: 'GET',
-    errorShowType: ErrorShowTypeEnum.ERROR_MESSAGE,
-    params: data,
-    ...(options || {}),
-  });
-  console.log(res, '获取列表');
-  return res;
-};
-
-

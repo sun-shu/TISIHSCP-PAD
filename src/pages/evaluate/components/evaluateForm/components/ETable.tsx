@@ -1,29 +1,138 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Modal, Button, Divider, ConfigProvider, Form } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
-import React from 'react';
-import Medication from './Medication';
-import Disease from './Disease';
-import { ElementTypeEnum } from '@/enums/ElementTypeEnum';
 import { ElementDataTypeEnum } from '@/enums/ElementDataTypeEnum';
-import { EDateTime, EInput, ESelect } from '@/pages/evaluate/components/evaluateForm/component';
-import ERadio from '@/pages/evaluate/components/evaluateForm/ERadio';
-import ECheckBox from '@/pages/evaluate/components/evaluateForm/ECheckBox';
-import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
-import { OptionDataType } from '@/pages/evaluate/components/evaluateForm/enums/OptionDataTypeEnum';
-import { OptionDataTypeEnum } from './enums/OptionDataTypeEnum';
-import { OptionControlTypeEnum } from './enums/OptionControlTypeEnum';
+import { EDateTime, EInput, ESelect, ERadio, ECheckBox } from './index';
+import { OptionDataTypeEnum } from '../enums/OptionDataTypeEnum';
+import { OptionControlTypeEnum } from '../enums/OptionControlTypeEnum';
 import { ElementRequireFlgEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementRequireFlgEnum';
-// 弹窗类型
-type ModalType = 'view' | 'create'
-// 弹窗按钮类型
-type ButtonType = 'del' | 'save' | 'close'
-// 需要先确定好数据结构，然后再进行组件的拆分
-// 1.确定数据结构
 
 const { EDateTimePicker, ETimePicker } = EDateTime;
 const { ETextArea } = EInput;
 // 表单组件的基础结构
+
+
+const Disease = () => {
+  return (
+    <div
+      className="w-[420px] h-[652px] px-[60px] py-5 bg-white rounded flex-col justify-start items-start gap-2.5 inline-flex">
+      {/* <div className="w-[500px] justify-between items-center inline-flex">
+                <div className="text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                    主要疾病-03
+                </div>
+                <div className="w-6 h-6 relative">
+                    <img
+                        className="w-[22px] h-[22px] left-[1px] top-[1px] absolute"
+                        src="https://via.placeholder.com/22x22"
+                    />
+                </div>
+            </div> */}
+      <div className="w-[300px] h-[0px] border border-zinc-300"></div>
+      <div className="flex-col justify-center items-center gap-5 flex">
+        <div className="flex-col justify-center items-center gap-2.5 flex">
+          <div className="h-[494px] relative">
+            <div
+              className="w-[300px] h-[74px] left-0 top-0 absolute flex-col justify-start items-start gap-1 inline-flex">
+              <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                疾病名称
+              </div>
+              <div className="w-[300px] h-10 justify-center items-center inline-flex">
+                <div
+                  className="w-[300px] h-10 px-2.5 py-0.5 bg-white rounded border border-zinc-600 justify-start items-center gap-2.5 inline-flex">
+                  <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
+                    | 请填写
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="w-[300px] h-[74px] left-0 top-[84px] absolute flex-col justify-start items-start gap-1 inline-flex">
+              <div className="flex-col justify-start items-start gap-1 flex">
+                <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                  就医时间
+                </div>
+              </div>
+              <div
+                className="w-[300px] h-10 px-2.5 bg-white rounded border border-teal-500 justify-between items-center inline-flex">
+                <div className="grow shrink basis-0 h-9 justify-between items-center flex">
+                  <div className="text-zinc-600 text-lg font-semibold font-['PingFang SC'] leading-9">
+                    选择后字段
+                  </div>
+                  <div className="w-6 h-6 px-1.5 py-2 justify-center items-center flex" />
+                </div>
+              </div>
+            </div>
+            <div
+              className="w-[300px] h-[74px] left-0 top-[168px] absolute flex-col justify-start items-start gap-1 inline-flex">
+              <div className="flex-col justify-start items-start gap-1 flex">
+                <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                  医院
+                </div>
+              </div>
+              <div
+                className="w-[300px] h-10 px-2.5 py-2 bg-white rounded border border-zinc-600 justify-start items-center gap-[62px] inline-flex">
+                <div className="grow shrink basis-0 h-9 justify-between items-center flex">
+                  <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
+                    请选择
+                  </div>
+                  <div className="w-6 h-6 px-1.5 py-2 justify-center items-center flex" />
+                </div>
+              </div>
+            </div>
+            <div
+              className="w-[300px] h-[74px] left-0 top-[252px] absolute flex-col justify-start items-start gap-1 inline-flex">
+              <div className="flex-col justify-start items-start gap-1 flex">
+                <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                  科室
+                </div>
+              </div>
+              <div
+                className="w-[300px] h-10 px-2.5 py-2 bg-white rounded border border-zinc-600 justify-start items-center gap-[62px] inline-flex">
+                <div className="grow shrink basis-0 h-9 justify-between items-center flex">
+                  <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
+                    请选择
+                  </div>
+                  <div className="w-6 h-6 px-1.5 py-2 justify-center items-center flex" />
+                </div>
+              </div>
+            </div>
+            <div
+              className="w-[300px] h-[74px] left-0 top-[336px] absolute flex-col justify-start items-start gap-1 inline-flex">
+              <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                主治医师
+              </div>
+              <div className="w-[300px] h-10 justify-center items-center inline-flex">
+                <div
+                  className="w-[300px] h-10 px-2.5 py-0.5 bg-white rounded border border-zinc-600 justify-start items-center gap-2.5 inline-flex">
+                  <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
+                    | 请填写
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="w-[300px] h-[74px] left-0 top-[420px] absolute flex-col justify-start items-start gap-1 inline-flex">
+              <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                陪同人
+              </div>
+              <div className="w-[300px] h-10 justify-center items-center inline-flex">
+                <div
+                  className="w-[300px] h-10 px-2.5 py-0.5 bg-white rounded border border-zinc-600 justify-start items-center gap-2.5 inline-flex">
+                  <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
+                    | 请填写
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+
 const FormItemBaseContainer = ({ item, form = {}, children, formItemProps = {} }) => {
   return (
     <div>
@@ -317,7 +426,7 @@ const ETable = (props) => {
         title={title}
         disabled={disabled}
         item={item}
-        children={currentType === 'create' ? <Disease /> : <Medication />}
+        children={currentType === 'create' ? <Disease /> : <Disease />}
         setFormVisible={setFormVisible}
         setData={setData}
         data={data}

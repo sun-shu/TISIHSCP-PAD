@@ -1,21 +1,31 @@
-import ElderDetailLayout from '@/components/ElderDetailLayout';
+//基础类
+import { useEffect, useState } from 'react';
+
+//类型定义/枚举
+import { EvluateRelativeTypeEnum } from '@/enums/EvluateRelativeTypeEnum';
+import { EvaluationStatusEnum } from '@/pages/evaluate/addOfComposite/enums/EvaluationStatusEnum';
+import {
+  CustomerComposeInfoResDTO,
+  CustomerComposeResultResDTO,
+  GetCustomerComposeInfoRequest,
+} from '@/api/evaluateTemplate/getCustomerComposeInfo.interface';
+
+//组件
 import ProgressBar from '@/components/ProgressBar';
 import { Button } from 'antd';
 import LookIcon from '@/assets/icon/look.png';
 import FinishIcon from '@/assets/icon/finish.png';
 import EvaluteIcon from '@/assets/icon/evalute-1.png';
+import ElderDetailLayout from '@/components/ElderDetailLayout';
+
+//hooks
 import useListOfComposite from './useNotFilledList';
-import { useEffect, useState } from 'react';
+import useLoadTemplateData from './hooks/useLoadTemplateData';
+
+//工具
 import { history, useSearchParams } from 'umi';
 import { useMatch, useRequest } from '@@/exports';
-import {
-  CustomerComposeInfoResDTO,
-  CustomerComposeResultResDTO,
-  getCustomerComposeInfo,
-  GetCustomerComposeInfoRequest,
-} from '@/api/evaluateTemplate';
-import { EvluateRelativeTypeEnum } from '@/enums/EvluateRelativeTypeEnum';
-import { EvaluationStatusEnum } from '@/pages/evaluate/addOfComposite/enums/EvaluationStatusEnum';
+
 
 const ProgressInfo = ({ completeCount = 0, totalCount }) => {
   return (
@@ -32,7 +42,6 @@ const ProgressInfo = ({ completeCount = 0, totalCount }) => {
 
 const FilledList = ({ compositeStatus = EvaluationStatusEnum.FINISHED, data = [] }) => {
 
-  console.log('data', data);
   const ListOfCompositeHooks = useListOfComposite();
 
   return (
@@ -86,6 +95,7 @@ const NotFilledList = ({ data = [] }) => {
   const handleGoToAddPageBtnClick = (templateCode: string) => {
     history.push('/evaluate/add/' + templateCode);
   };
+
   const ListOfCompositeHooks = useListOfComposite();
   return (
     <>
@@ -120,44 +130,20 @@ const NotFilledList = ({ data = [] }) => {
 };
 
 const EditCompositeEvaluatePage = (props) => {
-  const [filledListData, setFilledListData] = useState([]);
-  const [notFilledListData, setNotFilledListData] = useState([]);
   const { params } = useMatch('/evaluate/add-of-composite/:templateCode');
-
   const { templateCode: templateComposeCode } = params;
+
   const [searchParams] = useSearchParams();
   const relativeId = searchParams.getAll('relativeId');
   const relativeType = searchParams.getAll('relativeType');
 
-  const { data: templateData = {}, error, loading, run }: {
-    data: CustomerComposeInfoResDTO;
-    error: any;
-    loading: boolean;
-    run: any;
-  } = useRequest(() => {
-    const requestParams: GetCustomerComposeInfoRequest = {
-      templateComposeCode,
-      ...(relativeType === EvluateRelativeTypeEnum.TASK ? { customerTaskRecordId: relativeId } : {}),
-      ...(relativeType === EvluateRelativeTypeEnum.HISTORY ? { recordMainId: relativeId } : {}),
-    };
-
-    console.log('requestParams', requestParams);
-
-    return getCustomerComposeInfo(requestParams);
-  }, {
-    ready: !!templateComposeCode,
-    onSuccess: (result, params) => {
-      setFilledListData(result.completeList || []);
-      setNotFilledListData(result.incompleteList || []);
-    },
+  const { filledListData, notFilledListData, templateData } = useLoadTemplateData({
+    templateComposeCode,
+    relativeId,
+    relativeType,
   });
 
-  console.log('templateList', templateData);
-
-  const [disabled, setDisabled] = useState(false);
-  useEffect(() => {
-    setDisabled(!(notFilledListData.length === 0));
-  }, [notFilledListData.length]);
+  const disabled = !(notFilledListData.length === 0);
 
   // 生成报告按钮跳转
   const handleClick = () => {
@@ -170,7 +156,7 @@ const EditCompositeEvaluatePage = (props) => {
         title={
           <div>
             <span>综合评估</span>
-            <ProgressInfo completeCount={templateData.completeCount} totalCount={templateData.totalCount} />
+            <ProgressInfo completeCount={filledListData.length} totalCount={notFilledListData.length} />
           </div>
         }
         classname="relative"
