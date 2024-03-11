@@ -101,7 +101,8 @@ const EvaluateFormComponent = ({ form, initialValues, disabled, templateCode }: 
         {templateName}
       </div>
 
-      <div className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide pt-[10px]">
+      <div
+        className="mb-[5px] text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide pt-[10px]">
         已完成 {fillCount} / {needFillCount}
       </div>
       <ProgressBar processRate={fillCount / needFillCount} />

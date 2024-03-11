@@ -24,6 +24,7 @@ import useLoadTemplateData from './hooks/useLoadTemplateData';
 //工具
 import { history, useSearchParams } from 'umi';
 import { useMatch, useRequest } from '@@/exports';
+import useSubmitEvaluateGroup from '@/pages/evaluate/addOfComposite/hooks/useSubmitEvaluateGroup';
 
 
 const ProgressInfo = ({ completeCount = 0, totalCount }) => {
@@ -93,12 +94,13 @@ interface NotFilledListProps {
     templateComposeCode?: string;
     relativeId?: string[];
     relativeType?: string[];
+    customerId?: string[];
   };
 }
 
 const NotFilledList = ({ data, locationParams = {} }: NotFilledListProps) => {
   const handleGoToAddPageBtnClick = (templateCode: string) => {
-    history.push('/evaluate/add/' + templateCode + '?relativeId=' + locationParams.relativeId + '&relativeType=' + locationParams.relativeType + '&templateComposeCode=' + locationParams.templateComposeCode);
+    history.push('/evaluate/add/' + templateCode + '?relativeId=' + locationParams.relativeId + '&relativeType=' + locationParams.relativeType + '&templateComposeCode=' + locationParams.templateComposeCode + '&customerId=' + locationParams.customerId);
   };
 
   return (
@@ -153,10 +155,8 @@ const EditCompositeEvaluatePage = (props) => {
 
   const disabled = !(notFilledListData.length === 0);
 
-  // 生成报告按钮跳转
-  const handleClick = () => {
-    history.push('/elder/detail');
-  };
+  const { submitEvaluateGroup, viewReport, loading } = useSubmitEvaluateGroup(locationParams);
+
 
   return (
     <>
@@ -183,14 +183,27 @@ const EditCompositeEvaluatePage = (props) => {
           </div>
         </div>
         <div className="w-[620px] mt-[20px] flex items-center justify-end">
-          <Button
-            className="px-[10px] py-[4px] flex"
-            type="primary"
-            disabled={disabled}
-            onClick={handleClick}
-          >
-            生成报告
-          </Button>
+          {
+            templateData.evaluationStatus === EvaluationStatusEnum.UNFINISHED ? (
+              <Button
+                className="px-[10px] py-[4px] flex"
+                type="primary"
+                disabled={disabled}
+                onClick={submitEvaluateGroup}
+              >
+                生成报告
+              </Button>
+            ) : (
+              <Button
+                className="px-[10px] py-[4px] flex"
+                type="primary"
+                onClick={viewReport}
+              >
+                查看报告
+              </Button>
+            )
+          }
+
         </div>
       </ElderDetailLayout>
     </>

@@ -14,14 +14,16 @@ const addPage = () => {
   const relativeId = searchParams.get('relativeId');
   const relativeType = searchParams.get('relativeType');
   const templateComposeCode = searchParams.get('templateComposeCode');
+  const customerId = searchParams.get('customerId');
 
   const [form] = Form.useForm();
 
-  const { submitAddFormReturn, submitAddFormContinue } = useSubmitAddForm(form, {
+  const { submitAddEvaluteGroupContinue, submitAddEvaluteGroupReturn, submitAddEvalute } = useSubmitAddForm(form, {
     templateCode,
     templateComposeCode,
     relativeId,
     relativeType,
+    customerId,
   });
 
 
@@ -34,10 +36,17 @@ const addPage = () => {
       </div>
 
       <div className="fixed bottom-0 left-0 w-full flex items-center justify-center bg-white p-5">
-        <div>
-          <Button type="primary" className="mr-10" onClick={submitAddFormReturn}>提交并返回</Button>
-          <Button onClick={submitAddFormContinue}>继续填写</Button>
+        <div className="w-full flex-center">
+          {
+            templateComposeCode ? (<> <Button type="primary" className="mr-10 w-[240px] h-[48px]"
+                                              onClick={submitAddEvaluteGroupReturn}>提交并返回</Button>
+                <Button type="primary" ghost className="mr-10 w-[240px] h-[48px]"
+                        onClick={submitAddEvaluteGroupContinue}>继续填写</Button></>) :
+              <Button type="primary" className="mr-10 w-[240px] h-[48px]" onClick={submitAddEvalute}>提交</Button>
+          }
         </div>
+
+
       </div>
     </div>
   );

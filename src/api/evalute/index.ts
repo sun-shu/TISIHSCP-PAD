@@ -21,7 +21,21 @@ export const addComposeResult = async (data: addComposeResultInterface.Request =
   const res = request('/hcsp-gateway/evaluateApi/v1/QAResult/addComposeResult', {
     method: 'POST',
     errorShowType: ErrorShowTypeEnum.ERROR_MESSAGE,
-    params: data,
+    data: data,
+    ...(options || {}),
+  });
+
+  return res;
+};
+
+
+export const showResult = async (params: any, options?: {
+  [key: string]: any
+}): Promise<any> => {
+  const res = request('/hcsp-gateway/evaluateApi/v1/QAResult/showResult', {
+    method: 'GET',
+    errorShowType: ErrorShowTypeEnum.ERROR_MESSAGE,
+    params,
     ...(options || {}),
   });
 

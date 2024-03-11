@@ -7,13 +7,12 @@ import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enu
 // 这个组件有一个问题，显隐的时候，选择的值直接丢失了，需要重新选择一次
 //TODO :需要做的尝试 把之前的代码恢复回来 看看是否是因为修改了数据结构导致的问题(已經測試了，之前就是這樣的)
 const ECheckBox = (props) => {
-  const { checked = {}, onChange, options, changeElementVisible, item: config } = props;
+  const { id, checked = {}, onChange, options, changeElementVisible, item: config } = props;
 
   const otherOptionId = options.find(option => option.optionType === OptionTypeEnum.OTHER)?.value?.toString();
   console.log(checked, 'checked');
   const handleOnChange = (newValue) => {
 
-    console.log(newValue, 'newValue data');
     const hasOther = newValue.some(item => item === otherOptionId);
 
     const data = {
@@ -24,7 +23,6 @@ const ECheckBox = (props) => {
       answer: hasOther ? checked.answer : '',
     };
 
-    console.log(data, 'data', checked?.optionValues?.split(','));
     onChange(data);
   };
 
@@ -43,7 +41,7 @@ const ECheckBox = (props) => {
   };
 
   return (
-    <div>
+    <div id={id}>
       <Checkbox.Group className="w-full" onChange={handleOnChange} checked={checked?.optionValues?.split(',')}>
         <Space direction="vertical" className="w-full">
 

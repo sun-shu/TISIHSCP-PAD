@@ -66,8 +66,12 @@ export default defineConfig({
           redirect: '/evaluate/task-list',
         },
         {
-          path: '/evaluate/add/:templateCode',
+          path: '/evaluate/add/:recordMainId',
           component: 'evaluate/add/index',
+        },
+        {
+          path: '/evaluate/detail/:templateCode/:recordMainId',
+          component: 'evaluate/detail/index',
         },
         {
           path: '/evaluate/add-of-composite/:templateCode',
@@ -80,7 +84,7 @@ export default defineConfig({
 
         { path: '/evaluate/task-list', component: 'evaluate/taskList/index' },
       ],
-    }
+    },
   ],
   alias: {
     '@': 'src/',
@@ -98,11 +102,11 @@ export default defineConfig({
       pathRewrite: { '^/hcsp-gateway': '' },
     },
     // 本地mock
-    "/local": {
+    '/local': {
       // target: "http://localhost:8080/",
       // hangeOrigin: true,
       pathRewrite: { '^/local': '' },
-    }
+    },
   },
   tailwindcss: {},
 

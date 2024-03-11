@@ -4,7 +4,7 @@ import { OptionTypeEnum } from '@/pages/evaluate/components/evaluateForm/enums/O
 import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
 
 const ESelect = ({ selectProps, ...props }) => {
-  const { value = {}, onChange, options, changeElementVisible, item: config } = props;
+  const { id, value = {}, onChange, options, changeElementVisible, item: config } = props;
 
   const handleOnChange = (value, option) => {
     console.log(value, option, 'value');
@@ -31,7 +31,7 @@ const ESelect = ({ selectProps, ...props }) => {
   };
 
   return (
-    <div className="flex gap-[20px] h-[34px]">
+    <div className="flex gap-[20px] h-[34px]" id={id}>
       <Select
         className="w-[140px]"
         {...selectProps}

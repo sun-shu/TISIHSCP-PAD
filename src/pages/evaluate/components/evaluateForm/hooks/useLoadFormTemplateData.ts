@@ -17,13 +17,13 @@ const useLoadFormTemplateData = (templateCode, form: FormInstance, setElementLis
   }), {
     ready: !!templateCode,
     onSuccess: (result, params) => {
+
+      console.log('result', result);
       setElementList(result.resDTO?.elementList);
 
       form.validateFields({
         validateOnly: true,
       });
-
-      form.evaluateTemplateData = result;
     },
   });
 

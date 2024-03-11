@@ -4,7 +4,7 @@ import { OptionTypeEnum } from '@/pages/evaluate/components/evaluateForm/enums/O
 import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
 
 const ERadio = (props) => {
-  const { value = {}, onChange, options, changeElementVisible, item: config } = props;
+  const { id, value = {}, onChange, options, changeElementVisible, item: config } = props;
   const handleOnChange = (e) => {
     const selectedOption = options.find(option => option.value === e.target.value);
 
@@ -32,7 +32,7 @@ const ERadio = (props) => {
   };
 
   return (
-    <div>
+    <div id={id}>
       <Radio.Group className="w-full" onChange={handleOnChange} value={value?.optionValues}>
         <Space direction="vertical" className="w-full">
           {

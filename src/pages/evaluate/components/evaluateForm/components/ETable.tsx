@@ -365,7 +365,7 @@ const ETableForm = (props) => {
 
 const ETable = (props) => {
   const { disabled = false } = props;
-  const { value, onChange, item = item, title } = props;
+  const { id, value, onChange, item = item, title } = props;
   // value 是当前面板卡列表数据
   const [currentSelectData, setCurrentSelectData] = useState({});
   const [selectDataIndex, setSelectDataIndex] = useState(0);
@@ -433,7 +433,7 @@ const ETable = (props) => {
         onSubmit={handleSubmit}
       />
       {/* 面板选项列表数据 */}
-      <div className="grid grid-cols-2 gap-[20px] items-center">
+      <div className="grid grid-cols-2 gap-[20px] items-center" id={id}>
         {
           data.map((item, index) => {
             if (item.status !== 0) {
