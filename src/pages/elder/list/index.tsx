@@ -5,9 +5,8 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { Affix, Avatar, Button, ConfigProvider, Input, Select } from 'antd';
-import CustomTag from '@/components/CustomTag';
 import EvaluateIcon from '@/assets/icon/evalute.png';
-import Logo from '@/assets/logo.png';
+import LevelOfCareTag from '@/components/LevelOfCareTag';
 
 const ListComponent = () => {
   const handleGoToDetailClick = () => {
@@ -51,7 +50,7 @@ const ListComponent = () => {
 
               </div>
               <div className="flex flex-col items-start justify-start  py-[10px] gap-[0.63rem] text-[1rem] flex-1">
-                <CustomTag text="2级照护"></CustomTag>
+                <LevelOfCareTag level={'02'} />
                 <div className="relative tracking-[0.05em] leading-[1.5rem] font-semibold">
                   1号楼-3层-301-1床
                 </div>

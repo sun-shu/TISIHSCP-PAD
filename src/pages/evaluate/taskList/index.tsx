@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 import EmptyDataContainer from '@/components/exception/EmptyDataContainer/index';
 import { TaskTypeEnum } from '@/enums/TaskTypeEnum';
 import { EvluateRelativeTypeEnum } from '@/enums/EvluateRelativeTypeEnum';
+import LevelOfCareTag from '@/components/LevelOfCareTag';
 
 // 选项卡Tab枚举
 enum TabTypeEnums {
@@ -186,23 +187,23 @@ const ElderListTemplate = ({ title, data = [], countDescription }: {
                         {name} <span>{age}岁</span>
                       </div>
                       <div className="portrait:hidden">
-                        <CustomTag text="2级照护" />
+                        <LevelOfCareTag level={nurseGrade} />
                       </div>
                     </div>
 
                     <div className="landscape:hidden">
-                      <CustomTag text="2级照护" />
+                      <LevelOfCareTag level={nurseGrade} />
                     </div>
                     <div
                       className="w-full justify-between line-clamp-1 text-zinc-700 text-sm font-semibold font-['PingFang SC'] leading-normal tracking-wide">
                       1号楼-3层-301-1床
                     </div>
 
-                    <div
+                    {checkInTime && (<div
                       className="text-zinc-700 text-xs  leading-[18px] tracking-wide">入院时间：{
                       dayjs(checkInTime).format('YYYY-MM-DD')
                     }
-                    </div>
+                    </div>)}
                   </div>
                 </div>
               </div>

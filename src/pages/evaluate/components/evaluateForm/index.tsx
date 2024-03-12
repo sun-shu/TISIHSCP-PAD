@@ -1,5 +1,5 @@
 //基础类
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 //类型定义/枚举
 import { FormInstance } from 'antd';
@@ -35,14 +35,9 @@ const EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
   const { elementList = [], form } = props;
   const { setElementList } = props;
 
-  // 使用 useMemo 记住过滤后的表单元素列表
-  const filteredElementList = React.useMemo(() => {
-    return elementList.filter(item => item.elementIsShow === ElementVisibleEnum.SHOW);
-  }, [elementList]);
-
   const { changeElementVisible } = useQuestionCalculate(elementList, setElementList);
 
-
+//  PS by sunshu：这里使用elementList.map的原因是操作同一份数据，如果使用UseMemo，会导致重新渲染(计算验证进度和多选状态)
   return (
     <div>
       <ConfigProvider
@@ -68,10 +63,11 @@ const EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
           },
         }}
       >
-        {filteredElementList.map((item, index) => {
+        {elementList.map((item, index) => {
           return (
             <>
-              <FormItemComponent item={item} index={index} form={form} changeElementVisible={changeElementVisible} />
+              {item.elementIsShow === ElementVisibleEnum.SHOW &&
+                <FormItemComponent item={item} index={index} form={form} changeElementVisible={changeElementVisible} />}
             </>
           );
         })}
@@ -98,10 +94,8 @@ const EvaluateFormComponent = ({
   const [elementList, setElementList] = useState(_.cloneDeep(initElementList));
 
 
-  const { fillCount, needFillCount } = useProgressShow();
-  const onFieldsChange = (changedFields, allFields) => {
-    console.log('onFieldsChange', changedFields, allFields);
-  };
+  const { fillCount, needFillCount, onFieldsChange, onValuesChange } = useProgressShow(form);
+
 
   return (
     <div>
@@ -113,10 +107,10 @@ const EvaluateFormComponent = ({
         className="mb-[5px] text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide pt-[10px]">
         已完成 {fillCount} / {needFillCount}
       </div>
-      <ProgressBar processRate={fillCount / needFillCount} />
+      <ProgressBar processRate={fillCount / needFillCount * 100} />
       <div className="text-right border-b-[1px] py-[10px]">※ 为必填项</div>
       <Form scrollToFirstError form={form} colon={false} initialValues={initialValues}
-            disabled={disabled} onFieldsChange={onFieldsChange}>
+            disabled={disabled} onFieldsChange={onFieldsChange} onValuesChange={onValuesChange}>
         {elementList &&
           <EvaluateFormTemplates elementList={elementList} form={form}
                                  setElementList={setElementList}
