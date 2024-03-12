@@ -7,6 +7,7 @@ import React from 'react';
 
 import useLoadCustomer from './useLoadCustomer';
 import { CustomerWechatDTO } from '@/api/customer/getCustomerWechat.interface';
+import LevelOfCareTag from '@/components/LevelOfCareTag';
 
 const ElderInfoCardCol = (props: {
   data: CustomerWechatDTO
@@ -24,7 +25,7 @@ const ElderInfoCardCol = (props: {
           <div className="text-zinc-700 text-xl font-semibold  leading-[30px] line-clamp-1">
             {data?.name}
           </div>
-          <CustomTag text="2级照护" />
+          <LevelOfCareTag level={data?.nurseGrade} />
 
         </div>
         <div className="flex-col justify-start items-start gap-2.5 inline-flex">
@@ -57,7 +58,7 @@ const ElderInfoCardRow = (props: {
           <div className=" text-center text-xl font-semibold leading-8 line-clamp-1">
             {data?.name}
           </div>
-          <CustomTag text="2级照护" />
+          <LevelOfCareTag level={data?.nurseGrade} />
         </span>
         <div className=" text-base font-semibold leading-6 tracking-wider self-stretch  mt-2.5 line-clamp-3">
           {data?.bedName}

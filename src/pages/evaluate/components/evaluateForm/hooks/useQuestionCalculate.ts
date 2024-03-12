@@ -50,6 +50,7 @@ const useQuestionCalculate = (elementList: TemplateResDTO[], setElementList) => 
 
     // 使用解构赋值和条件判断来简化映射操作
     setElementList(newElementList);
+    
   };
 
 

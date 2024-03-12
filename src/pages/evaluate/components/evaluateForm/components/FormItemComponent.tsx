@@ -61,7 +61,7 @@ const FormItemBaseContainer = ({ item, form = {}, children, formItemProps = {} }
 
       <div className="px-[60px]  bg-white flex-center rounded-[4px]">
         <div className="w-full my-[20px]">
-          <Form.Item name={item.id} {...formItemProps} noStyle>
+          <Form.Item name={item.id} {...formItemProps}>
             {children}
           </Form.Item>
 
@@ -91,7 +91,7 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   // 文本组件- 数字、文本
   const createTextComponent = ({ elementDataType, ...item }, index) => {
     const rules = [{
-      validator: (rule, value) => {
+      validator: (rule, value = {}) => {
         if (item.elementRequireFlg === ElementRequireFlgEnum.YES) {
           if (!value.answer) {
             return Promise.reject('必填项');
@@ -129,7 +129,7 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   // 日期组件- 年月日、日期时间、时分
   const createDateComponent = ({ elementDataType, ...item }, index) => {
     const rules = [{
-      validator: (rule, value) => {
+      validator: (rule, value = {}) => {
         if (item.elementRequireFlg === ElementRequireFlgEnum.YES) {
           if (!value.answer) {
             return Promise.reject('必填项');
@@ -176,7 +176,7 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   // 文本域组件
   const createTextareaComponent = (item: TemplateElementResDTO, index) => {
     const rules = [{
-      validator: (rule, value) => {
+      validator: (rule, value = {}) => {
         if (item.elementRequireFlg === ElementRequireFlgEnum.YES) {
           if (!value.answer) {
             return Promise.reject('必填项');
@@ -204,7 +204,7 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   const createSingleSelectComponent = (item: TemplateElementResDTO, index) => {
     const rules = [
       {
-        validator: (rule, value) => {
+        validator: (rule, value = {}) => {
           if (value.optionType === OptionTypeEnum.OTHER) {
             if (!value.answer) {
               return Promise.reject('必填项');
@@ -238,7 +238,7 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   const createMultiSelectComponent = (item: TemplateElementResDTO, index) => {
     const rules = [
       {
-        validator: (rule, value) => {
+        validator: (rule, value = {}) => {
           if (value.optionType === OptionTypeEnum.OTHER) {
             if (!value.answer) {
               return Promise.reject('必填项');
@@ -307,7 +307,7 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
       rules,
       valuePropName: 'checked',
     };
- 
+
 
     return (
       <FormItemBaseContainer item={item} key={item.id} form={form} formItemProps={formItemProps}>
