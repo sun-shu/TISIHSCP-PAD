@@ -36,8 +36,9 @@ const addPage = () => {
       <div className="max-w-[620px] m-auto py-[20px]">
         <div className="mb-[90px]">
           <div className="mt-[20px]">
-            <EvaluateForm form={form} templateCode={templateCode} templateName={templateName}
-                          elementList={evaluateTemplateData?.resDTO?.elementList} />
+            {evaluateTemplateData?.resDTO?.elementList &&
+              <EvaluateForm form={form} templateCode={templateCode} templateName={templateName}
+                            elementList={evaluateTemplateData?.resDTO?.elementList} />}
           </div>
         </div>
 

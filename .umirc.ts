@@ -12,6 +12,7 @@ export default defineConfig({
     '@umijs/plugins/dist/tailwindcss',
     '@umijs/plugins/dist/react-query',
   ],
+  publicPath: './',
   antd: {
     configProvider: {},
     theme: {
@@ -36,7 +37,6 @@ export default defineConfig({
   },
   routes: [
     { path: '/', component: 'evaluate/taskList/index' },
-    { path: '/docs', component: 'docs' },
     { path: '/login', component: 'user/login/index', layout: false },
     { path: '/user-info', component: 'user/info/index' },
     {
