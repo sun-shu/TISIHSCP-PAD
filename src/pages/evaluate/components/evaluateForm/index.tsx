@@ -79,6 +79,7 @@ const EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
   );
 };
 
+//TODO 把elementList放在外面
 // 纯表单
 const EvaluateFormComponent = ({ form, initialValues, disabled, templateCode }: {
   templateCode: string;
