@@ -20,6 +20,8 @@ import useQuestionCalculate from '@/pages/evaluate/components/evaluateForm/hooks
 
 //样式
 //工具
+import _ from 'lodash';
+
 //常量
 
 
@@ -81,14 +83,20 @@ const EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
 
 //TODO 把elementList放在外面
 // 纯表单
-const EvaluateFormComponent = ({ form, initialValues, disabled, templateCode }: {
+const EvaluateFormComponent = ({
+                                 form,
+                                 initialValues,
+                                 disabled,
+                                 templateCode,
+                                 elementList: initElementList,
+                                 templateName,
+                               }: {
   templateCode: string;
   [key: string]: any;
 }) => {
   //因为这里会有显隐变化，所以数据单独存储
-  const [elementList, setElementList] = useState([]);
+  const [elementList, setElementList] = useState(_.cloneDeep(initElementList));
 
-  const { loading, templateName } = useLoadFormTemplateData(templateCode, form, setElementList);
 
   const { fillCount, needFillCount } = useProgressShow();
   const onFieldsChange = (changedFields, allFields) => {
@@ -96,8 +104,7 @@ const EvaluateFormComponent = ({ form, initialValues, disabled, templateCode }: 
   };
 
   return (
-
-    <Skeleton loading={loading}>
+    <div>
       <div className="text-[28px] font-semibold leading-10  bg-gray-F6 w-full">
         {templateName}
       </div>
@@ -115,7 +122,8 @@ const EvaluateFormComponent = ({ form, initialValues, disabled, templateCode }: 
                                  setElementList={setElementList}
           />}
       </Form>
-    </Skeleton>
+    </div>
+
   );
 };
 

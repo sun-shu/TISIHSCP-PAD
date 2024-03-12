@@ -42,10 +42,13 @@ const ProgressInfo = ({ completeCount = 0, totalCount }) => {
 
 const FilledList = ({ compositeStatus = EvaluationStatusEnum.FINISHED, data = [] }) => {
 
+  const handleGoToDetailBtnClick = (templateCode: string, recordMainId: string) => {
+    history.push(`/evaluate/detail/${templateCode}/${recordMainId}`);
+  };
 
   return (
     <>
-      {data.map(({ templateName, questionsCount, templateCode }: CustomerComposeResultResDTO, index) => (
+      {data.map(({ templateName, questionsCount, templateCode, recordMainId }: CustomerComposeResultResDTO, index) => (
         <div className="h-[170px] p-5 bg-white rounded-[20px] flex-col justify-start items-center inline-flex  w-full"
              key={index}>
           <div className="self-stretch h-[100px] flex-col text-justify items-start gap-1 flex">
@@ -58,8 +61,8 @@ const FilledList = ({ compositeStatus = EvaluationStatusEnum.FINISHED, data = []
             </div>
 
           </div>
-          <div className="h-[30px]  justify-between items-center gap-2.5 flex w-full">
-            <div className="text-golden-F4 text-lg ">修改比例70%</div>
+          <div className="h-[30px]  justify-end items-center gap-2.5 flex w-full">
+            {/*<div className="text-golden-F4 text-lg ">修改比例70%</div>*/}
             {compositeStatus === EvaluationStatusEnum.FINISHED ? (
               <Button
                 className="px-[10px] py-[4px] bg-golden-F4 flex text-black"
@@ -74,6 +77,9 @@ const FilledList = ({ compositeStatus = EvaluationStatusEnum.FINISHED, data = []
               <Button
                 className="px-[10px] py-[4px] flex"
                 type="primary"
+                onClick={() => {
+                  handleGoToDetailBtnClick(templateCode, recordMainId);
+                }}
                 icon={
                   <img src={LookIcon} width={24} />
                 }

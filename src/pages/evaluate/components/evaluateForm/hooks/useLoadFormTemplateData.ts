@@ -3,10 +3,9 @@ import { getEvaluateTemplateData } from '@/api/evaluateTemplate/index';
 import { TemplateDataResultDTO } from '@/api/evaluateTemplate/seeTemplateData.interface';
 import { useRequest } from '@@/exports';
 import { FormInstance } from 'antd';
+import _ from 'lodash';
 
-const useLoadFormTemplateData = (templateCode, form: FormInstance, setElementList) => {
-
-
+const useLoadFormTemplateData = (templateCode, form: FormInstance) => {
   const { data: evaluateTemplateData = {}, error, loading, run }: {
     data: TemplateDataResultDTO;
     error: any;
@@ -17,10 +16,6 @@ const useLoadFormTemplateData = (templateCode, form: FormInstance, setElementLis
   }), {
     ready: !!templateCode,
     onSuccess: (result, params) => {
-
-      console.log('result', result);
-      setElementList(result.resDTO?.elementList);
-
       form.validateFields({
         validateOnly: true,
       });
