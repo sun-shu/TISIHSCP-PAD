@@ -16,6 +16,7 @@ const addPage = () => {
   const relativeType = searchParams.get('relativeType');
   const templateComposeCode = searchParams.get('templateComposeCode');
   const customerId = searchParams.get('customerId');
+  const remaindIndex = searchParams.get('remaindIndex');
 
   const [form] = Form.useForm();
 
@@ -28,6 +29,7 @@ const addPage = () => {
     relativeId,
     relativeType,
     customerId,
+    remaindIndex,
   });
 
 
@@ -47,8 +49,8 @@ const addPage = () => {
             {
               templateComposeCode ? (<> <Button type="primary" className="mr-10 w-[240px] h-[48px]"
                                                 onClick={submitAddEvaluteGroupReturn}>提交并返回</Button>
-                  <Button type="primary" ghost className="mr-10 w-[240px] h-[48px]"
-                          onClick={submitAddEvaluteGroupContinue}>继续填写</Button></>) :
+                  {Number(remaindIndex) > 1 && <Button type="primary" ghost className="mr-10 w-[240px] h-[48px]"
+                                                       onClick={submitAddEvaluteGroupContinue}>继续填写</Button>}</>) :
                 <Button type="primary" className="mr-10 w-[240px] h-[48px]" onClick={submitAddEvalute}>提交</Button>
             }
           </div>

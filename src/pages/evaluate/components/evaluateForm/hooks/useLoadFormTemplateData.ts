@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getEvaluateTemplateData } from '@/api/evaluateTemplate/index';
 import { TemplateDataResultDTO } from '@/api/evaluateTemplate/seeTemplateData.interface';
 import { useRequest } from '@@/exports';
@@ -15,6 +15,7 @@ const useLoadFormTemplateData = (templateCode, form: FormInstance) => {
     templateCode,
   }), {
     ready: !!templateCode,
+    manual: true,
     onSuccess: (result, params) => {
       form.validateFields({
         validateOnly: true,
@@ -24,6 +25,9 @@ const useLoadFormTemplateData = (templateCode, form: FormInstance) => {
 
   const { templateName } = evaluateTemplateData.resDTO || {};
 
+  useEffect(() => {
+    run();
+  }, [templateCode]);
   return {
     evaluateTemplateData,
     templateName,

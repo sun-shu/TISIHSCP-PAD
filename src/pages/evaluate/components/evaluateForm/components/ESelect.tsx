@@ -6,10 +6,11 @@ import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enu
 const ESelect = ({ selectProps, ...props }) => {
   const { id, value = {}, onChange, options, changeElementVisible, item: config } = props;
 
-  const handleOnChange = (value, option) => {
-    console.log(value, option, 'value');
+  console.log('ESelect', props);
+  const handleOnChange = (newValue, option) => {
+    console.log(newValue, option, 'value');
     onChange({
-      optionValues: value.value,
+      optionValues: newValue,
       answer: config.optionType === OptionTypeEnum.OTHER ? value.answer : '',
       elementId: config.id,
       optionType: option.optionType,
@@ -36,11 +37,10 @@ const ESelect = ({ selectProps, ...props }) => {
         className="w-[140px]"
         {...selectProps}
         onChange={handleOnChange}
-        labelInValue
-        value={value?.optionValues}
+        value={value?.optionValues?.toString()}
       >{
         options.map((item) => {
-          return <Select.Option value={item.value} {...item}>{item.label}</Select.Option>;
+          return <Select.Option {...item} value={item.value.toString()}>{item.label}</Select.Option>;
         })
       }
 

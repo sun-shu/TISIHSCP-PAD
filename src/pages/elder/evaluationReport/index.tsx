@@ -97,11 +97,13 @@ const EvaluationReportPage = () => {
   const relativeId = searchParams.get('relativeId');
   const relativeType = searchParams.get('relativeType');
   const customerId = searchParams.get('customerId');
+  const templateComposeCode = searchParams.get('templateComposeCode');
 
   const locationParams = {
     relativeId,
     relativeType,
     customerId,
+    templateComposeCode,
   };
 
   const { data, loading } = useLoadReportData(locationParams);

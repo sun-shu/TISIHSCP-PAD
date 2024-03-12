@@ -7,20 +7,29 @@ import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enu
 // 这个组件有一个问题，显隐的时候，选择的值直接丢失了，需要重新选择一次
 //TODO :需要做的尝试 把之前的代码恢复回来 看看是否是因为修改了数据结构导致的问题(已經測試了，之前就是這樣的)
 const ECheckBox = (props) => {
-  const { id, checked = {}, onChange, options, changeElementVisible, item: config } = props;
+  const { id, value = {}, onChange, options, changeElementVisible, item: config } = props;
 
   const otherOptionId = options.find(option => option.optionType === OptionTypeEnum.OTHER)?.value?.toString();
-  console.log(checked, 'checked');
+  console.log(value, value?.optionValues?.split(','), 'checked');
+
+  if (!value.hasOwnProperty('hasOther')) {
+    // 设置hasOther的默认
+    const hasOther = value.optionValues?.split(',').some(item => item === otherOptionId);
+    onChange({
+      ...value,
+      hasOther: hasOther,
+    });
+  }
   const handleOnChange = (newValue) => {
 
     const hasOther = newValue.some(item => item === otherOptionId);
 
     const data = {
-      ...checked,
+      ...value,
       optionValues: newValue.join(','),
       elementId: config.id,
       hasOther,
-      answer: hasOther ? checked.answer : '',
+      answer: hasOther ? value.answer : '',
     };
 
     onChange(data);
@@ -35,14 +44,15 @@ const ECheckBox = (props) => {
 
   const handleOtherTextChange = (e) => {
     onChange({
-      ...checked,
+      ...value,
       answer: e.target.value,
     });
   };
 
   return (
     <div id={id}>
-      <Checkbox.Group className="w-full" onChange={handleOnChange} checked={checked?.optionValues?.split(',')}>
+      <Checkbox.Group className="w-full" onChange={handleOnChange}
+                      value={value?.optionValues?.split(',')}>
         <Space direction="vertical" className="w-full">
 
 
@@ -53,7 +63,7 @@ const ECheckBox = (props) => {
               >
                         <span>
                           其他
-                          {checked.hasOther ? (
+                          {value.hasOther ? (
                             <> ：
                               <Input
                                 style={{

@@ -61,7 +61,7 @@ const FormItemBaseContainer = ({ item, form = {}, children, formItemProps = {} }
 
       <div className="px-[60px]  bg-white flex-center rounded-[4px]">
         <div className="w-full my-[20px]">
-          <Form.Item name={item.id} {...formItemProps}>
+          <Form.Item name={item.id} {...formItemProps} className="mb-0">
             {children}
           </Form.Item>
 
@@ -256,7 +256,6 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
 
     const formItemProps = {
       rules,
-      valuePropName: 'checked',
     };
 
     return (
