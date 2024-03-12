@@ -10,7 +10,7 @@
 
 - clone项目
 
-> [项目地址](https://github.com/sun-shu/TISIHSCP-PAD.git)
+> [项目地址](111.33.127.102:8090/tisihcsp/PROD01-TISIHCSP-EVA-MCS)
 
 - 切换分支
 
