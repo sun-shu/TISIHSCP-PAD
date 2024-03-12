@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    /** https://cn.vitejs.dev/guide/features.html#typescript-compiler-options */
+    "useDefineForClassFields": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    /** TS 严格模式 */
+    "strict": false,
+    "jsx": "preserve",
+    "importHelpers": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "sourceMap": false,
+    "resolveJsonModule": true,
+    /** https://cn.vitejs.dev/guide/features.html#typescript-compiler-options */
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+    "skipLibCheck": true,
+    "jsx": "react"
+  },
+  "extends": "./src/.umi/tsconfig.json"
+}
