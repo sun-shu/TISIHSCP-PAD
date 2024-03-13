@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { history } from 'umi';
 import LookIcon from '@/assets/icon/look.png';
+import { useSearchParams } from '@@/exports';
 
 // 加载更多分割线
 const LoadMoreDivider = ({ handleLoadMoreBtnClick }) => {
@@ -225,13 +226,14 @@ enum TabTypeEnums {
 // 长者详情
 const ElderDetail = () => {
   const [currentTab, setCurrentTab] = useState(TabTypeEnums.RECORD);
-
+  const [searchParams] = useSearchParams();
+  const customerId = searchParams.get('customerId');
   return (
     <>
-      <ElderDetailLayout title="长者详情">
+      <ElderDetailLayout title="长者详情" customerId={customerId}>
         <div>
           <MenuGroup currentTab={currentTab} setCurrentTab={setCurrentTab} />
-
+ 
           <div>
 
             <div hidden={currentTab !== TabTypeEnums.RECORD}>

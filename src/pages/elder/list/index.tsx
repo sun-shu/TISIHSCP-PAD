@@ -12,8 +12,12 @@ import useLoadCustomerList from '@/pages/elder/list/hooks/useLoadCustomerList';
 
 const ListComponent = ({ data = [] }) => {
   console.log('data', data);
-  const handleGoToDetailClick = () => {
-    history.push('/elder/detail');
+  const handleGoToDetailClick = (customerId) => {
+    history.push(`/elder/detail?customerId=${customerId}`);
+  };
+
+  const handleGoToEvaluateTemplateClick = (customerId) => {
+    history.push('/evaluate/template-list?customerId=' + customerId);
   };
 
   return (
@@ -36,14 +40,16 @@ const ListComponent = ({ data = [] }) => {
         {data.map((item) => (
           <div
             className="relative rounded bg-white w-full flex flex-row items-center justify-between py-[0.63rem] pr-[1.25rem] mb-[20px] pl-[0.63rem] box-border cursor-pointer text-left text-[1.25rem] text-darkslategray font-px"
-            onClick={handleGoToDetailClick}
+            onClick={() => {
+              handleGoToDetailClick(item.customerId);
+            }}
           >
-            <div className=" flex flex-1 flex-row items-center justify-between gap-[0.63rem]">
+            <div className=" flex flex-1 flex-row items-center justify-start gap-[20px] w-min">
               <Avatar shape="square" size={80} icon={<UserOutlined />} />
 
               <div
-                className=" flex  flex-col justify-between py-[10px] box-border flex-none min-w-[100px]">
-                <div className="relative  font-semibold">
+                className=" flex  flex-col justify-between py-[10px] box-border flex-none min-w-[120px]">
+                <div className="relative  font-semibold line-clamp-1">
                   {item.name}
                 </div>
                 <div className="text-base font-semibold">
@@ -52,13 +58,13 @@ const ListComponent = ({ data = [] }) => {
                 <div className="text-base font-semibold"> {item.age}岁</div>
 
               </div>
-              <div className="flex flex-col items-start justify-start  py-[10px] gap-[0.63rem] text-[1rem] flex-1">
+              <div className="flex flex-col items-start justify-start  py-[10px] gap-[0.63rem] text-[1rem] ">
                 <LevelOfCareTag level={item.nurseGrade} />
-                <div className="relative tracking-[0.05em] leading-[1.5rem] font-semibold">
+                <div className="relative tracking-[0.05em] leading-[1.5rem] font-semibold line-clamp-1">
                   1号楼-3层-301-1床
                 </div>
                 <div className="flex flex-row items-center justify-start text-[0.75rem]">
-                  <div className="relative tracking-[0.05em] leading-[1.13rem]">
+                  <div className="relative tracking-[0.05em] leading-[1.13rem] line-clamp-1">
                     入住日期：2023-12-02
                   </div>
                 </div>
@@ -68,6 +74,10 @@ const ListComponent = ({ data = [] }) => {
               <Button
                 className="px-[10px] py-[4px] flex"
                 type="primary"
+                onClickCapture={() => {
+
+                  handleGoToEvaluateTemplateClick(item.customerId);
+                }}
                 icon={<img src={EvaluateIcon} width={24} height={24} />
                 }
               >

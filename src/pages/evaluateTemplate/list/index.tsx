@@ -1,6 +1,15 @@
 import { ProfileFilled, SearchOutlined } from '@ant-design/icons';
 import { Affix, Button, ConfigProvider, Input } from 'antd';
 import { history } from 'umi';
+import useLoadEvaluteTemplateList from '@/pages/evaluateTemplate/list/hooks/useLoadEvaluteTemplateList';
+import { useSearchParams } from '@@/exports';
+import { TemplateClassEnum } from '@/enums/TemplateClassEnum';
+
+const templateTypeDescConfig = {
+  [TemplateClassEnum.Evaluate]: '评估',
+  [TemplateClassEnum.EvaluateGroup]: '综合评估',
+  [TemplateClassEnum.Form]: '表单',
+};
 
 const SearchComponent = () => {
   return (
@@ -40,9 +49,14 @@ const SearchComponent = () => {
   );
 };
 
-const EvaluateTemplateCard = () => {
-  const handleGoToDetailClick = () => {
-    history.push('/elder/detail');
+const EvaluateTemplateCard = ({ data = {}, customerId }) => {
+  const handleGoToDetailClick = (item) => {
+    const nextUrl = {
+      [TemplateClassEnum.Evaluate]: `/evaluate/add/${item.templateCode}?customerId=${customerId}`, // 评
+      [TemplateClassEnum.Form]: `/evaluate/add/${item.templateCode}?customerId=${customerId}`, // 评
+      [TemplateClassEnum.EvaluateGroup]: `/evaluate/add-of-composite/${item.templateCode}?customerId=${customerId}`,// 估
+    };
+    history.push(nextUrl[item.templateClass]);
   };
 
   return (
@@ -51,10 +65,10 @@ const EvaluateTemplateCard = () => {
       <div className="w-[22.38rem] flex flex-row items-center justify-start gap-[0.63rem]">
         <div className="flex-col justify-start items-start inline-flex">
           <div className="w-[220px] text-zinc-700 text-lg font-semibold font-['PingFang SC'] leading-9">
-            养老照护分级评估
+            {data.name}
           </div>
           <div className="text-zinc-700 text-sm font-normal font-['PingFang SC'] leading-tight tracking-wide">
-            评估
+            {templateTypeDescConfig[data.templateClass]}
           </div>
         </div>
       </div>
@@ -62,8 +76,8 @@ const EvaluateTemplateCard = () => {
         <Button
           className="px-[10px] py-[4px]"
           type="primary"
-          onClick={() => {
-            history.push('/evaluate/template-list-composite');
+          onClickCapture={() => {
+            handleGoToDetailClick(data);
           }}
         >
           开始评估
@@ -72,7 +86,7 @@ const EvaluateTemplateCard = () => {
     </div>
   );
 };
-const ListComponent = () => {
+const ListComponent = ({ data = [], customerId }) => {
   return (
     <>
       <ConfigProvider
@@ -89,15 +103,24 @@ const ListComponent = () => {
           },
         }}
       >
-        {Array.from(new Array(100)).map(() => (
-          <EvaluateTemplateCard />
+        {data.map((item) => (
+          <EvaluateTemplateCard data={item} customerId={customerId} />
         ))}
       </ConfigProvider>
     </>
   );
 };
 
+
 const ElderTemplateListPage = () => {
+  const [searchParams] = useSearchParams();
+  const customerId = searchParams.get('customerId');
+
+  const { data = {} } = useLoadEvaluteTemplateList({
+    customerId,
+  });
+
+  console.log('ElderTemplateListPage', data.dataList);
   return (
     <>
       <div className=" text-center flex justify-center flex-col items-center">
@@ -118,7 +141,7 @@ const ElderTemplateListPage = () => {
               </div>
             </div>
           </Affix>
-          <ListComponent></ListComponent>
+          <ListComponent data={data.dataList} customerId={customerId}></ListComponent>
         </div>
       </div>
     </>
