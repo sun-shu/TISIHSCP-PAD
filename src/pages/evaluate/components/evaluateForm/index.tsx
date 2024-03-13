@@ -77,8 +77,6 @@ const EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
   );
 };
 
-//TODO 把elementList放在外面
-// 纯表单
 const EvaluateFormComponent = ({
                                  form,
                                  initialValues,
@@ -94,7 +92,7 @@ const EvaluateFormComponent = ({
   const [elementList, setElementList] = useState(_.cloneDeep(initElementList));
 
 
-  const { fillCount, needFillCount, onFieldsChange, onValuesChange } = useProgressShow(form);
+  const { fillCount, needFillCount, onFieldsChange, onValuesChange } = useProgressShow(form, initialValues);
 
 
   return (
@@ -109,12 +107,12 @@ const EvaluateFormComponent = ({
       </div>
       <ProgressBar processRate={fillCount / needFillCount * 100} />
       <div className="text-right border-b-[1px] py-[10px]">※ 为必填项</div>
-      <Form scrollToFirstError form={form} colon={false} initialValues={initialValues}
+      <Form scrollToFirstError form={form} colon={false}
             disabled={disabled} onFieldsChange={onFieldsChange} onValuesChange={onValuesChange}>
         {elementList &&
           <EvaluateFormTemplates elementList={elementList} form={form}
-                                 setElementList={setElementList}
-          />}
+                                 setElementList={setElementList} />
+        }
       </Form>
     </div>
 

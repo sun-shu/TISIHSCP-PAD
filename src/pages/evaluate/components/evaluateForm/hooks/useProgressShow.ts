@@ -4,15 +4,16 @@
 import { useEffect, useState } from 'react';
 import { FormInstance } from 'antd';
 
-const useProgressShow = (form: FormInstance) => {
+const useProgressShow = (form: FormInstance, initialValues) => {
   const [fillCount, setFillCount] = useState(5);
   const [needFillCount, setNeedFillCount] = useState(10);
 
   useEffect(() => {
+    initialValues && form.setFieldsValue(initialValues);
     form?.validateFields({
       validateOnly: true,
     });
-  }, []);
+  }, [initialValues]);
 
   const onFieldsChange = (changedFields, allFields) => {
     setFillCount(allFields.filter((field) => field.validated && field.errors.length === 0).length);

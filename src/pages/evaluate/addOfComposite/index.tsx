@@ -34,7 +34,7 @@ const ProgressInfo = ({ completeCount = 0, totalCount }) => {
         <div className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide mb-[5px]">
           已完成 {completeCount}/{totalCount}
         </div>
-        <ProgressBar processRate={Math.floor(completeCount / totalCount)} />
+        <ProgressBar processRate={completeCount / totalCount * 100} />
       </div>
     </>
   );
@@ -70,6 +70,9 @@ const FilledList = ({ compositeStatus = EvaluationStatusEnum.FINISHED, data = []
                 icon={
                   <img src={FinishIcon} width={24} />
                 }
+                onClick={() => {
+                  handleGoToDetailBtnClick(templateCode, recordMainId);
+                }}
               >
                 已完成
               </Button>
@@ -106,7 +109,17 @@ interface NotFilledListProps {
 
 const NotFilledList = ({ data, locationParams = {} }: NotFilledListProps) => {
   const handleGoToAddPageBtnClick = (templateCode: string) => {
-    history.push('/evaluate/add/' + templateCode + '?relativeId=' + locationParams.relativeId + '&relativeType=' + locationParams.relativeType + '&templateComposeCode=' + locationParams.templateComposeCode + '&customerId=' + locationParams.customerId);
+    // 定义要传递的参数对象
+    const queryParams = {
+      relativeId: locationParams.relativeId,
+      relativeType: locationParams.relativeType,
+      templateComposeCode: locationParams.templateComposeCode,
+      customerId: locationParams.customerId,
+      remaindIndex: data.length,
+    };
+
+    // 使用模板字符串和展开运算符构建URL
+    history.push(`/evaluate/add/${templateCode}?${new URLSearchParams(queryParams)}`);
   };
 
   return (
@@ -171,7 +184,8 @@ const EditCompositeEvaluatePage = (props) => {
         title={
           <div>
             <span>综合评估</span>
-            <ProgressInfo completeCount={filledListData.length} totalCount={notFilledListData.length} />
+            <ProgressInfo completeCount={filledListData.length}
+                          totalCount={filledListData.length + notFilledListData.length} />
           </div>
         }
         classname="relative"

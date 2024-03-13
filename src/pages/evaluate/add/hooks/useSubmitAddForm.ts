@@ -22,7 +22,7 @@ import { useRequest } from '@@/exports';
 
 
 const useSubmitAddForm = (form: FormInstance, params) => {
-  const { templateCode, templateComposeCode, relativeType, relativeId, customerId } = params;
+  const { templateCode, templateComposeCode, relativeType, relativeId, customerId, remaindIndex } = params;
 
   console.log('useSubmitAddForm', params);
   const { loading, run, data } = useRequest(addResult, {
@@ -56,33 +56,39 @@ const useSubmitAddForm = (form: FormInstance, params) => {
     return run(data);
   };
 
+  //单项评估-提交
   const submitAddEvalute = async (values: any) => {
     const data = await submitAddForm();
     console.log('submitAddEvalute', data);
     const { recordMainId } = data;
-    // history.push(`/elder/evaluation-report?recordMainId=${recordMainId}`);
-    history.push(`/elder/evaluation-report?relativeId=${params.relativeId}&relativeType=${params.relativeType}&customerId=${params.customerId}`);
-
+    history.push(`/elder/evaluation-report?recordMainId=${recordMainId}`);
+    // history.push(`/elder/evaluation-report?relativeId=${params.relativeId}&relativeType=${params.relativeType}&customerId=${params.customerId}`);
+ 
     //跳转评估结果页面
   };
 
-//提交并返回
+  //综合评估-提交并返回
   const submitAddEvaluteGroupReturn = async (values: any) => {
     await submitAddForm();
     //如果是综合评估，返回到综合评估列表，如果是单项评估，
     history.replace(`/evaluate/add-of-composite/${templateComposeCode}?relativeId=${relativeId}&relativeType=${relativeType}&customerId=${customerId}`);
   };
 
-  //提交并继续
+  //综合评估-提交并继续
   const submitAddEvaluteGroupContinue = async () => {
     const data = await submitAddForm();
     const { nextTemplateCode } = data || {};
-    //如果是综合评估，返回到综合评估列表，如果是单项评估，if (nextTemplateCode) {
-    history.replace(`/evaluate/add/${nextTemplateCode}?relativeId=${relativeId}&relativeType=${relativeType}&customerId=${customerId}&templateComposeCode=${templateComposeCode}`);
 
+    const nextRemaindIndex: any = remaindIndex - 1;
+    const queryParams = new URLSearchParams({
+      relativeId: relativeId,
+      relativeType: relativeType,
+      customerId: customerId,
+      templateComposeCode: templateComposeCode,
+      remaindIndex: nextRemaindIndex,
+    });
 
-    //这里处理formconsole.log('submitAddFormContinue');
-    // history.replace('/evaluate/add/next');
+    history.replace(`/evaluate/add/${nextTemplateCode}?${queryParams}`);
   };
 
   //返回按钮需要的两个方法

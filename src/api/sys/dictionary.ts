@@ -4,7 +4,7 @@ import { request } from 'umi';
 const getDictionaryContent = async () => {
   return request('/hcsp-gateway/baseApi/v1/frontend/configs', {
     method: 'GET',
-    errorShowType: ErrorShowTypeEnum.WARN_MESSAGE,
+    errorShowType: ErrorShowTypeEnum.SILENT,
   });
 };
 
