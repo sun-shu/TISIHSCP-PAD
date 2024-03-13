@@ -43,16 +43,17 @@ export const request: RequestConfig = {
   // 错误处理： umi@3 的错误处理方案。
   errorConfig: {
     // 错误抛出
-    errorThrower: (res: ResponseStructure) => {
-      const { data, description, status } = res;
-      console.log('errorThrower', res);
-      if (status !== 0) {
-        const error: any = new Error(description);
-        error.name = 'BizError';
-        error.info = { status, description, data };
-        throw error; // 抛出自制的错误
-      }
-    },
+    // errorThrower: (res: ResponseStructure) => {
+    //   console.log('errorThrower', res);
+    //
+    //   const { data, description, status } = res;
+    //   if (status !== 0) {
+    //     const error: any = new Error(description);
+    //     error.name = 'BizError';
+    //     error.info = { status, description, data };
+    //     throw error; // 抛出自制的错误
+    //   }
+    // },
     // 错误接收及处理
     errorHandler: (error: any, opts: any) => {
       console.log('errorHandler', error, opts);
@@ -105,31 +106,44 @@ export const request: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config) => {
-      console.log('requestInterceptors');
+      console.log('requestInterceptors', config);
       // 拦截请求配置，进行个性化处理。
       const url = config.url.concat('');
 
-      return { ...config, url };
+      return { ...config, url, params: { ...config.params, lang: 'zh' } };
     },
     authHeaderInterceptor,
   ],
 
   // 响应拦截器
   responseInterceptors: [
-    (response: any) => {
+    [(response: any) => {
+      console.log('responseInterceptors', response);
+
       // 拦截响应数据，进行个性化处理 没有权限跳转登录页
       const { data, status, description } = response.data as Result<any>;
-      console.log('responseInterceptors', response, data, status);
-      if (status !== '0') {
-        return Promise.reject({
-          name: 'BizError',
-          info: { status, description, data },
-        });
-      }
 
-      console.log('responseInterceptors', response, data, status);
+
+      console.log('responseInterceptors', response, status);
       return response;
     },
+      (error: Error) => {
+
+        if (error.response.status === 401) {
+          history.push('/login');
+        }
+
+        const { status, description, data } = error.response.data;
+        if ((status !== '0')) {
+          return Promise.reject({
+            name: 'BizError',
+            info: { status, description, data },
+          });
+        }
+
+        // do nothing4
+        console.log('responseInterceptors', error);
+      }],
   ],
 };
 
@@ -149,7 +163,7 @@ export async function getInitialState() {
 
       return true;
     } catch (error) {
-      history.push('/login');
+      // history.push('/login');
     }
 
     return false;

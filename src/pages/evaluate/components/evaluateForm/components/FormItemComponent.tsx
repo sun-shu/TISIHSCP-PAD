@@ -39,7 +39,7 @@ interface FormItemBaseContainerProps {
   formItemProps?: any,
 }
 
-const FormItemBaseContainer = ({ item, form = {}, children, formItemProps = {} }: FormItemBaseContainerProps) => {
+const FormItemBaseContainerDefault = ({ item, children, formItemProps = {} }: FormItemBaseContainerProps) => {
   return (
     <div>
       <div
@@ -76,10 +76,17 @@ interface FormItemComponentProps {
   item: TemplateElementResDTO,
   index: number,
   form: any,
-  changeElementVisible: (elementId: number, visible: boolean) => void
+  changeElementVisible: (elementId: number, visible: boolean) => void,
+  FormItemBaseContainer: React.FC<FormItemBaseContainerProps>,
 }
 
-const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItemComponentProps) => {
+const FormItemComponent = ({
+                             item,
+                             index,
+                             form,
+                             changeElementVisible = null,
+                             FormItemBaseContainer = FormItemBaseContainerDefault,
+                           }: FormItemComponentProps) => {
   const options = React.useMemo(() => (
     item.optionList?.map((option) => ({
       label: option.optionName,
@@ -89,7 +96,7 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   ), [item.optionList]);
 
   // 文本组件- 数字、文本
-  const createTextComponent = ({ elementDataType, ...item }, index) => {
+  const createTextComponent = ({ elementDataType, ...item }) => {
     const rules = [{
       validator: (rule, value = {}) => {
         if (item.elementRequireFlg === ElementRequireFlgEnum.YES) {
@@ -127,7 +134,7 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   };
 
   // 日期组件- 年月日、日期时间、时分
-  const createDateComponent = ({ elementDataType, ...item }, index) => {
+  const createDateComponent = ({ elementDataType, ...item }) => {
     const rules = [{
       validator: (rule, value = {}) => {
         if (item.elementRequireFlg === ElementRequireFlgEnum.YES) {
@@ -174,7 +181,7 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   };
 
   // 文本域组件
-  const createTextareaComponent = (item: TemplateElementResDTO, index) => {
+  const createTextareaComponent = (item: TemplateElementResDTO) => {
     const rules = [{
       validator: (rule, value = {}) => {
         if (item.elementRequireFlg === ElementRequireFlgEnum.YES) {
@@ -201,7 +208,7 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   };
 
   // 单选组件
-  const createSingleSelectComponent = (item: TemplateElementResDTO, index) => {
+  const createSingleSelectComponent = (item: TemplateElementResDTO) => {
     const rules = [
       {
         validator: (rule, value = {}) => {
@@ -235,7 +242,7 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   };
 
   // 多选组件
-  const createMultiSelectComponent = (item: TemplateElementResDTO, index) => {
+  const createMultiSelectComponent = (item: TemplateElementResDTO) => {
     const rules = [
       {
         validator: (rule, value = {}) => {
@@ -266,7 +273,7 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   };
 
   // 一级标题组件
-  const createOneSectionComponent = (item: TemplateElementResDTO, index) => {
+  const createOneSectionComponent = (item: TemplateElementResDTO) => {
 
     return (
       <>
@@ -276,7 +283,7 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   };
 
   // 二级标题组件
-  const createTwoSectionComponent = (item: TemplateElementResDTO, index) => {
+  const createTwoSectionComponent = (item: TemplateElementResDTO) => {
 
 
     return (
@@ -285,7 +292,7 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
   };
 
   // 表格组件
-  const createTableComponent = (item: TemplateElementResDTO, index) => {
+  const createTableComponent = (item: TemplateElementResDTO) => {
     const rules = [
       {
         validator: (rule, value) => {
@@ -317,20 +324,20 @@ const FormItemComponent = ({ item, index, form, changeElementVisible }: FormItem
 
   // 模板配置
   const templateConfig = {
-    [ElementTypeEnum.TEXT]: (item, index) => createTextComponent(item, index),
-    [ElementTypeEnum.TEXTAREA]: (item, index) => createTextareaComponent(item, index),
-    [ElementTypeEnum.SINGLE_SELECT]: (item, index) => createSingleSelectComponent(item, index),
-    [ElementTypeEnum.MULTI_SELECT]: (item, index) => createMultiSelectComponent(item, index),
-    [ElementTypeEnum.ONE_SECTION]: (item, index) => createOneSectionComponent(item, index),
-    [ElementTypeEnum.TWO_SECTION]: (item, index) => createTwoSectionComponent(item, index),
-    [ElementTypeEnum.TABLE]: (item, index) => createTableComponent(item, index),
-    [ElementTypeEnum.DATE]: (item, index) => createDateComponent(item, index),
+    [ElementTypeEnum.TEXT]: (item) => createTextComponent(item),
+    [ElementTypeEnum.TEXTAREA]: (item) => createTextareaComponent(item),
+    [ElementTypeEnum.SINGLE_SELECT]: (item) => createSingleSelectComponent(item),
+    [ElementTypeEnum.MULTI_SELECT]: (item) => createMultiSelectComponent(item),
+    [ElementTypeEnum.ONE_SECTION]: (item) => createOneSectionComponent(item),
+    [ElementTypeEnum.TWO_SECTION]: (item) => createTwoSectionComponent(item),
+    [ElementTypeEnum.TABLE]: (item) => createTableComponent(item),
+    [ElementTypeEnum.DATE]: (item) => createDateComponent(item),
     // ...
   };
 
   return (
     <>
-      <div className="mt-[20px]" key={item.id}>{templateConfig[item.elementType]?.(item, index)}</div>
+      <div className="mt-[20px]" key={item.id}>{templateConfig[item.elementType]?.(item)}</div>
     </>
   );
 };

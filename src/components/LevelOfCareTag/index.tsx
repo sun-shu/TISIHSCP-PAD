@@ -3,12 +3,12 @@ import { LevelOfCareEnum } from '@/enums/LevelOfCareEnum';
 
 const LevelOfCareTag = ({ level = '' }) => {
   const levelMap = {
-    [LevelOfCareEnum.Level1]: '1级照护',
-    [LevelOfCareEnum.Level2]: '2级照护',
-    [LevelOfCareEnum.Level3]: '3级照护',
-    [LevelOfCareEnum.Level4]: '4级照护',
-    [LevelOfCareEnum.Level5]: '5级照护',
-    [LevelOfCareEnum.Level6]: '6级照护',
+    [LevelOfCareEnum.Level1]: '正常',
+    [LevelOfCareEnum.Level2]: '轻度',
+    [LevelOfCareEnum.Level3]: '中度I',
+    [LevelOfCareEnum.Level4]: '中度II',
+    [LevelOfCareEnum.Level5]: '重度I',
+    [LevelOfCareEnum.Level6]: '重度II',
   };
 
   return (level ? <CustomTag text={levelMap[level]} /> : null);

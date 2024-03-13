@@ -7,8 +7,11 @@ import {
 import { Affix, Avatar, Button, ConfigProvider, Input, Select } from 'antd';
 import EvaluateIcon from '@/assets/icon/evalute.png';
 import LevelOfCareTag from '@/components/LevelOfCareTag';
+import BuildingSelect from '@/components/entitySelects/BuildingSelect';
+import useLoadCustomerList from '@/pages/elder/list/hooks/useLoadCustomerList';
 
-const ListComponent = () => {
+const ListComponent = ({ data = [] }) => {
+  console.log('data', data);
   const handleGoToDetailClick = () => {
     history.push('/elder/detail');
   };
@@ -30,27 +33,27 @@ const ListComponent = () => {
         }}
       >
 
-        {Array.from(new Array(100)).map(() => (
+        {data.map((item) => (
           <div
             className="relative rounded bg-white w-full flex flex-row items-center justify-between py-[0.63rem] pr-[1.25rem] mb-[20px] pl-[0.63rem] box-border cursor-pointer text-left text-[1.25rem] text-darkslategray font-px"
             onClick={handleGoToDetailClick}
           >
-            <div className="w-[22.38rem] flex flex-row items-center justify-start gap-[0.63rem]">
+            <div className=" flex flex-1 flex-row items-center justify-between gap-[0.63rem]">
               <Avatar shape="square" size={80} icon={<UserOutlined />} />
 
               <div
-                className=" flex flex-none flex-col justify-between py-[10px] box-border flex-none">
+                className=" flex  flex-col justify-between py-[10px] box-border flex-none min-w-[100px]">
                 <div className="relative  font-semibold">
-                  郑文锦
+                  {item.name}
                 </div>
                 <div className="text-base font-semibold">
                   男
                 </div>
-                <div className="text-base font-semibold"> 65岁</div>
+                <div className="text-base font-semibold"> {item.age}岁</div>
 
               </div>
               <div className="flex flex-col items-start justify-start  py-[10px] gap-[0.63rem] text-[1rem] flex-1">
-                <LevelOfCareTag level={'02'} />
+                <LevelOfCareTag level={item.nurseGrade} />
                 <div className="relative tracking-[0.05em] leading-[1.5rem] font-semibold">
                   1号楼-3层-301-1床
                 </div>
@@ -117,17 +120,8 @@ const SearchComponent = () => {
           />
 
           <div className="flex gap-[10px] justify-between">
-            <Select
-              placeholder="楼宇"
-              style={{ width: '100%' }}
-              suffixIcon={<CaretDownOutlined className="pointer-events-none	" />}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'lucy', label: 'Lucy' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-                { value: 'disabled', label: 'Disabled', disabled: true },
-              ]}
-            />
+            <BuildingSelect></BuildingSelect>
+            <BuildingSelect></BuildingSelect>
             <Select
               placeholder="楼层"
               style={{ width: '100%' }}
@@ -183,6 +177,10 @@ const SearchComponent = () => {
 };
 
 const ElderListPage = () => {
+  const { customerList = [] } = useLoadCustomerList();
+
+  console.log('customerList', customerList);
+
   return (
     <>
       <div className=" text-center flex justify-center flex-col items-center">
@@ -194,7 +192,7 @@ const ElderListPage = () => {
                   长者列表
                 </div>
                 <div className="relative text-[0.75rem] tracking-[0.05em] leading-[1.13rem]">
-                  共有 215位长者
+                  共有{customerList.length}位长者
                 </div>
               </div>
 
@@ -203,7 +201,7 @@ const ElderListPage = () => {
               </div>
             </div>
           </Affix>
-          <ListComponent></ListComponent>
+          <ListComponent data={customerList}></ListComponent>
         </div>
       </div>
     </>

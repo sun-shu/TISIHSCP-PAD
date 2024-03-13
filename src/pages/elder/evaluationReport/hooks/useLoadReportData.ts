@@ -22,7 +22,6 @@ const useLoadReportData = (params) => {
     });
   }, {
     manual: true,
-    ready: !!params.relativeId,
     onSuccess: (result, params) => {
       setData(result);
     },
@@ -35,7 +34,6 @@ const useLoadReportData = (params) => {
     });
   }, {
     manual: true,
-    ready: !!params.relativeId,
     onSuccess: (result, params) => {
       setData(result);
     },
@@ -43,8 +41,8 @@ const useLoadReportData = (params) => {
 
 
   useEffect(() => {
-    params.templateComposeCode ? runLoadEvaluteGroupDataFn() : runLoadEvaluteGroupDataFn();
-  }, [params.relativeId]);
+    params.templateComposeCode ? runLoadEvaluteGroupDataFn() : runLoadEvaluteDataFn();
+  }, []);
 
   return {
     data,

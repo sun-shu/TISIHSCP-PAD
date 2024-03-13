@@ -70,6 +70,9 @@ const FilledList = ({ compositeStatus = EvaluationStatusEnum.FINISHED, data = []
                 icon={
                   <img src={FinishIcon} width={24} />
                 }
+                onClick={() => {
+                  handleGoToDetailBtnClick(templateCode, recordMainId);
+                }}
               >
                 已完成
               </Button>

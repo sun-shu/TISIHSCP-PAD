@@ -24,7 +24,7 @@ const EvaluationReportSummer = ({ completeList = [] }) => {
           <div className=" justify-start items-start gap-2.5 inline-flex">
             <div
               className="grow shrink basis-0 text-justify text-zinc-700 text-lg font-normal font-['PingFang SC'] leading-9">
-              {item.commentaryName}
+              {item.commentaryName || '...'}
             </div>
           </div>
         </div>
@@ -98,15 +98,17 @@ const EvaluationReportPage = () => {
   const relativeType = searchParams.get('relativeType');
   const customerId = searchParams.get('customerId');
   const templateComposeCode = searchParams.get('templateComposeCode');
-
+  const recordMainId = searchParams.get('recordMainId');
+//=211005735
   const locationParams = {
     relativeId,
     relativeType,
     customerId,
     templateComposeCode,
+    recordMainId,
   };
 
-  const { data, loading } = useLoadReportData(locationParams);
+  const { data = {}, loading } = useLoadReportData(locationParams);
   return (
     <>
       <ElderDetailLayout title="综合评估报告">
@@ -129,7 +131,7 @@ const EvaluationReportPage = () => {
               总结
             </div>
             <div className=" text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
-              {data.commentaryName}
+              {data.commentaryName || '暂无总结'}
             </div>
           </div>
           {

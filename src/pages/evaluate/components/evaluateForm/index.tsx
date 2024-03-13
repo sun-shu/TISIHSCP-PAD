@@ -111,8 +111,8 @@ const EvaluateFormComponent = ({
             disabled={disabled} onFieldsChange={onFieldsChange} onValuesChange={onValuesChange}>
         {elementList &&
           <EvaluateFormTemplates elementList={elementList} form={form}
-                                 setElementList={setElementList}
-          />}
+                                 setElementList={setElementList} />
+        }
       </Form>
     </div>
 

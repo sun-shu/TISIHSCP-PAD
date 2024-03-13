@@ -61,9 +61,9 @@ const useSubmitAddForm = (form: FormInstance, params) => {
     const data = await submitAddForm();
     console.log('submitAddEvalute', data);
     const { recordMainId } = data;
-    // history.push(`/elder/evaluation-report?recordMainId=${recordMainId}`);
-    history.push(`/elder/evaluation-report?relativeId=${params.relativeId}&relativeType=${params.relativeType}&customerId=${params.customerId}`);
-
+    history.push(`/elder/evaluation-report?recordMainId=${recordMainId}`);
+    // history.push(`/elder/evaluation-report?relativeId=${params.relativeId}&relativeType=${params.relativeType}&customerId=${params.customerId}`);
+ 
     //跳转评估结果页面
   };
 
