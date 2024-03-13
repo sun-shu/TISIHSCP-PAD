@@ -13,17 +13,17 @@ const DetailPage = () => {
 
   const [form] = Form.useForm();
 
-  const { data, loading } = useLoadDetailData(form, {
+  const { data, initialValues, loading } = useLoadDetailData(form, {
     recordMainId,
   });
-   
+
   return (
     <div className="max-w-[620px] m-auto py-[20px]">
       <div className="mb-[90px]">
         <div className="mt-[20px]">
           {data?.resDTO?.elementList &&
             <EvaluateForm form={form} templateCode={templateCode} templateName={data.templateName}
-                          elementList={data?.resDTO?.elementList} />}
+                          elementList={data?.resDTO?.elementList} initialValues={initialValues} />}
         </div>
       </div>
 

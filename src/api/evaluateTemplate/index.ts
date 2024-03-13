@@ -30,3 +30,16 @@ export const getCustomerComposeInfo = async (data: getCustomerComposeInfoInterfa
 
   return res;
 };
+ 
+export const getTemplateMainSelect = async (data: getCustomerComposeInfoInterface.GetCustomerComposeInfoRequest = {}, options?: {
+  [key: string]: any
+}): Promise<getCustomerComposeInfoInterface.CustomerComposeInfoResDTO> => {
+  const res = request('/hcsp-gateway/evaluateApi/v1/template/getTemplateMainSelect', {
+    method: 'GET',
+    errorShowType: ErrorShowTypeEnum.ERROR_MESSAGE,
+    params: data,
+    ...(options || {}),
+  });
+
+  return res;
+};

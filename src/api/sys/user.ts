@@ -41,6 +41,8 @@ const getUserInfo = async (options?: { [key: string]: any }) => {
 const checkToken = async (options?: { [key: string]: any }) => {
   return request('/hcsp-gateway/umApi/v1/checkToken', {
     method: 'GET',
+    errorShowType: ErrorShowTypeEnum.SILENT,
+
     ...(options || {}),
   });
 };

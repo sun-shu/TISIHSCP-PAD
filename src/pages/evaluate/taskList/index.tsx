@@ -223,7 +223,7 @@ const PreMonthElderList = ({ data = [] }) => {
   return (
     <ElderListTemplate
       title={<span className="text-red-FF">上月待评估长者列表</span>}
-      countDescription={data.length > 0 ? <span>上月共有{data.length}位长者待评估</span> : ''}
+      countDescription={data.length > 0 ? <span>上月有{data.length}个评估任务待完成</span> : ''}
       data={data}
     ></ElderListTemplate>
   );
@@ -235,7 +235,7 @@ const NextMonthElderList = ({ data = [] }) => {
 
     <ElderListTemplate
       title="下月待评估长者列表"
-      countDescription={data.length > 0 ? <span>下月共有{data.length}位长者待评估</span> : ''}
+      countDescription={data.length > 0 ? <span>下月有{data.length}个评估任务待完成</span> : ''}
       data={data}
     ></ElderListTemplate>
 
@@ -248,7 +248,7 @@ const CurrentMonthElderList = ({ data = [] }) => {
   return (
     <ElderListTemplate
       title="本月待评估长者列表"
-      countDescription={data.length > 0 ? <span>本月共有{data.length}位长者待评估</span> : ''}
+      countDescription={data.length > 0 ? <span>本月有{data.length}个评估任务待完成</span> : ''}
       data={data}
     ></ElderListTemplate>
   );
@@ -300,7 +300,7 @@ const TaskListPage = () => {
               </div>
               <div
                 className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide pb-[10px]">
-                本周共有 10位长者待评估
+                {/*本周共有 10位长者待评估*/}
               </div>
 
               <SearchComponent searchElder={searchElder} />

@@ -5,14 +5,16 @@ import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enu
 
 const ERadio = (props) => {
   const { id, value = {}, onChange, options, changeElementVisible, item: config } = props;
+
+  console.log('ERadio', props);
   const handleOnChange = (e) => {
-    const selectedOption = options.find(option => option.value === e.target.value);
+    const selectedOption = options.find(option => option.value.toString() === e.target.value);
 
     const newValue = {
       optionValues: e.target.value,
       answer: config.optionType === OptionTypeEnum.OTHER ? value.answer : '',
       elementId: config.id,
-      optionType: selectedOption.optionType,
+      optionType: selectedOption?.optionType,
     };
 
     onChange(newValue);
@@ -40,7 +42,7 @@ const ERadio = (props) => {
               console.log(item, 'item');
               if (item.optionType === OptionTypeEnum.OTHER) {
                 return (
-                  <Radio value={item.value} className="w-full flex flex-1 relative">
+                  <Radio value={item.value.toString()} className="w-full flex flex-1 relative">
                       <span>
                         其他
                         {value.optionType === OptionTypeEnum.OTHER ? (
@@ -62,7 +64,7 @@ const ERadio = (props) => {
                       </span>
                   </Radio>);
               }
-              return <Radio value={item.value}>{item.label}</Radio>;
+              return <Radio value={item.value.toString()}>{item.label}</Radio>;
             })
           }
 

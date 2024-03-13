@@ -1,143 +1,15 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Modal, Button, Divider, ConfigProvider, Form } from 'antd';
 import { CloseCircleOutlined } from '@ant-design/icons';
-import { ElementDataTypeEnum } from '@/enums/ElementDataTypeEnum';
-import { EDateTime, EInput, ESelect, ERadio, ECheckBox } from './index';
-import { OptionDataTypeEnum } from '../enums/OptionDataTypeEnum';
-import { OptionControlTypeEnum } from '../enums/OptionControlTypeEnum';
 import { ElementRequireFlgEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementRequireFlgEnum';
-
-const { EDateTimePicker, ETimePicker } = EDateTime;
-const { ETextArea } = EInput;
-// 表单组件的基础结构
-
-
-const Disease = () => {
-  return (
-    <div
-      className="w-[420px] h-[652px] px-[60px] py-5 bg-white rounded flex-col justify-start items-start gap-2.5 inline-flex">
-      {/* <div className="w-[500px] justify-between items-center inline-flex">
-                <div className="text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-                    主要疾病-03
-                </div>
-                <div className="w-6 h-6 relative">
-                    <img
-                        className="w-[22px] h-[22px] left-[1px] top-[1px] absolute"
-                        src="https://via.placeholder.com/22x22"
-                    />
-                </div>
-            </div> */}
-      <div className="w-[300px] h-[0px] border border-zinc-300"></div>
-      <div className="flex-col justify-center items-center gap-5 flex">
-        <div className="flex-col justify-center items-center gap-2.5 flex">
-          <div className="h-[494px] relative">
-            <div
-              className="w-[300px] h-[74px] left-0 top-0 absolute flex-col justify-start items-start gap-1 inline-flex">
-              <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-                疾病名称
-              </div>
-              <div className="w-[300px] h-10 justify-center items-center inline-flex">
-                <div
-                  className="w-[300px] h-10 px-2.5 py-0.5 bg-white rounded border border-zinc-600 justify-start items-center gap-2.5 inline-flex">
-                  <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
-                    | 请填写
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className="w-[300px] h-[74px] left-0 top-[84px] absolute flex-col justify-start items-start gap-1 inline-flex">
-              <div className="flex-col justify-start items-start gap-1 flex">
-                <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-                  就医时间
-                </div>
-              </div>
-              <div
-                className="w-[300px] h-10 px-2.5 bg-white rounded border border-teal-500 justify-between items-center inline-flex">
-                <div className="grow shrink basis-0 h-9 justify-between items-center flex">
-                  <div className="text-zinc-600 text-lg font-semibold font-['PingFang SC'] leading-9">
-                    选择后字段
-                  </div>
-                  <div className="w-6 h-6 px-1.5 py-2 justify-center items-center flex" />
-                </div>
-              </div>
-            </div>
-            <div
-              className="w-[300px] h-[74px] left-0 top-[168px] absolute flex-col justify-start items-start gap-1 inline-flex">
-              <div className="flex-col justify-start items-start gap-1 flex">
-                <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-                  医院
-                </div>
-              </div>
-              <div
-                className="w-[300px] h-10 px-2.5 py-2 bg-white rounded border border-zinc-600 justify-start items-center gap-[62px] inline-flex">
-                <div className="grow shrink basis-0 h-9 justify-between items-center flex">
-                  <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
-                    请选择
-                  </div>
-                  <div className="w-6 h-6 px-1.5 py-2 justify-center items-center flex" />
-                </div>
-              </div>
-            </div>
-            <div
-              className="w-[300px] h-[74px] left-0 top-[252px] absolute flex-col justify-start items-start gap-1 inline-flex">
-              <div className="flex-col justify-start items-start gap-1 flex">
-                <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-                  科室
-                </div>
-              </div>
-              <div
-                className="w-[300px] h-10 px-2.5 py-2 bg-white rounded border border-zinc-600 justify-start items-center gap-[62px] inline-flex">
-                <div className="grow shrink basis-0 h-9 justify-between items-center flex">
-                  <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
-                    请选择
-                  </div>
-                  <div className="w-6 h-6 px-1.5 py-2 justify-center items-center flex" />
-                </div>
-              </div>
-            </div>
-            <div
-              className="w-[300px] h-[74px] left-0 top-[336px] absolute flex-col justify-start items-start gap-1 inline-flex">
-              <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-                主治医师
-              </div>
-              <div className="w-[300px] h-10 justify-center items-center inline-flex">
-                <div
-                  className="w-[300px] h-10 px-2.5 py-0.5 bg-white rounded border border-zinc-600 justify-start items-center gap-2.5 inline-flex">
-                  <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
-                    | 请填写
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className="w-[300px] h-[74px] left-0 top-[420px] absolute flex-col justify-start items-start gap-1 inline-flex">
-              <div className="w-[300px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-                陪同人
-              </div>
-              <div className="w-[300px] h-10 justify-center items-center inline-flex">
-                <div
-                  className="w-[300px] h-10 px-2.5 py-0.5 bg-white rounded border border-zinc-600 justify-start items-center gap-2.5 inline-flex">
-                  <div className="text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
-                    | 请填写
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  );
-};
+import FormItemComponent from '@/pages/evaluate/components/evaluateForm/components/FormItemComponent';
 
 
 const FormItemBaseContainer = ({ item, form = {}, children, formItemProps = {} }) => {
   return (
     <div>
       <div
-        className="w-[620px] font-semibold h-[30px] justify-start items-center gap-2.5 inline-flex mb-[10px]  text-black">
+        className="font-semibold h-[30px] justify-start items-center gap-2.5 inline-flex mb-[10px]  text-black">
         {item.optionRequireFlg === ElementRequireFlgEnum.YES &&
           <div className="w-6 font-bold h-6 p-2.5  text-xl justify-center items-center gap-2.5 flex">
             ※
@@ -152,10 +24,9 @@ const FormItemBaseContainer = ({ item, form = {}, children, formItemProps = {} }
 
       <div className="bg-white  rounded-[4px]">
         <div className="w-full ">
-          <Form.Item name={item.id} noStyle {...formItemProps}>
+          <Form.Item name={item.id} {...formItemProps} className="mb-0">
             {children}
           </Form.Item>
-
         </div>
       </div>
     </div>
@@ -166,7 +37,7 @@ const FormItemBaseContainer = ({ item, form = {}, children, formItemProps = {} }
 const ETableForm = (props) => {
   const [form] = Form.useForm();
   // 面板卡弹窗表单
-  const { data, onSubmit, disabled, title, type, defultValue, item, setFormVisible, setData, open } = props;
+  const { data, onSubmit, disabled, title, defultValue, item, setFormVisible, setData, open } = props;
   const handleDeleteBtnClick = () => {
     // 删除数据
     // onSubmit(data);
@@ -176,8 +47,11 @@ const ETableForm = (props) => {
     setFormVisible(false);
 
   };
-  const handleSaveBtnClick = () => {
+  const handleSaveBtnClick = async () => {
 
+    const res = await form.validateFields();
+
+    console.log('res', res, '====');
     //没有数据的时候，直接新增一条数据
     if (Object.keys(defultValue).length === 0) {
       // 调用新增数据接口
@@ -185,6 +59,7 @@ const ETableForm = (props) => {
       const resData = [...data, res];
       setData(resData);
     }
+
     // 有数据的时候，直接修改数据
     else {
       //修改数据， 找到源数组中的这一条数据，并修改
@@ -209,92 +84,19 @@ const ETableForm = (props) => {
     setFormVisible(false);
   };
 
+  const elementList = item?.optionList.map((item, index) => {
+    console.log('item', item, '====');
+    return {
+      ...item,
+      elementType: item.optionControlType,
+      elementDataType: item.optionDataType,
+      elementRequireFlg: item.optionRequireFlg,
+      elementName: item.optionName,
+      elementMaxLength: item.optionMaxLength,
+    };
+  });
 
-  const templateConfig = {
-    [OptionControlTypeEnum.TEXT]: ({ optionDataType, ...item }: {
-      elementDataType: ElementDataTypeEnum, [key: string]: any
-    }, index) => {
-      switch (optionDataType) {
-        case OptionDataTypeEnum.NUMBER:
-          return (
-            <FormItemBaseContainer item={item} index={index} form={form}>
-              <EInput type="number" form={form} maxLength={item?.optionMaxLength}
-                      placeHolder={item.optionPlaceholder} />
-            </FormItemBaseContainer>
-          );
-        case OptionDataTypeEnum.TEXT:
-          return (
-            <FormItemBaseContainer item={item} index={index} form={form}>
-              <EInput type="text" form={form} maxLength={item?.elementMaxLength} />
-            </FormItemBaseContainer>
-          );
-      }
-    },
-    [OptionControlTypeEnum.TEXTAREA]: (item, index) => {
-      return (
-        <FormItemBaseContainer item={item} index={index} form={form}>
-          <ETextArea rows={4} form={form} maxLength={item?.elementMaxLength} />
-        </FormItemBaseContainer>
-      );
-    },
-    [OptionControlTypeEnum.SINGLE_SELECT]: (item, index) => {
-      console.log('item', item, '====');
-      // 单选多选，点选下拉框
-      const options = item?.optionList.map((option) => ({
-        label: option.optionName,
-        value: option.id,
-        ...option,
-      }));
-      return (
-        <FormItemBaseContainer item={item} index={index} form={form}>
-
-          {item.optionList.length > 4 ?
-            <ESelect form={form} options={options} changeElementVisible={changeElementVisible} /> :
-            <ERadio form={form} options={options} changeElementVisible={changeElementVisible}></ERadio>}
-        </FormItemBaseContainer>
-      );
-    },
-    [OptionControlTypeEnum.MULTI_SELECT]: (item, index) => {
-      console.log('MULTI_SELECT item', item, '====');
-      const options = item?.optionList.map((option) => ({
-        label: option.optionName,
-        value: option.id,
-        ...option,
-      }));
-      return (
-        <FormItemBaseContainer item={item} index={index} form={form} formItemProps={{ valuePropName: 'checked' }}>
-          <ECheckBox form={form} options={options} changeElementVisible={changeElementVisible} />
-        </FormItemBaseContainer>
-      );
-    },
-
-    [OptionControlTypeEnum.DATE]: ({ elementDataType, ...item }: {
-      elementDataType: ElementDataTypeEnum, [key: string]: any
-    }, index) => {
-      switch (elementDataType) {
-        case OptionDataTypeEnum.YEAR_MONTH_DAY:
-          return (
-            <FormItemBaseContainer item={item} index={index} form={form}>
-              <EDateTime />
-            </FormItemBaseContainer>
-          );
-
-        case OptionDataTypeEnum.DATE_TIME:
-          return (
-            <FormItemBaseContainer item={item} index={index} form={form}>
-              <EDateTimePicker />
-            </FormItemBaseContainer>
-          );
-        case OptionDataTypeEnum.HOUR_MINUTE:
-          return (
-            <FormItemBaseContainer item={item} index={index} form={form}>
-              <ETimePicker />
-            </FormItemBaseContainer>
-          );
-      }
-    },
-  };
-
+  console.log('elementList', elementList, '====');
   return (
     <>
       <ConfigProvider theme={{
@@ -307,11 +109,14 @@ const ETableForm = (props) => {
       >
         <Modal
           open={open}
-          title={title}
+          title={item.elementName}
+
           closeIcon={<CloseCircleOutlined />}
+          className=" max-h-[600px] bg-white  w-[600px]"
           classNames={{
             footer: 'grid grid-cols-2 justify-between',
             header: 'text-white  text-xl font-semibold  leading-[30px]',
+            body: 'max-h-[600px] overflow-y-auto px-[24px]',
           }}
           footer={[
 
@@ -349,13 +154,21 @@ const ETableForm = (props) => {
               },
             }}
           >
-            {item?.optionList.map((item, index) => {
-              return (
-                <>
-                  <div className="mt-[20px]" key={index}>{templateConfig[item.optionControlType]?.(item, index)}</div>
-                </>
-              );
-            })}
+            <Form scrollToFirstError form={form} colon={false}
+                  disabled={disabled}>
+              <div className="px-[24px]">
+                {elementList.map((item, index) => {
+                  return (
+                    <>
+                      <FormItemComponent item={item} index={index} form={form}
+                                         FormItemBaseContainer={FormItemBaseContainer}
+                      />
+                    </>
+                  );
+                })}
+              </div>
+            </Form>
+
           </ConfigProvider>
         </Modal>
       </ConfigProvider>
@@ -368,9 +181,7 @@ const ETable = (props) => {
   const { id, value, onChange, item = item, title } = props;
   // value 是当前面板卡列表数据
   const [currentSelectData, setCurrentSelectData] = useState({});
-  const [selectDataIndex, setSelectDataIndex] = useState(0);
   const [formVisible, setFormVisible] = useState(false);
-  const [currentType, setCurrentType] = useState('');
   const [data, setData] = useState([]);
 
   //  点击查看按钮
@@ -402,31 +213,20 @@ const ETable = (props) => {
     setFormVisible(true);
   };
 
-  console.log('value', value);
   /**
    * 获取列表按钮文本辅助函数
    * @param status 列表按钮文本
    * @returns
    */
-  const getBtnText = (status: number) => {
-    if (status === 1) {
-      return '查看';
-    }
-    if (status === 2) {
-      return '新增';
-    }
-  };
   return (
     <>
       {/* 面板选项卡表单 */}
       <ETableForm
         open={formVisible}
         defultValue={currentSelectData}
-        type={currentType}
         title={title}
         disabled={disabled}
         item={item}
-        children={currentType === 'create' ? <Disease /> : <Disease />}
         setFormVisible={setFormVisible}
         setData={setData}
         data={data}

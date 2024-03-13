@@ -12,7 +12,8 @@ export default defineConfig({
     '@umijs/plugins/dist/tailwindcss',
     '@umijs/plugins/dist/react-query',
   ],
-  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/evaluation/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/evaluation/' : '/',
   antd: {
     configProvider: {},
     theme: {

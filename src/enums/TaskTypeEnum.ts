@@ -16,6 +16,7 @@
 // 4
 // :
 // {code: "05", name: "XR训练", enName: "XR-TRAIN", jpName: "XRトレーニン
+
 export enum TaskTypeEnum {
   BASE_TASK = '00',
   FORM = '01',

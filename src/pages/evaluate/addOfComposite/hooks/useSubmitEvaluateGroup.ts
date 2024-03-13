@@ -28,11 +28,18 @@ const useSubmitEvaluateGroup = (params) => {
       ...sourceParmas,
     });
 
-    history.push(`/elder/evaluation-report?relativeId=${params.relativeId}&relativeType=${params.relativeType}&customerId=${params.customerId}`);
+    viewReport();
   };
 
-  const viewReport = async () => {
-    history.push(`/elder/evaluation-report?relativeId=${params.relativeId}&relativeType=${params.relativeType}&customerId=${params.customerId}`);
+  const viewReport = () => {
+    const queryParams = new URLSearchParams({
+      relativeId: params.relativeId,
+      relativeType: params.relativeType,
+      customerId: params.customerId,
+      templateComposeCode: params.templateComposeCode,
+    });
+
+    history.push(`/elder/evaluation-report?${queryParams}`);
   };
 
   return {
