@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import { history } from 'umi';
 import LookIcon from '@/assets/icon/look.png';
 import { useSearchParams } from '@@/exports';
+import useLoadEvaluteList from '@/pages/elder/detail/hooks/useLoadEvaluteList';
+import dayjs from 'dayjs';
 
 // 加载更多分割线
 const LoadMoreDivider = ({ handleLoadMoreBtnClick }) => {
@@ -31,33 +33,33 @@ const LoadMoreDivider = ({ handleLoadMoreBtnClick }) => {
 };
 
 // 评估记录卡片
-const EvaluationRecordCard = ({ reportTitle, reportDate, evaluator }) => {
+const EvaluationRecordCard = ({ recordMainId, reportTitle = '', reportDate = '', evaluator = '' }) => {
   return (
     <div className="w-[620px] h-[76px] px-[20px] py-[10px] bg-white rounded justify-between items-center inline-flex">
-      <div className="w-[300px] flex-col justify-start items-start inline-flex">
-        <div className="self-stretch h-9 text-zinc-700 text-lg font-semibold ">
-          字段A综合评估报告
+      <div className=" flex-col justify-start items-start inline-flex">
+        <div className="self-stretch h-9 text-zinc-700 text-lg font-semibold line-clamp-1 leading-[30px]">
+          {reportTitle}
         </div>
         <div className="justify-start items-start inline-flex">
           <div className="justify-start items-start gap-5 flex">
             <div className="text-zinc-700 text-sm font-normal  leading-tight tracking-wide">
-              2024-01-07
+              {reportDate}
             </div>
             <div className="justify-start items-start flex">
               <div className="text-zinc-700 text-sm font-normal  leading-tight tracking-wide">
                 评估师：
               </div>
               <div className="text-zinc-700 text-sm font-normal  leading-tight tracking-wide">
-                李书萍
+                {evaluator}
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="justify-start items-center gap-5 flex">
+      <div className="justify-end items-center gap-5 flex h-auto w-fit basis-[100%] flex-1 ">
         <Button
           onClick={() => {
-            history.push('/elder/evaluation-report');
+            history.push(`/elder/evaluation-report?recordMainId=${recordMainId}`);
           }}
           type="primary"
           className="text-white text-sm flex"
@@ -105,10 +107,11 @@ const EvaluationTrendCard = () => {
 };
 
 // 评估记录列表
-const EvaluationRecordList = ({ defaultShowAll = false }) => {
+const EvaluationRecordList = ({ data = [], defaultShowAll = false }) => {
   const [loadMoreBtnShow, setLoadMoreBtnShow] = useState(!defaultShowAll);
   const [recordList, setRecordList] = useState([]);
 
+  console.log('recordList', data);
   useEffect(() => {
     if (defaultShowAll) {
       // loading Data
@@ -128,13 +131,14 @@ const EvaluationRecordList = ({ defaultShowAll = false }) => {
   return (
     <div className="my-[20px]">
       <div className="text-xl font-semibold  leading-[30px]">评估记录</div>
-      <div>共{recordList.length}条记录</div>
-      {recordList.map(() => (
+      <div>共{data.length}条记录</div>
+      {data.map((item) => (
         <div className="py-[10px]">
           <EvaluationRecordCard
-            reportTitle="字段A综合评估报告"
-            reportDate="2024-01-07"
-            evaluator="李书萍"
+            reportTitle={item.templateName}
+            reportDate={dayjs(item.recordTime).format('YYYY-MM-DD')}
+            evaluator={item.createUser}
+            recordMainId={item.recordMainId}
           />
         </div>
       ))}
@@ -228,16 +232,23 @@ const ElderDetail = () => {
   const [currentTab, setCurrentTab] = useState(TabTypeEnums.RECORD);
   const [searchParams] = useSearchParams();
   const customerId = searchParams.get('customerId');
+
+  const { data = [] } = useLoadEvaluteList({
+    customerId,
+  });
+  console.log(data, 'data');
+
+
   return (
     <>
       <ElderDetailLayout title="长者详情" customerId={customerId}>
         <div>
           <MenuGroup currentTab={currentTab} setCurrentTab={setCurrentTab} />
- 
+
           <div>
 
             <div hidden={currentTab !== TabTypeEnums.RECORD}>
-              <EvaluationRecordList defaultShowAll={true} />
+              <EvaluationRecordList defaultShowAll={true} data={data.dataList} />
             </div>
 
             <div hidden={currentTab !== TabTypeEnums.TREND}>

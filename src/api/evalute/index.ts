@@ -56,3 +56,18 @@ export const showScoreResult = async (params: any, options?: {
 
   return res;
 };
+
+//用户评估记录列表
+export const getRecordList = async (params: any, options?: {
+  [key: string]: any
+}): Promise<any> => {
+  //https://dev-shcsp.tisi.com.cn/hcsp-gateway/evluateApi/v1/QAResult/getRecordList
+  const res = request('/hcsp-gateway/evaluateApi/v1/QAResult/getRecordList', {
+    method: 'GET',
+    errorShowType: ErrorShowTypeEnum.ERROR_MESSAGE,
+    params,
+    ...(options || {}),
+  });
+
+  return res;
+};
