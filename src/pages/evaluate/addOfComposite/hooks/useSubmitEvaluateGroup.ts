@@ -37,6 +37,7 @@ const useSubmitEvaluateGroup = (params) => {
       relativeType: params.relativeType,
       customerId: params.customerId,
       templateComposeCode: params.templateComposeCode,
+      recordMainId: params.recordMainId,
     });
 
     history.push(`/elder/evaluation-report?${queryParams}`);

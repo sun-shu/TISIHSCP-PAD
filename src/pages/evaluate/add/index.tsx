@@ -17,6 +17,7 @@ const addPage = () => {
   const relativeType = searchParams.get('relativeType');
   const templateComposeCode = searchParams.get('templateComposeCode');
   const remaindIndex = searchParams.get('remaindIndex');
+  const parentRecordMainId = searchParams.get('parentRecordMainId');
 
   const [form] = Form.useForm();
 
@@ -30,6 +31,7 @@ const addPage = () => {
     relativeType,
     customerId,
     remaindIndex,
+    parentRecordMainId
   });
 
 

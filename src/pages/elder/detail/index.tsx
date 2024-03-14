@@ -33,7 +33,10 @@ const LoadMoreDivider = ({ handleLoadMoreBtnClick }) => {
 };
 
 // 评估记录卡片
-const EvaluationRecordCard = ({ recordMainId, reportTitle = '', reportDate = '', evaluator = '' }) => {
+const EvaluationRecordCard = ({ recordMainId, reportTitle = '', reportDate = '', evaluator = '', templateComposeCode = '' }) => {
+   const handleGoToReport = () => {
+    history.push(`/elder/evaluation-report?recordMainId=${recordMainId}&templateComposeCode=${templateComposeCode}`);
+   }
   return (
     <div className="w-[620px] h-[76px] px-[20px] py-[10px] bg-white rounded justify-between items-center inline-flex">
       <div className=" flex-col justify-start items-start inline-flex">
@@ -139,6 +142,7 @@ const EvaluationRecordList = ({ data = [], defaultShowAll = false }) => {
             reportDate={dayjs(item.recordTime).format('YYYY-MM-DD')}
             evaluator={item.createUser}
             recordMainId={item.recordMainId}
+            templateComposeCode={item.templateComposeCode}
           />
         </div>
       ))}

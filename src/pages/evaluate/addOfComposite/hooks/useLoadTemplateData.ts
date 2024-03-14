@@ -24,6 +24,7 @@ const useLoadTemplateData = (params) => {
       ...(relativeType === EvluateRelativeTypeEnum.TASK ? { customerTaskRecordId: relativeId } : {}),
       ...(relativeType === EvluateRelativeTypeEnum.HISTORY ? { recordMainId: relativeId } : {}),
       ...(relativeType === EvluateRelativeTypeEnum.CUSTOMER ? { customerId: customerId } : {}),
+      ...params
     };
 
     console.log('requestParams', requestParams);
