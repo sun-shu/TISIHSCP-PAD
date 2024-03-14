@@ -8,6 +8,7 @@ import LookIcon from '@/assets/icon/look.png';
 import { useSearchParams } from '@@/exports';
 import useLoadEvaluteList from '@/pages/elder/detail/hooks/useLoadEvaluteList';
 import dayjs from 'dayjs';
+import {TemplateClassEnum} from "@/enums/TemplateClassEnum";
 
 // 加载更多分割线
 const LoadMoreDivider = ({ handleLoadMoreBtnClick }) => {
@@ -33,9 +34,10 @@ const LoadMoreDivider = ({ handleLoadMoreBtnClick }) => {
 };
 
 // 评估记录卡片
-const EvaluationRecordCard = ({ recordMainId, reportTitle = '', reportDate = '', evaluator = '', templateCode = '', customerId = '' }) => {
-   const handleGoToReport = () => {
-    history.push(`/elder/evaluation-report?recordMainId=${recordMainId}&templateComposeCode=${templateCode}&customerId=${customerId}`);
+const EvaluationRecordCard = ({ templateClass, recordMainId, reportTitle = '', reportDate = '', evaluator = '', templateCode = '', customerId = '' }) => {
+   const handleGoToReport = (item = {}) => {
+     const url = templateClass === TemplateClassEnum.EvaluateGroup ? `/elder/evaluation-report?recordMainId=${recordMainId}&templateComposeCode=${templateCode}&customerId=${customerId}` : `/elder/evaluation-report?recordMainId=${recordMainId}&customerId=${customerId}`
+    history.push(url);
    }
   return (
     <div className="w-[620px] h-[76px] px-[20px] py-[10px] bg-white rounded justify-between items-center inline-flex">
@@ -136,6 +138,7 @@ const EvaluationRecordList = ({ data = [], defaultShowAll = false, customerId = 
       {data?.map((item) => (
         <div className="py-[10px]">
           <EvaluationRecordCard
+              templateClass={item.templateClass}
             reportTitle={item.templateName}
             reportDate={dayjs(item.recordTime).format('YYYY-MM-DD')}
             evaluator={item.createUser}
