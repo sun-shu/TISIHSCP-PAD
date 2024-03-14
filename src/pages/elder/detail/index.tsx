@@ -244,7 +244,7 @@ const ElderDetail = () => {
       <ElderDetailLayout title="长者详情" customerId={customerId}>
         <div>
           <MenuGroup currentTab={currentTab} setCurrentTab={setCurrentTab} />
-
+ 
           <div>
 
             <div hidden={currentTab !== TabTypeEnums.RECORD}>
