@@ -57,8 +57,8 @@ const ECheckBox = (props) => {
 
 
           {options?.map((item) => {
-            if (item.optionType === OptionTypeEnum.OTHER) {
-              return (<Checkbox value={item.value.toString()} onChange={handleOneItemChange}
+            if (item?.optionType === OptionTypeEnum.OTHER) {
+              return (<Checkbox value={item?.value.toString()} onChange={handleOneItemChange}
                                 className="w-full flex flex-1 relative"
               >
                         <span>
@@ -81,8 +81,8 @@ const ECheckBox = (props) => {
               </Checkbox>);
             }
 
-            return <Checkbox value={item.value.toString()} onChange={handleOneItemChange}
-            >{item.label} </Checkbox>;
+            return <Checkbox value={item?.value.toString()} onChange={handleOneItemChange}
+            >{item?.label} </Checkbox>;
           })}
         </Space>
       </Checkbox.Group>

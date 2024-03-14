@@ -44,24 +44,24 @@ const FormItemBaseContainerDefault = ({ item, children, formItemProps = {} }: Fo
     <div>
       <div
         className="w-[620px] font-semibold h-[30px] justify-start items-center gap-2.5 inline-flex mb-[10px]  text-black">
-        {item.elementRequireFlg === ElementRequireFlgEnum.YES &&
+        {item?.elementRequireFlg === ElementRequireFlgEnum.YES &&
           <div className="w-6 font-bold h-6 p-2.5  text-xl justify-center items-center gap-2.5 flex">
             ※
           </div>}
 
         <div className="justify-start items-center gap-2.5 flex">
           <div className="text-right text-zinc-700 text-xl font-bold font-['PingFang SC'] leading-[30px]">
-            {item.elementNum?.toString().padStart(2, '0')}
+            {item?.elementNum?.toString().padStart(2, '0')}
           </div>
           <div className="text-zinc-700 text-xl  font-['PingFang SC'] leading-[30px] font-bold">
-            {item.elementName}
+            {item?.elementName}
           </div>
         </div>
       </div>
 
       <div className="px-[60px]  bg-white flex-center rounded-[4px]">
         <div className="w-full my-[20px]">
-          <Form.Item name={item.id} {...formItemProps} className="mb-0">
+          <Form.Item name={item?.id} {...formItemProps} className="mb-0">
             {children}
           </Form.Item>
 
@@ -88,18 +88,18 @@ const FormItemComponent = ({
                              FormItemBaseContainer = FormItemBaseContainerDefault,
                            }: FormItemComponentProps) => {
   const options = React.useMemo(() => (
-    item.optionList?.map((option) => ({
+    item?.optionList?.map((option) => ({
       label: option.optionName,
       value: option.id,
       ...option,
     }))
-  ), [item.optionList]);
+  ), [item?.optionList]);
 
   // 文本组件- 数字、文本
   const createTextComponent = ({ elementDataType, ...item }) => {
     const rules = [{
       validator: (rule, value = {}) => {
-        if (item.elementRequireFlg === ElementRequireFlgEnum.YES) {
+        if (item?.elementRequireFlg === ElementRequireFlgEnum.YES) {
           if (!value.answer) {
             return Promise.reject('必填项');
           }
@@ -118,7 +118,7 @@ const FormItemComponent = ({
     switch (elementDataType) {
       case ElementDataTypeEnum.NUMBER:
         return (
-          <FormItemBaseContainer item={item} key={item.id} form={form} formItemProps={formItemProps}>
+          <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
             <EInput componentProps={{
               type: 'number',
             }} form={form} item={item} />
@@ -126,7 +126,7 @@ const FormItemComponent = ({
         );
       case ElementDataTypeEnum.TEXT:
         return (
-          <FormItemBaseContainer item={item} key={item.id} form={form} formItemProps={formItemProps}>
+          <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
             <EInput type="text" form={form} item={item} />
           </FormItemBaseContainer>
         );
@@ -137,7 +137,7 @@ const FormItemComponent = ({
   const createDateComponent = ({ elementDataType, ...item }) => {
     const rules = [{
       validator: (rule, value = {}) => {
-        if (item.elementRequireFlg === ElementRequireFlgEnum.YES) {
+        if (item?.elementRequireFlg === ElementRequireFlgEnum.YES) {
           if (!value.answer) {
             return Promise.reject('必填项');
           }
@@ -156,21 +156,21 @@ const FormItemComponent = ({
     switch (elementDataType) {
       case ElementDataTypeEnum.YEAR_MONTH_DAY:
         return (
-          <FormItemBaseContainer item={item} key={item.id} form={form} formItemProps={formItemProps}>
+          <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
             <EDateTime item={item} />
           </FormItemBaseContainer>
         );
 
       case ElementDataTypeEnum.DATE_TIME:
         return (
-          <FormItemBaseContainer item={item} key={item.id} form={form} formItemProps={formItemProps}>
+          <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
             <EDateTimePicker item={item} />
           </FormItemBaseContainer>
         );
 
       case ElementDataTypeEnum.HOUR_MINUTE:
         return (
-          <FormItemBaseContainer item={item} key={item.id} form={form} formItemProps={formItemProps}>
+          <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
             <ETimePicker item={item} />
           </FormItemBaseContainer>
         );
@@ -181,7 +181,7 @@ const FormItemComponent = ({
   const createTextareaComponent = (item: TemplateElementResDTO) => {
     const rules = [{
       validator: (rule, value = {}) => {
-        if (item.elementRequireFlg === ElementRequireFlgEnum.YES) {
+        if (item?.elementRequireFlg === ElementRequireFlgEnum.YES) {
           if (!value.answer) {
             return Promise.reject('必填项');
           }
@@ -198,7 +198,7 @@ const FormItemComponent = ({
     };
 
     return (
-      <FormItemBaseContainer item={item} key={item.id} form={form} formItemProps={formItemProps}>
+      <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
         <ETextArea rows={4} form={form} item={item} />
       </FormItemBaseContainer>
     );
@@ -229,9 +229,9 @@ const FormItemComponent = ({
     };
 
     return (
-      <FormItemBaseContainer item={item} key={item.id} form={form} formItemProps={formItemProps}>
+      <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
 
-        {item.optionList.length > 4 ?
+        {item?.optionList?.length > 4 ?
           <ESelect options={options} changeElementVisible={changeElementVisible} form={form} item={item} /> :
           <ERadio options={options} changeElementVisible={changeElementVisible} form={form} item={item} />}
       </FormItemBaseContainer>
@@ -274,7 +274,7 @@ const FormItemComponent = ({
 
     return (
       <>
-        <OneSection title={item.elementName} />
+        <OneSection title={item?.elementName} />
       </>
     );
   };
@@ -284,7 +284,7 @@ const FormItemComponent = ({
 
 
     return (
-      <TwoSection title={item.elementName} />
+      <TwoSection title={item?.elementName} />
     );
   };
 
@@ -293,7 +293,7 @@ const FormItemComponent = ({
     const rules = [
       {
         validator: (rule, value) => {
-          if (item.elementRequireFlg === ElementRequireFlgEnum.YES) {
+          if (item?.elementRequireFlg === ElementRequireFlgEnum.YES) {
             if (!value.answer) {
               return Promise.reject('必填项');
             }
@@ -313,7 +313,7 @@ const FormItemComponent = ({
 
 
     return (
-      <FormItemBaseContainer item={item} key={item.id} form={form} formItemProps={formItemProps}>
+      <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
         <ETable form={form} item={item} />
       </FormItemBaseContainer>
     );
@@ -334,7 +334,7 @@ const FormItemComponent = ({
 
   return (
     <>
-      <div className="mt-[20px]" key={item.id}>{templateConfig[item.elementType]?.(item)}</div>
+      <div className="mt-[20px]" key={item?.id}>{templateConfig[item?.elementType]?.(item)}</div>
     </>
   );
 };

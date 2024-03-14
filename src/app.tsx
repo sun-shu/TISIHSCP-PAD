@@ -156,7 +156,9 @@ export async function getInitialState() {
   // 在这里判断是否登录，如果登录加载全局数据。在登录回调中refresh这个全局数据
 
   const fetchUserInfo = async () => {
-    return await userAPI.getUserInfo();
+    const { data } = await userAPI.getUserInfo();
+
+    return data;
   };
 
   const checkToken = async () => {
@@ -167,11 +169,12 @@ export async function getInitialState() {
 
       return true;
     } catch (error) {
-      // history.push('/login');
+      history.push('/login');
     }
 
     return false;
   };
+
 
   if (location.pathname !== loginPath) {
     const isEffectiveToken = await checkToken();

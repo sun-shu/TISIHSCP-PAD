@@ -40,7 +40,7 @@ const ESelect = ({ selectProps, ...props }) => {
         value={value?.optionValues?.toString()}
       >{
         options.map((item) => {
-          return <Select.Option {...item} value={item.value.toString()}>{item.label}</Select.Option>;
+          return <Select.Option {...item} value={item?.value.toString()}>{item?.label}</Select.Option>;
         })
       }
 

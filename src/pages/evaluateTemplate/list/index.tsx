@@ -53,11 +53,11 @@ const SearchComponent = () => {
 const EvaluateTemplateCard = ({ data = {}, customerId }) => {
   const handleGoToDetailClick = (item) => {
     const nextUrl = {
-      [TemplateClassEnum.Evaluate]: `/evaluate/add/${item.templateCode}?customerId=${customerId}`, // 评
-      [TemplateClassEnum.Form]: `/evaluate/add/${item.templateCode}?customerId=${customerId}`, // 评
-      [TemplateClassEnum.EvaluateGroup]: `/evaluate/add-of-composite/${item.templateCode}?relativeType=${EvluateRelativeTypeEnum.CUSTOMER}&relativeId=${customerId}&customerId=${customerId}`,// 估
+      [TemplateClassEnum.Evaluate]: `/evaluate/add/${customerId}/${item?.templateCode}`, // 评
+      [TemplateClassEnum.Form]: `/evaluate/add/${customerId}/${item?.templateCode}`, // 评
+      [TemplateClassEnum.EvaluateGroup]: `/evaluate/add-of-composite/${customerId}/${item?.templateCode}?relativeType=${EvluateRelativeTypeEnum.CUSTOMER}&relativeId=${customerId}`,// 估
     };
-    history.push(nextUrl[item.templateClass]);
+    history.push(nextUrl[item?.templateClass]);
   };
 
   return (
@@ -66,10 +66,10 @@ const EvaluateTemplateCard = ({ data = {}, customerId }) => {
       <div className="w-[22.38rem] flex flex-row items-center justify-start gap-[0.63rem]">
         <div className="flex-col justify-start items-start inline-flex">
           <div className="w-[220px] text-zinc-700 text-lg font-semibold font-['PingFang SC'] leading-9">
-            {data.name}
+            {data?.name}
           </div>
           <div className="text-zinc-700 text-sm font-normal font-['PingFang SC'] leading-tight tracking-wide">
-            {templateTypeDescConfig[data.templateClass]}
+            {templateTypeDescConfig[data?.templateClass]}
           </div>
         </div>
       </div>
@@ -105,7 +105,7 @@ const ListComponent = ({ data = [], customerId }) => {
           },
         }}
       >
-        {data.map((item) => (
+        {data?.map((item) => (
           <EvaluateTemplateCard data={item} customerId={customerId} />
         ))}
       </ConfigProvider>
@@ -122,7 +122,7 @@ const ElderTemplateListPage = () => {
     customerId,
   });
 
-  console.log('ElderTemplateListPage', data.dataList);
+  console.log('ElderTemplateListPage', data?.dataList);
   return (
     <>
       <div className=" text-center flex justify-center flex-col items-center">
@@ -134,7 +134,7 @@ const ElderTemplateListPage = () => {
                   评估模版
                 </div>
                 <div className="relative text-[0.75rem] tracking-[0.05em] leading-[1.13rem]">
-                  共有 30个模版
+                  共有 {data?.dataList?.length}个模版
                 </div>
               </div>
 
@@ -143,7 +143,7 @@ const ElderTemplateListPage = () => {
               </div>
             </div>
           </Affix>
-          <ListComponent data={data.dataList} customerId={customerId}></ListComponent>
+          <ListComponent data={data?.dataList} customerId={customerId}></ListComponent>
         </div>
       </div>
     </>

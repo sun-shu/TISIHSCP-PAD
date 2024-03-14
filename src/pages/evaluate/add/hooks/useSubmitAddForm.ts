@@ -37,9 +37,7 @@ const useSubmitAddForm = (form: FormInstance, params) => {
 
     const sourceParmas = params.relativeType === EvluateRelativeTypeEnum.TASK ? {
       customerTaskRecordId: params.relativeId,
-    } : {
-      customerId: params.relativeId,
-    };
+    } : {};
 
     const data = {
       templateCode: params.templateCode,
@@ -62,16 +60,13 @@ const useSubmitAddForm = (form: FormInstance, params) => {
     console.log('submitAddEvalute', data);
     const { recordMainId } = data;
     history.push(`/elder/evaluation-report?recordMainId=${recordMainId}`);
-    // history.push(`/elder/evaluation-report?relativeId=${params.relativeId}&relativeType=${params.relativeType}&customerId=${params.customerId}`);
- 
-    //跳转评估结果页面
   };
 
   //综合评估-提交并返回
   const submitAddEvaluteGroupReturn = async (values: any) => {
     await submitAddForm();
-    //如果是综合评估，返回到综合评估列表，如果是单项评估，
-    history.replace(`/evaluate/add-of-composite/${templateComposeCode}?relativeId=${relativeId}&relativeType=${relativeType}&customerId=${customerId}`);
+    //综合评估，返回到综合评估列表
+    history.replace(`/evaluate/add-of-composite/${customerId}/${templateComposeCode}?relativeId=${relativeId}&relativeType=${relativeType}`);
   };
 
   //综合评估-提交并继续
@@ -88,7 +83,7 @@ const useSubmitAddForm = (form: FormInstance, params) => {
       remaindIndex: nextRemaindIndex,
     });
 
-    history.replace(`/evaluate/add/${nextTemplateCode}?${queryParams}`);
+    history.replace(`/evaluate/add/${customerId}/${nextTemplateCode}?${queryParams}`);
   };
 
   //返回按钮需要的两个方法

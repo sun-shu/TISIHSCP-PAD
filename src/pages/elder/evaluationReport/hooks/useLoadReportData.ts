@@ -22,7 +22,7 @@ const useLoadReportData = (params) => {
     });
   }, {
     manual: true,
-    onSuccess: (result, params) => {
+    onSuccess: (result = {}, params) => {
       setData(result);
     },
   });
@@ -34,7 +34,7 @@ const useLoadReportData = (params) => {
     });
   }, {
     manual: true,
-    onSuccess: (result, params) => {
+    onSuccess: (result = {}, params) => {
       setData(result);
     },
   });

@@ -8,14 +8,14 @@ import useLoadFormTemplateData from '@/pages/evaluate/components/evaluateForm/ho
 
 // TODO: 1. 表单进度条 2. 长者信息 3.提交的结果展示
 const addPage = () => {
-  const { params } = useMatch('/evaluate/add/:templateCode');
-  const { templateCode = '28030065433N' } = params;
+  const { params } = useMatch('/evaluate/add/:customerId/:templateCode');
+  const { templateCode = '', customerId } = params;
 
+  console.log(customerId, 'customerId');
   const [searchParams] = useSearchParams();
   const relativeId = searchParams.get('relativeId');
   const relativeType = searchParams.get('relativeType');
   const templateComposeCode = searchParams.get('templateComposeCode');
-  const customerId = searchParams.get('customerId');
   const remaindIndex = searchParams.get('remaindIndex');
 
   const [form] = Form.useForm();

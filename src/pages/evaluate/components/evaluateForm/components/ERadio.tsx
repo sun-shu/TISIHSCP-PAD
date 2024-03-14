@@ -8,11 +8,11 @@ const ERadio = (props) => {
 
   console.log('ERadio', props);
   const handleOnChange = (e) => {
-    const selectedOption = options.find(option => option.value.toString() === e.target.value);
+    const selectedOption = options.find(option => option.value?.toString() === e.target.value);
 
     const newValue = {
       optionValues: e.target.value,
-      answer: config.optionType === OptionTypeEnum.OTHER ? value.answer : '',
+      answer: config.optionType === OptionTypeEnum.OTHER ? value?.answer : '',
       elementId: config.id,
       optionType: selectedOption?.optionType,
     };
@@ -26,10 +26,10 @@ const ERadio = (props) => {
 
   const handleOtherTextChange = (e) => {
     onChange({
-      optionValues: value.optionValues,
+      optionValues: value?.optionValues,
       answer: e.target.value,
       elementId: config.id,
-      optionType: value.optionType,
+      optionType: value?.optionType,
     });
   };
 
@@ -40,16 +40,16 @@ const ERadio = (props) => {
           {
             options?.map((item) => {
               console.log(item, 'item');
-              if (item.optionType === OptionTypeEnum.OTHER) {
+              if (item?.optionType === OptionTypeEnum.OTHER) {
                 return (
-                  <Radio value={item.value.toString()} className="w-full flex flex-1 relative">
+                  <Radio value={item?.value?.toString()} className="w-full flex flex-1 relative">
                       <span>
                         其他
-                        {value.optionType === OptionTypeEnum.OTHER ? (
+                        {value?.optionType === OptionTypeEnum.OTHER ? (
                           <>
                             ：
                             <Input
-                              value={value.answer}
+                              value={value?.answer}
                               onChange={handleOtherTextChange}
                               style={{
                                 width: '80%',
@@ -64,7 +64,7 @@ const ERadio = (props) => {
                       </span>
                   </Radio>);
               }
-              return <Radio value={item.value.toString()}>{item.label}</Radio>;
+              return <Radio value={item?.value?.toString()}>{item?.label}</Radio>;
             })
           }
 

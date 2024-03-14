@@ -47,8 +47,17 @@ const checkToken = async (options?: { [key: string]: any }) => {
   });
 };
 
+const loginExit = async (options?: { [key: string]: any }) => {
+  return request('/hcsp-gateway/umApi/v1/currentuserexit', {
+    method: 'DELETE',
+    errorShowType: ErrorShowTypeEnum.SILENT,
+    ...(options || {}),
+  });
+};
+
 export default {
   login,
   getUserInfo,
   checkToken,
+  loginExit,
 };

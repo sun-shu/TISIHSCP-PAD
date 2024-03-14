@@ -40,14 +40,12 @@ const EDateTimePicker = (props) => {
     <div id={id}>
       <div className="flex gap-[20px]">
         <div>
-          <div className=" text-zinc-700 text-xl font-semibold  leading-[30px] mb-[10px]">年/月/日</div>
-          <DatePicker showNow={false} renderExtraFooter={() => ''} placeholder="" onChange={handleChangeDate}
+          <DatePicker showNow={false} renderExtraFooter={() => ''} onChange={handleChangeDate}
                       value={value.answer && dayjs(value.answer)}
-                      defaultValue={null} />
+                      defaultValue={null} placeholder="年/月/日" />
         </div>
         <div>
-          <div className=" text-zinc-700 text-xl font-semibold  leading-[30px] mb-[10px]">时/分</div>
-          <DatePicker showNow={false} renderExtraFooter={() => ''} placeholder="" picker="time"
+          <DatePicker showNow={false} renderExtraFooter={() => ''} placeholder="时/分" picker="time"
                       onChange={handleChangeTime}
                       value={value.answer && dayjs(value.answer)}
                       showTime={{ format: 'HH:mm', defaultValue: null }} />
@@ -72,8 +70,7 @@ const EDatePicker = (props) => {
 
   return (
     <div id={id}>
-      <div className=" text-zinc-700 text-xl font-semibold  leading-[30px] mb-[10px]">年/月/日</div>
-      <DatePicker showNow={false} renderExtraFooter={() => ''} placeholder="" onChange={handleChange}
+      <DatePicker showNow={false} renderExtraFooter={() => ''} placeholder="年/月/日" onChange={handleChange}
                   value={value.answer && dayjs(value.answer)} />
     </div>
   );
@@ -93,8 +90,7 @@ const ETimePicker = (props) => {
 
   return (
     <div id={id}>
-      <div className=" text-zinc-700 text-xl font-semibold  leading-[30px] mb-[10px]">时/分</div>
-      <DatePicker showNow={false} renderExtraFooter={null} placeholder="" picker="time"
+      <DatePicker showNow={false} renderExtraFooter={null} placeholder="时/分" picker="time"
                   showTime={{ format: 'HH:mm', defaultValue: null }}
                   onChange={handleChange}
                   value={value.answer && dayjs(value.answer)} />

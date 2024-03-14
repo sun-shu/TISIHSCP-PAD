@@ -140,10 +140,10 @@ const ElderListTemplate = ({ title, data = [], countDescription }: {
 }) => {
 
   const handleClickGoToEvaluePage = (id, customerId, taskType: TaskTypeEnum, templateCode: string) => {
-    const nextPath = taskType === TaskTypeEnum.COMPREHENSIVE_EVALUATION ? `/evaluate/add-of-composite/${templateCode}` : `/evaluate/add/${templateCode}`;
+    const nextPath = taskType === TaskTypeEnum.COMPREHENSIVE_EVALUATION ? `/evaluate/add-of-composite/${customerId}/${templateCode}` : `/evaluate/add/${customerId}/${templateCode}`;
     history.push({
       pathname: nextPath,
-      search: `?relativeId=${id}&relativeType=${EvluateRelativeTypeEnum.TASK}&customerId=${customerId}`,
+      search: `?relativeId=${id}&relativeType=${EvluateRelativeTypeEnum.TASK}`,
     });
   };
 
@@ -159,19 +159,19 @@ const ElderListTemplate = ({ title, data = [], countDescription }: {
       </div>
       <EmptyDataContainer data={data} emptyClassName="h-[100px] w-full ">
         <div className="justify-start items-start  gap-[10px] flex  flex-wrap">
-          {data.map(({
-                       imageUrl,
-                       name,
-                       id,
-                       nurseGrade,
-                       templateName,
-                       age,
-                       checkInTime,
-                       taskExecuteDate,
-                       templateCode,
-                       taskType,
-                       customerId,
-                     }) => (
+          {data?.map(({
+                        imageUrl,
+                        name,
+                        id,
+                        nurseGrade,
+                        templateName,
+                        age,
+                        checkInTime,
+                        taskExecuteDate,
+                        templateCode,
+                        taskType,
+                        customerId,
+                      }) => (
             <div className=" landscape:w-[380px] portrait:w-[300px] p-5 bg-white rounded flex-center flex-col"
                  onClick={() => {
                    handleClickGoToEvaluePage(id, customerId, taskType, templateCode);
@@ -224,7 +224,7 @@ const PreMonthElderList = ({ data = [] }) => {
   return (
     <ElderListTemplate
       title={<span className="text-red-FF">上月待评估长者列表</span>}
-      countDescription={data.length > 0 ? <span>上月有{data.length}个评估任务待完成</span> : ''}
+      countDescription={data?.length > 0 ? <span>上月有{data?.length}个评估任务待完成</span> : ''}
       data={data}
     ></ElderListTemplate>
   );
@@ -236,7 +236,7 @@ const NextMonthElderList = ({ data = [] }) => {
 
     <ElderListTemplate
       title="下月待评估长者列表"
-      countDescription={data.length > 0 ? <span>下月有{data.length}个评估任务待完成</span> : ''}
+      countDescription={data?.length > 0 ? <span>下月有{data?.length}个评估任务待完成</span> : ''}
       data={data}
     ></ElderListTemplate>
 
@@ -249,7 +249,7 @@ const CurrentMonthElderList = ({ data = [] }) => {
   return (
     <ElderListTemplate
       title="本月待评估长者列表"
-      countDescription={data.length > 0 ? <span>本月有{data.length}个评估任务待完成</span> : ''}
+      countDescription={data?.length > 0 ? <span>本月有{data?.length}个评估任务待完成</span> : ''}
       data={data}
     ></ElderListTemplate>
   );

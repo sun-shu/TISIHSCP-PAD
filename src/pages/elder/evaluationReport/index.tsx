@@ -5,26 +5,26 @@ import { useMatch, useSearchParams } from '@@/exports';
 
 const EvaluationReportSummer = ({ completeList = [] }) => {
   console.log(completeList, 'completeList');
-
+ 
   const components = completeList.map((item, index) => {
     const component = (
       <div
-        key={item.id}
+        key={item?.id}
         className="card-group h-min p-5  top-[426px]  bg-white rounded-[20px] flex-col justify-start items-center inline-flex">
         <div className="self-stretch  flex-col justify-start items-start gap-2.5 flex">
           <div className="self-stretch pb-1 border-b border-zinc-300 justify-start items-start gap-1 inline-flex">
             <div
               className="grow shrink basis-0 text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-              {item.templateName}
+              {item?.templateName}
             </div>
             <div className="text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
-              {item.recordScore}分
+              {item?.recordScore}分
             </div>
           </div>
           <div className=" justify-start items-start gap-2.5 inline-flex">
             <div
               className="grow shrink basis-0 text-justify text-zinc-700 text-lg font-normal font-['PingFang SC'] leading-9">
-              {item.commentaryName || '...'}
+              {item?.commentaryName || '...'}
             </div>
           </div>
         </div>
@@ -52,7 +52,7 @@ const EvaluationReportSummer = ({ completeList = [] }) => {
     const doms = [...document.getElementsByClassName('card-group')] || [];
     doms.length === components.length &&
     doms.map((item, index) => {
-      const height = item.offsetHeight;
+      const height = item?.offsetHeight;
 
       setComponentStack((prev) => {
         if (leftHeight <= rightHeight) {
@@ -77,7 +77,7 @@ const EvaluationReportSummer = ({ completeList = [] }) => {
   return (
     <>
       <div className="invisible fixed max-w-[305px]">
-        {components.map((item) => item.component)}
+        {components.map((item) => item?.component)}
       </div>
       <div className="flex   justify-between  gap-[20px] w-[620px] ">
         <div className="flex flex-col gap-[20px] max-w-[305px] h-max  w-full">
@@ -109,6 +109,8 @@ const EvaluationReportPage = () => {
   };
 
   const { data = {}, loading } = useLoadReportData(locationParams);
+
+  console.log('EvaluationReportPage', data);
   return (
     <>
       <ElderDetailLayout title="综合评估报告">
@@ -121,7 +123,7 @@ const EvaluationReportPage = () => {
                 </div>
               </div>
               <div className="text-zinc-700 text-[28px] font-semibold font-['PingFang SC'] leading-[42px]">
-                {data.recordScore}
+                {data?.recordScore}
               </div>
             </div>
 
@@ -131,12 +133,12 @@ const EvaluationReportPage = () => {
               总结
             </div>
             <div className=" text-zinc-600 text-lg font-normal font-['PingFang SC'] leading-9">
-              {data.commentaryName || '暂无总结'}
+              {data?.commentaryName || '暂无总结'}
             </div>
           </div>
           {
             data?.completeList?.length > 0 &&
-            <EvaluationReportSummer completeList={data.completeList}></EvaluationReportSummer>}
+            <EvaluationReportSummer completeList={data?.completeList}></EvaluationReportSummer>}
         </div>
       </ElderDetailLayout>
     </>

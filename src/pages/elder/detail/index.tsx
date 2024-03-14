@@ -131,8 +131,8 @@ const EvaluationRecordList = ({ data = [], defaultShowAll = false }) => {
   return (
     <div className="my-[20px]">
       <div className="text-xl font-semibold  leading-[30px]">评估记录</div>
-      <div>共{data.length}条记录</div>
-      {data.map((item) => (
+      <div>共{data?.length}条记录</div>
+      {data?.map((item) => (
         <div className="py-[10px]">
           <EvaluationRecordCard
             reportTitle={item.templateName}
@@ -248,7 +248,7 @@ const ElderDetail = () => {
           <div>
 
             <div hidden={currentTab !== TabTypeEnums.RECORD}>
-              <EvaluationRecordList defaultShowAll={true} data={data.dataList} />
+              <EvaluationRecordList defaultShowAll={true} data={data?.dataList} />
             </div>
 
             <div hidden={currentTab !== TabTypeEnums.TREND}>

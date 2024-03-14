@@ -1,13 +1,9 @@
 //基础类
-import { useEffect, useState } from 'react';
 
 //类型定义/枚举
-import { EvluateRelativeTypeEnum } from '@/enums/EvluateRelativeTypeEnum';
 import { EvaluationStatusEnum } from '@/pages/evaluate/addOfComposite/enums/EvaluationStatusEnum';
 import {
-  CustomerComposeInfoResDTO,
   CustomerComposeResultResDTO,
-  GetCustomerComposeInfoRequest,
 } from '@/api/evaluateTemplate/getCustomerComposeInfo.interface';
 
 //组件
@@ -48,7 +44,7 @@ const FilledList = ({ compositeStatus = EvaluationStatusEnum.FINISHED, data = []
 
   return (
     <>
-      {data.map(({ templateName, questionsCount, templateCode, recordMainId }: CustomerComposeResultResDTO, index) => (
+      {data?.map(({ templateName, questionsCount, templateCode, recordMainId }: CustomerComposeResultResDTO, index) => (
         <div className="h-[170px] p-5 bg-white rounded-[20px] flex-col justify-start items-center inline-flex  w-full"
              key={index}>
           <div className="self-stretch h-[100px] flex-col text-justify items-start gap-1 flex">
@@ -114,17 +110,16 @@ const NotFilledList = ({ data, locationParams = {} }: NotFilledListProps) => {
       relativeId: locationParams.relativeId,
       relativeType: locationParams.relativeType,
       templateComposeCode: locationParams.templateComposeCode,
-      customerId: locationParams.customerId,
-      remaindIndex: data.length,
+      remaindIndex: data?.length,
     };
 
     // 使用模板字符串和展开运算符构建URL
-    history.push(`/evaluate/add/${templateCode}?${new URLSearchParams(queryParams)}`);
+    history.push(`/evaluate/add/${locationParams.customerId}/${templateCode}?${new URLSearchParams(queryParams)}`);
   };
 
   return (
     <>
-      {data.map(({ templateName, questionsCount, templateCode }: CustomerComposeResultResDTO, index) => (
+      {data?.map(({ templateName, questionsCount, templateCode }: CustomerComposeResultResDTO, index) => (
         <div className="h-[170px] p-5 bg-white rounded-[20px] flex-col justify-start items-center inline-flex w-full"
              key={index}>
           <div className="self-stretch h-[100px] flex-col text-justify items-start gap-1 flex">
@@ -154,14 +149,19 @@ const NotFilledList = ({ data, locationParams = {} }: NotFilledListProps) => {
   );
 };
 
+//  该页面支持2个固定参数，customerId和templateCode，
+//  4个可选参数，templateComposeCode、relativeId、relativeType、remaindIndex
+// templateComposeCode: 综合评估模板编码
+// relativeId: 关联对象ID customerIdstomerId: 客户ID, taskId: 任务ID, mainId: 记录ID
+// relativeType: 关联对象类型 对应枚举 EvluateRelativeTypeEnum
+// remaindIndex: 剩余未填写的模板数量
 const EditCompositeEvaluatePage = (props) => {
-  const { params } = useMatch('/evaluate/add-of-composite/:templateCode');
-  const { templateCode: templateComposeCode } = params;
+  const { params } = useMatch('/evaluate/add-of-composite/:customerId/:templateCode');
+  const { templateCode: templateComposeCode, customerId } = params;
 
   const [searchParams] = useSearchParams();
   const relativeId = searchParams.get('relativeId');
   const relativeType = searchParams.get('relativeType');
-  const customerId = searchParams.get('customerId');
 
   const locationParams = {
     templateComposeCode,

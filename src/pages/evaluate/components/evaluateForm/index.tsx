@@ -68,7 +68,7 @@ const EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
           elementList.map((item, index) => {
             return (
               <>
-                {item.elementIsShow !== ElementVisibleEnum.HIDE &&
+                {item?.elementIsShow !== ElementVisibleEnum.HIDE &&
                   <FormItemComponent item={item} index={index} form={form}
                                      changeElementVisible={changeElementVisible} />}
               </>

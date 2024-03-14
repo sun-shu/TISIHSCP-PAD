@@ -56,8 +56,19 @@ export default function userModel() {
     //fetchConfig
   };
 
+  const loginOut = async () => {
+    await userAPI.loginExit();
+    setToken('');
+    setInitialState((s) => ({
+      ...s,
+      currentUser: {},
+    }));
+    history.push('/login');
+  };
+
   return {
     login,
     getUserInfo,
+    loginOut,
   };
 }

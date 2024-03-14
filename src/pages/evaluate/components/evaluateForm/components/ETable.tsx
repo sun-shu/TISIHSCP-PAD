@@ -10,21 +10,21 @@ const FormItemBaseContainer = ({ item, form = {}, children, formItemProps = {} }
     <div>
       <div
         className="font-semibold h-[30px] justify-start items-center gap-2.5 inline-flex mb-[10px]  text-black">
-        {item.optionRequireFlg === ElementRequireFlgEnum.YES &&
+        {item?.optionRequireFlg === ElementRequireFlgEnum.YES &&
           <div className="w-6 font-bold h-6 p-2.5  text-xl justify-center items-center gap-2.5 flex">
             ※
           </div>}
 
         <div className="justify-start items-center gap-2.5 flex">
           <div className="text-zinc-700 text-xl  font-['PingFang SC'] leading-[30px] font-bold">
-            {item.optionName}
+            {item?.optionName}
           </div>
         </div>
       </div>
 
       <div className="bg-white  rounded-[4px]">
         <div className="w-full ">
-          <Form.Item name={item.id} {...formItemProps} className="mb-0">
+          <Form.Item name={item?.id} {...formItemProps} className="mb-0">
             {children}
           </Form.Item>
         </div>
@@ -42,7 +42,7 @@ const ETableForm = (props) => {
     // 删除数据
     // onSubmit(data);
     // 模拟列表数据移除
-    const resData = data.filter((item, index) => index !== data.length - 1);
+    const resData = data?.filter((item, index) => index !== data?.length - 1);
     setData(resData);
     setFormVisible(false);
 
@@ -62,8 +62,8 @@ const ETableForm = (props) => {
     // 有数据的时候，直接修改数据
     else {
       //修改数据， 找到源数组中的这一条数据，并修改
-      const resData = data.map((item, index) => {
-        if (item.id === data[data.length - 1].id) {
+      const resData = data?.map((item, index) => {
+        if (item?.id === data[data?.length - 1].id) {
           return {
             ...item,
 
@@ -87,11 +87,11 @@ const ETableForm = (props) => {
     console.log('item', item, '====');
     return {
       ...item,
-      elementType: item.optionControlType,
-      elementDataType: item.optionDataType,
-      elementRequireFlg: item.optionRequireFlg,
-      elementName: item.optionName,
-      elementMaxLength: item.optionMaxLength,
+      elementType: item?.optionControlType,
+      elementDataType: item?.optionDataType,
+      elementRequireFlg: item?.optionRequireFlg,
+      elementName: item?.optionName,
+      elementMaxLength: item?.optionMaxLength,
     };
   });
 
@@ -108,7 +108,7 @@ const ETableForm = (props) => {
       >
         <Modal
           open={open}
-          title={item.elementName}
+          title={item?.elementName}
 
           closeIcon={<CloseCircleOutlined />}
           className=" max-h-[600px] bg-white  w-[600px]"
@@ -197,13 +197,13 @@ const ETable = (props) => {
     //...关闭ETableForm
     let newData = { ...value };
     //如果已经存在了selectDataIndex，就修改原数组，没有存在ID，证明是新增，需要追加在原数组后面,并递增selectDataIndex
-    if (data.id) {
+    if (data?.id) {
 
 
       //修改value数组
     }
 
-    onChange(data.value);
+    onChange(data?.value);
   };
 
 
@@ -235,8 +235,8 @@ const ETable = (props) => {
       {/* 面板选项列表数据 */}
       <div className="grid grid-cols-2 gap-[20px] items-center" id={id}>
         {
-          data.map((answer, index) => {
-            if (item.status !== 0) {
+          data?.map((answer, index) => {
+            if (item?.status !== 0) {
               return (
                 <div
                   key={answer.id} onClick={() => {

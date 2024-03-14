@@ -39,16 +39,17 @@ const ListComponent = ({ data = [] }) => {
         }}
       >
 
-        {data.map((item) => (
+        {data?.map((item) => (
           <div
             className="relative rounded bg-white w-full flex flex-row items-center justify-between py-[0.63rem] pr-[1.25rem] mb-[20px] pl-[0.63rem] box-border cursor-pointer text-left text-[1.25rem] text-darkslategray font-px"
             onClick={() => {
-              handleGoToDetailClick(item.customerId);
+              handleGoToDetailClick(item?.customerId);
             }}
           >
-            <div className=" flex flex-1 flex-row items-center justify-start gap-[20px] w-min">
+            <div className=" flex flex-1 flex-row items-center justify-start gap-[20px] max-w-[620px]">
 
-              <Avatar size={80} src={item.imageUrl} icon={<img src={ManAvatar} />} shape="square"
+              <Avatar src={item?.imageUrl} icon={<img src={ManAvatar} width={104} height={104} />}
+                      shape="square"
                       className="w-[104px] h-[104px] border-none">
 
               </Avatar>
@@ -56,18 +57,18 @@ const ListComponent = ({ data = [] }) => {
               <div
                 className=" flex  flex-col justify-between py-[10px] box-border flex-none min-w-[120px]">
                 <div className="relative  font-semibold line-clamp-1">
-                  {item.name}
+                  {item?.name}
                 </div>
                 <div className="text-base font-semibold">
-                  {SexDescConst[item.gender]}
+                  {SexDescConst[item?.gender]}
                 </div>
-                <div className="text-base font-semibold"> {item.age}岁</div>
+                <div className="text-base font-semibold"> {item?.age}岁</div>
 
               </div>
               <div className="flex flex-col items-start justify-start  py-[10px] gap-[0.63rem] text-[1rem] ">
-                <LevelOfCareTag level={item.nurseGrade} />
-                <div className="relative tracking-[0.05em] leading-[1.5rem] font-semibold line-clamp-1">
-                  {item.bedName}
+                <LevelOfCareTag level={item?.nurseGrade} />
+                <div className="relative tracking-[0.05em] leading-[1.5rem] font-semibold line-clamp-1 max-w-[150px]">
+                  {item?.bedName}
                 </div>
                 <div className="flex flex-row items-center justify-start text-[0.75rem]">
                   <div className="relative tracking-[0.05em] leading-[1.13rem] line-clamp-1">
@@ -82,7 +83,7 @@ const ListComponent = ({ data = [] }) => {
                 type="primary"
                 onClickCapture={() => {
 
-                  handleGoToEvaluateTemplateClick(item.customerId);
+                  handleGoToEvaluateTemplateClick(item?.customerId);
                 }}
                 icon={<img src={EvaluateIcon} width={24} height={24} />
                 }

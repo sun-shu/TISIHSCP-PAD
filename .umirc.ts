@@ -71,7 +71,7 @@ export default defineConfig({
           redirect: '/evaluate/task-list',
         },
         {
-          path: '/evaluate/add/:recordMainId',
+          path: '/evaluate/add/:customerId/:recordMainId',
           component: 'evaluate/add/index',
         },
         {
@@ -79,7 +79,7 @@ export default defineConfig({
           component: 'evaluate/detail/index',
         },
         {
-          path: '/evaluate/add-of-composite/:templateCode',
+          path: '/evaluate/add-of-composite/:customerId/:templateCode',
           component: 'evaluate/addOfComposite/index',
         },
         {
