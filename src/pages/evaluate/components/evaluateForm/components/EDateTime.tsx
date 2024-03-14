@@ -40,12 +40,12 @@ const EDateTimePicker = (props) => {
     <div id={id}>
       <div className="flex gap-[20px]">
         <div>
-          <DatePicker showNow={false} renderExtraFooter={() => ''} onChange={handleChangeDate}
+          <DatePicker inputReadOnly showNow={false} renderExtraFooter={() => ''} onChange={handleChangeDate}
                       value={value.answer && dayjs(value.answer)}
                       defaultValue={null} placeholder="年/月/日" />
         </div>
         <div>
-          <DatePicker showNow={false} renderExtraFooter={() => ''} placeholder="时/分" picker="time"
+          <DatePicker inputReadOnly showNow={false} renderExtraFooter={() => ''} placeholder="时/分" picker="time"
                       onChange={handleChangeTime}
                       value={value.answer && dayjs(value.answer)}
                       showTime={{ format: 'HH:mm', defaultValue: null }} />
@@ -70,7 +70,8 @@ const EDatePicker = (props) => {
 
   return (
     <div id={id}>
-      <DatePicker showNow={false} renderExtraFooter={() => ''} placeholder="年/月/日" onChange={handleChange}
+      <DatePicker inputReadOnly showNow={false} renderExtraFooter={() => ''} placeholder="年/月/日"
+                  onChange={handleChange}
                   value={value.answer && dayjs(value.answer)} />
     </div>
   );
@@ -90,7 +91,7 @@ const ETimePicker = (props) => {
 
   return (
     <div id={id}>
-      <DatePicker showNow={false} renderExtraFooter={null} placeholder="时/分" picker="time"
+      <DatePicker inputReadOnly showNow={false} renderExtraFooter={null} placeholder="时/分" picker="time"
                   showTime={{ format: 'HH:mm', defaultValue: null }}
                   onChange={handleChange}
                   value={value.answer && dayjs(value.answer)} />

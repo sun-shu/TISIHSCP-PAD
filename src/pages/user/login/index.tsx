@@ -44,7 +44,7 @@ const Login = () => {
           className="rounded-[60px]"
         >
           <div className="mb-[100px]">
-            <img src={Logo} className="h-[40px]" />
+            {/*<img src={Logo} className="h-[40px]" />*/}
           </div>
 
           <p className="text-primary text-[28px] font-bold	mb-[60px]">登录</p>

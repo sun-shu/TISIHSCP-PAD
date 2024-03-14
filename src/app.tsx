@@ -35,7 +35,7 @@ const authHeaderInterceptor = (url: string, options: RequestConfig) => {
 // 登录时请求用户信息，Initiate中checkToken,如果token存在，请求用户信息，如果不存在，跳转登录页面
 export const request: RequestConfig = {
   // 统一的请求设定
-  timeout: 1000,
+  timeout: 5000,
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
   },

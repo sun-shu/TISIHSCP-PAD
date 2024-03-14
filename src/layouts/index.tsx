@@ -28,7 +28,7 @@ export default function Layout() {
               history.push('/evaluate/task-list');
             }}
           >
-            <img src={Logo} className="h-[40px]" />
+            {/*<img src={Logo} className="h-[40px]" />*/}
           </div>
           <ul className="flex flex-1 justify-start text-lg mb-0">
             <li>

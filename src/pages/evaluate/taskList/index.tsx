@@ -13,6 +13,8 @@ import { EvluateRelativeTypeEnum } from '@/enums/EvluateRelativeTypeEnum';
 import LevelOfCareTag from '@/components/LevelOfCareTag';
 import ManAvatar from '@/assets/avatar/man.png';
 
+import EvaluateIcon from '@/assets/icon/evalute-1.png';
+
 // 选项卡Tab枚举
 enum TabTypeEnums {
   // 上月 本月 下月
@@ -184,7 +186,8 @@ const ElderListTemplate = ({ title, data = [], countDescription }: {
                 <div className=" flex-1 flex-col justify-between h-full items-start flex">
                   <div className="flex-col justify-between w-full items-start gap-2 flex">
                     <div className="w-full justify-between items-center gap-5 flex">
-                      <div className="text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px]">
+                      <div
+                        className="text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px] line-clamp-1">
                         {name} <span>{age}岁</span>
                       </div>
                       <div className="portrait:hidden">
@@ -206,6 +209,26 @@ const ElderListTemplate = ({ title, data = [], countDescription }: {
                     }
                     </div>)}
                   </div>
+                </div>
+              </div>
+
+              <div
+                className="flex justify-between w-full items-center mt-[10px] pt-[10px] border-t border-zinc-300 gap-[5px]">
+                <div className="flex flex-col ">
+                  <div className="text-left line-clamp-1 font-normal text-base">
+                    {templateName}
+                  </div>
+
+
+                  <div className="text-zinc-700 text-xs font-light font-['PingFang SC'] leading-[18px] tracking-wide">
+                    计划日期：{taskExecuteDate}
+                  </div>
+                </div>
+
+                <div className="flex items-end">
+                  <Button type="primary" className="flex items-center justify-center px-[10px]"
+                          icon={<img src={EvaluateIcon} width={24}
+                          />}>开始评估</Button>
                 </div>
               </div>
 
