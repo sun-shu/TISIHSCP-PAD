@@ -33,9 +33,9 @@ const LoadMoreDivider = ({ handleLoadMoreBtnClick }) => {
 };
 
 // 评估记录卡片
-const EvaluationRecordCard = ({ recordMainId, reportTitle = '', reportDate = '', evaluator = '', templateComposeCode = '' }) => {
+const EvaluationRecordCard = ({ recordMainId, reportTitle = '', reportDate = '', evaluator = '', templateCode = '' }) => {
    const handleGoToReport = () => {
-    history.push(`/elder/evaluation-report?recordMainId=${recordMainId}&templateComposeCode=${templateComposeCode}`);
+    history.push(`/elder/evaluation-report?recordMainId=${recordMainId}&templateComposeCode=${templateCode}`);
    }
   return (
     <div className="w-[620px] h-[76px] px-[20px] py-[10px] bg-white rounded justify-between items-center inline-flex">
@@ -61,9 +61,7 @@ const EvaluationRecordCard = ({ recordMainId, reportTitle = '', reportDate = '',
       </div>
       <div className=" gap-5  h-auto w-fit  ">
         <Button
-          onClick={() => {
-            history.push(`/elder/evaluation-report?recordMainId=${recordMainId}`);
-          }}
+          onClick={handleGoToReport}
           type="primary"
           className="text-white text-sm flex w-max"
 
@@ -142,7 +140,7 @@ const EvaluationRecordList = ({ data = [], defaultShowAll = false }) => {
             reportDate={dayjs(item.recordTime).format('YYYY-MM-DD')}
             evaluator={item.createUser}
             recordMainId={item.recordMainId}
-            templateComposeCode={item.templateComposeCode}
+            templateCode={item.templateCode}
           />
         </div>
       ))}

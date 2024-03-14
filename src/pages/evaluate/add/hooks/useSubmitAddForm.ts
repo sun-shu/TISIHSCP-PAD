@@ -22,7 +22,7 @@ import { useRequest } from '@@/exports';
 
 
 const useSubmitAddForm = (form: FormInstance, params) => {
-  const { templateCode, templateComposeCode, relativeType, relativeId, customerId, remaindIndex, parentRecordMainId } = params;
+  const { templateComposeCode, relativeType, relativeId, customerId, remaindIndex } = params;
 
   console.log('useSubmitAddForm', params);
   const { loading, run, data } = useRequest(addResult, {
@@ -56,13 +56,14 @@ const useSubmitAddForm = (form: FormInstance, params) => {
   const submitAddEvalute = async (values: any) => {
     const data = await submitAddForm();
     console.log('submitAddEvalute', data);
-    const { recordMainId } = data;
-    history.push(`/elder/evaluation-report?recordMainId=${recordMainId}`);
+    const { parentRecordMainId } = data;
+    history.push(`/elder/evaluation-report?recordMainId=${parentRecordMainId}`);
   };
 
   //综合评估-提交并返回
   const submitAddEvaluteGroupReturn = async (values: any) => {
-    await submitAddForm();
+    const data = await submitAddForm();
+    const { parentRecordMainId } = data;
     //综合评估，返回到综合评估列表
     history.replace(`/evaluate/add-of-composite/${customerId}/${templateComposeCode}?relativeId=${relativeId}&relativeType=${relativeType}&recordMainId=${parentRecordMainId}`);
   };
