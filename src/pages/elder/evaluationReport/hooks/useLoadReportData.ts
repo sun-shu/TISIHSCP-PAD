@@ -18,6 +18,7 @@ const useLoadReportData = (params) => {
 
     return getCustomerComposeInfo({
       ...params,
+      parentRecordMainId: params.recordMainId,
       ...sourceParmas,
     });
   }, {
@@ -30,6 +31,7 @@ const useLoadReportData = (params) => {
   // 单项评估结果评分
   const { loading: evaluteDataLoading, run: runLoadEvaluteDataFn } = useRequest(() => {
     return showScoreResult({
+      recordMainId: params.recordMainId,
       ...params,
     });
   }, {

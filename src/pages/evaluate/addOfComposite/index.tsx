@@ -162,12 +162,14 @@ const EditCompositeEvaluatePage = (props) => {
   const [searchParams] = useSearchParams();
   const relativeId = searchParams.get('relativeId');
   const relativeType = searchParams.get('relativeType');
+  const recordMainId = searchParams.get('recordMainId');
 
   const locationParams = {
     templateComposeCode,
     relativeId,
     relativeType,
     customerId,
+    recordMainId
   };
 
   const { filledListData, notFilledListData, templateData } = useLoadTemplateData(locationParams);

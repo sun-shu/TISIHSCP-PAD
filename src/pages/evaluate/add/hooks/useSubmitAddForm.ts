@@ -22,7 +22,7 @@ import { useRequest } from '@@/exports';
 
 
 const useSubmitAddForm = (form: FormInstance, params) => {
-  const { templateCode, templateComposeCode, relativeType, relativeId, customerId, remaindIndex } = params;
+  const { templateCode, templateComposeCode, relativeType, relativeId, customerId, remaindIndex, parentRecordMainId } = params;
 
   console.log('useSubmitAddForm', params);
   const { loading, run, data } = useRequest(addResult, {
@@ -40,9 +40,7 @@ const useSubmitAddForm = (form: FormInstance, params) => {
     } : {};
 
     const data = {
-      templateCode: params.templateCode,
-      templateComposeCode: params.templateComposeCode,
-      customerId: params.customerId,
+      ...params,
       resultDataList: Object.entries(values).map(([key, value]) => {
         return value;
       }).filter(item => item),
@@ -66,13 +64,13 @@ const useSubmitAddForm = (form: FormInstance, params) => {
   const submitAddEvaluteGroupReturn = async (values: any) => {
     await submitAddForm();
     //综合评估，返回到综合评估列表
-    history.replace(`/evaluate/add-of-composite/${customerId}/${templateComposeCode}?relativeId=${relativeId}&relativeType=${relativeType}`);
+    history.replace(`/evaluate/add-of-composite/${customerId}/${templateComposeCode}?relativeId=${relativeId}&relativeType=${relativeType}&recordMainId=${parentRecordMainId}`);
   };
 
   //综合评估-提交并继续
   const submitAddEvaluteGroupContinue = async () => {
     const data = await submitAddForm();
-    const { nextTemplateCode } = data || {};
+    const { nextTemplateCode, parentRecordMainId } = data || {};
 
     const nextRemaindIndex: any = remaindIndex - 1;
     const queryParams = new URLSearchParams({
@@ -81,6 +79,7 @@ const useSubmitAddForm = (form: FormInstance, params) => {
       customerId: customerId,
       templateComposeCode: templateComposeCode,
       remaindIndex: nextRemaindIndex,
+      parentRecordMainId:parentRecordMainId
     });
 
     history.replace(`/evaluate/add/${customerId}/${nextTemplateCode}?${queryParams}`);
