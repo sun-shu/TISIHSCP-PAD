@@ -4,6 +4,7 @@ import { history } from 'umi';
 import useLoadEvaluteTemplateList from '@/pages/evaluateTemplate/list/hooks/useLoadEvaluteTemplateList';
 import { useSearchParams } from '@@/exports';
 import { TemplateClassEnum } from '@/enums/TemplateClassEnum';
+import { EvluateRelativeTypeEnum } from '@/enums/EvluateRelativeTypeEnum';
 
 const templateTypeDescConfig = {
   [TemplateClassEnum.Evaluate]: '评估',
@@ -54,7 +55,7 @@ const EvaluateTemplateCard = ({ data = {}, customerId }) => {
     const nextUrl = {
       [TemplateClassEnum.Evaluate]: `/evaluate/add/${item.templateCode}?customerId=${customerId}`, // 评
       [TemplateClassEnum.Form]: `/evaluate/add/${item.templateCode}?customerId=${customerId}`, // 评
-      [TemplateClassEnum.EvaluateGroup]: `/evaluate/add-of-composite/${item.templateCode}?customerId=${customerId}`,// 估
+      [TemplateClassEnum.EvaluateGroup]: `/evaluate/add-of-composite/${item.templateCode}?relativeType=${EvluateRelativeTypeEnum.CUSTOMER}&relativeId=${customerId}&customerId=${customerId}`,// 估
     };
     history.push(nextUrl[item.templateClass]);
   };

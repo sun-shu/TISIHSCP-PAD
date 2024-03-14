@@ -233,7 +233,7 @@ const ElderDetail = () => {
   const [searchParams] = useSearchParams();
   const customerId = searchParams.get('customerId');
 
-  const { data = [] } = useLoadEvaluteList({
+  const { data = {} } = useLoadEvaluteList({
     customerId,
   });
   console.log(data, 'data');

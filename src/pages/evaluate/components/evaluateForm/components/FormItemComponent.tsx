@@ -155,26 +155,23 @@ const FormItemComponent = ({
 
     switch (elementDataType) {
       case ElementDataTypeEnum.YEAR_MONTH_DAY:
-        const DateTimeElement = EDateTime; // 引入对应组件
         return (
           <FormItemBaseContainer item={item} key={item.id} form={form} formItemProps={formItemProps}>
-            <DateTimeElement item={item} />
+            <EDateTime item={item} />
           </FormItemBaseContainer>
         );
 
       case ElementDataTypeEnum.DATE_TIME:
-        const DateTimePickerElement = EDateTimePicker;
         return (
           <FormItemBaseContainer item={item} key={item.id} form={form} formItemProps={formItemProps}>
-            <DateTimePickerElement item={item} />
+            <EDateTimePicker item={item} />
           </FormItemBaseContainer>
         );
 
       case ElementDataTypeEnum.HOUR_MINUTE:
-        const TimePickerElement = ETimePicker;
         return (
           <FormItemBaseContainer item={item} key={item.id} form={form} formItemProps={formItemProps}>
-            <TimePickerElement item={item} />
+            <ETimePicker item={item} />
           </FormItemBaseContainer>
         );
     }

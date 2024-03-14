@@ -20,7 +20,7 @@ const addPage = () => {
 
   const [form] = Form.useForm();
 
-  const { evaluateTemplateData, loading, templateName } = useLoadFormTemplateData(templateCode, form);
+  const { evaluateTemplateData = {}, loading, templateName } = useLoadFormTemplateData(templateCode, form);
 
 
   const { submitAddEvaluteGroupContinue, submitAddEvaluteGroupReturn, submitAddEvalute } = useSubmitAddForm(form, {

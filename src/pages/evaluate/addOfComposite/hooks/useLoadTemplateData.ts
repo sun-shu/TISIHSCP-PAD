@@ -12,7 +12,7 @@ const useLoadTemplateData = (params) => {
   const [notFilledListData, setNotFilledListData] = useState([]);
 
 
-  const { relativeType, relativeId, templateComposeCode } = params;
+  const { relativeType, relativeId, templateComposeCode, customerId } = params;
   const { data: templateData = {}, error, loading, run }: {
     data: CustomerComposeInfoResDTO;
     error: any;
@@ -23,6 +23,7 @@ const useLoadTemplateData = (params) => {
       templateComposeCode,
       ...(relativeType === EvluateRelativeTypeEnum.TASK ? { customerTaskRecordId: relativeId } : {}),
       ...(relativeType === EvluateRelativeTypeEnum.HISTORY ? { recordMainId: relativeId } : {}),
+      ...(relativeType === EvluateRelativeTypeEnum.CUSTOMER ? { customerId: customerId } : {}),
     };
 
     console.log('requestParams', requestParams);

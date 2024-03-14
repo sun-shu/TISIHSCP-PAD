@@ -89,7 +89,10 @@ export default defineConfig({
 
         { path: '/evaluate/task-list', component: 'evaluate/taskList/index' },
       ],
+
+
     },
+    { path: '/*', component: '@/pages/404.tsx' },
   ],
   alias: {
     '@': 'src/',

@@ -55,7 +55,6 @@ const ETableForm = (props) => {
     //没有数据的时候，直接新增一条数据
     if (Object.keys(defultValue).length === 0) {
       // 调用新增数据接口
-      const res = {};
       const resData = [...data, res];
       setData(resData);
     }
@@ -213,6 +212,7 @@ const ETable = (props) => {
     setFormVisible(true);
   };
 
+  console.log(data, 'TableData');
   /**
    * 获取列表按钮文本辅助函数
    * @param status 列表按钮文本
@@ -235,13 +235,13 @@ const ETable = (props) => {
       {/* 面板选项列表数据 */}
       <div className="grid grid-cols-2 gap-[20px] items-center" id={id}>
         {
-          data.map((item, index) => {
+          data.map((answer, index) => {
             if (item.status !== 0) {
               return (
                 <div
-                  key={item.id} onClick={() => {
+                  key={answer.id} onClick={() => {
                   openETableForm({
-                    ...item, index,
+                    ...answer, index,
                   });
                 }}
                   className="w-60 h-[170px] px-5 pt-2.5 pb-5 bg-slate-50 rounded-[20px] flex-col justify-start items-start gap-2.5 inline-flex">
@@ -249,14 +249,16 @@ const ETable = (props) => {
                     className="w-[200px] text-zinc-600 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">{(index + 1).toString().padStart(2, '0')}
                   </div>
                   <div
-                    className="w-[200px] text-zinc-600 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">{item.title}
+                    className="w-[200px] text-zinc-600 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">
+                    {item?.optionList[0]?.optionName}:{answer[0]?.answer}
                   </div>
                   <div
-                    className="w-[200px] text-zinc-600 text-sm font-normal font-['PingFang SC'] leading-tight tracking-wide">就医时间：2023年10月24日
+                    className="w-[200px] text-zinc-600 text-sm font-normal font-['PingFang SC'] leading-tight tracking-wide">
+                    {item?.optionList[1]?.optionName}:{answer[1]?.answer}
                   </div>
                   <div
                     className="w-[200px] text-teal-500 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide">{
-                    item.status === 1 ? '查看' : '编辑'
+                    answer.status === 1 ? '查看' : '编辑'
                   }
                   </div>
                 </div>

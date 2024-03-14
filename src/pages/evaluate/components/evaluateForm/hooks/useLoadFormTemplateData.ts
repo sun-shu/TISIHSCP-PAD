@@ -23,7 +23,7 @@ const useLoadFormTemplateData = (templateCode, form: FormInstance) => {
     },
   });
 
-  const { templateName } = evaluateTemplateData.resDTO || {};
+  const { templateName } = evaluateTemplateData?.resDTO || {};
 
   useEffect(() => {
     run();
