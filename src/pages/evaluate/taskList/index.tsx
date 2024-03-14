@@ -1,8 +1,8 @@
 import CustomTag from '@/components/CustomTag';
 import { CloseCircleOutlined, SearchOutlined } from '@ant-design/icons';
-import { Affix, Button, ConfigProvider, Input } from 'antd';
+import { Affix, Avatar, Button, ConfigProvider, Input } from 'antd';
 import classNames from 'classnames';
-import { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { history, useRequest } from 'umi';
 import { CustomerTaskRecordPadItemDTO } from '@/api/task/getTaskList.interface';
 import { getTaskList } from '@/api/task';
@@ -11,6 +11,7 @@ import EmptyDataContainer from '@/components/exception/EmptyDataContainer/index'
 import { TaskTypeEnum } from '@/enums/TaskTypeEnum';
 import { EvluateRelativeTypeEnum } from '@/enums/EvluateRelativeTypeEnum';
 import LevelOfCareTag from '@/components/LevelOfCareTag';
+import ManAvatar from '@/assets/avatar/man.png';
 
 // 选项卡Tab枚举
 enum TabTypeEnums {
@@ -176,10 +177,10 @@ const ElderListTemplate = ({ title, data = [], countDescription }: {
                    handleClickGoToEvaluePage(id, customerId, taskType, templateCode);
                  }}>
               <div className="w-full justify-between items-center gap-5 flex">
-                <img
-                  className="w-[104px] h-[104px] rounded"
-                  src={imageUrl}
-                />
+                <Avatar src={imageUrl} icon={<img src={ManAvatar} width={160} height={160} />} shape="square"
+                        className="w-[104px] h-[104px] border-none">
+
+                </Avatar>
                 <div className=" flex-1 flex-col justify-between h-full items-start flex">
                   <div className="flex-col justify-between w-full items-start gap-2 flex">
                     <div className="w-full justify-between items-center gap-5 flex">

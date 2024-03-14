@@ -110,7 +110,11 @@ export const request: RequestConfig = {
       // 拦截请求配置，进行个性化处理。
       const url = config.url.concat('');
 
-      return { ...config, url, params: { ...config.params, lang: 'zh' } };
+      const params = { ...config.params };
+      if (config.method === 'get') {
+        params.lang = 'zh';
+      }
+      return { ...config, url, params };
     },
     authHeaderInterceptor,
   ],

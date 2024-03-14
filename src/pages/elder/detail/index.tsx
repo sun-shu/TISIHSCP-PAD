@@ -56,13 +56,13 @@ const EvaluationRecordCard = ({ recordMainId, reportTitle = '', reportDate = '',
           </div>
         </div>
       </div>
-      <div className="justify-end items-center gap-5 flex h-auto w-fit basis-[100%] flex-1 ">
+      <div className=" gap-5  h-auto w-fit  ">
         <Button
           onClick={() => {
             history.push(`/elder/evaluation-report?recordMainId=${recordMainId}`);
           }}
           type="primary"
-          className="text-white text-sm flex"
+          className="text-white text-sm flex w-max"
 
           icon={<img src={LookIcon} width={24} height={24} />}
         >

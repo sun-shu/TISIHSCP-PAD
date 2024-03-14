@@ -7,8 +7,10 @@ import {
 import { Affix, Avatar, Button, ConfigProvider, Input, Select } from 'antd';
 import EvaluateIcon from '@/assets/icon/evalute.png';
 import LevelOfCareTag from '@/components/LevelOfCareTag';
-import BuildingSelect from '@/components/entitySelects/BuildingSelect';
 import useLoadCustomerList from '@/pages/elder/list/hooks/useLoadCustomerList';
+import ManAvatar from '@/assets/avatar/man.png';
+import React from 'react';
+import { SexDescConst } from '@/const/SexDescConst';
 
 const ListComponent = ({ data = [] }) => {
   console.log('data', data);
@@ -45,7 +47,11 @@ const ListComponent = ({ data = [] }) => {
             }}
           >
             <div className=" flex flex-1 flex-row items-center justify-start gap-[20px] w-min">
-              <Avatar shape="square" size={80} icon={<UserOutlined />} />
+
+              <Avatar size={80} src={item.imageUrl} icon={<img src={ManAvatar} />} shape="square"
+                      className="w-[104px] h-[104px] border-none">
+
+              </Avatar>
 
               <div
                 className=" flex  flex-col justify-between py-[10px] box-border flex-none min-w-[120px]">
@@ -53,7 +59,7 @@ const ListComponent = ({ data = [] }) => {
                   {item.name}
                 </div>
                 <div className="text-base font-semibold">
-                  男
+                  {SexDescConst[item.gender]}
                 </div>
                 <div className="text-base font-semibold"> {item.age}岁</div>
 
@@ -61,7 +67,7 @@ const ListComponent = ({ data = [] }) => {
               <div className="flex flex-col items-start justify-start  py-[10px] gap-[0.63rem] text-[1rem] ">
                 <LevelOfCareTag level={item.nurseGrade} />
                 <div className="relative tracking-[0.05em] leading-[1.5rem] font-semibold line-clamp-1">
-                  1号楼-3层-301-1床
+                  {item.bedName}
                 </div>
                 <div className="flex flex-row items-center justify-start text-[0.75rem]">
                   <div className="relative tracking-[0.05em] leading-[1.13rem] line-clamp-1">
@@ -130,8 +136,7 @@ const SearchComponent = () => {
           />
 
           <div className="flex gap-[10px] justify-between">
-            <BuildingSelect></BuildingSelect>
-            <BuildingSelect></BuildingSelect>
+
             <Select
               placeholder="楼层"
               style={{ width: '100%' }}

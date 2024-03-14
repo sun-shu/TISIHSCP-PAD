@@ -80,23 +80,29 @@ const EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
   );
 };
 
-const EvaluateFormComponent = ({
-                                 form,
-                                 initialValues,
-                                 disabled,
-                                 templateCode,
-                                 elementList: initElementList,
-                                 templateName,
-                               }: {
-  templateCode: string;
+interface EvaluateFormComponentProps {
+  form: FormInstance<any>;
+  initialValues: any;
+  disabled: boolean;
+  elementList: TemplateResDTO[];
+  templateName: string;
+
   [key: string]: any;
-}) => {
+}
+
+const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
+
+  const {
+    form,
+    initialValues,
+    disabled = false,
+    elementList: initElementList,
+    templateName,
+  } = props;
   //因为这里会有显隐变化，所以数据单独存储
   const [elementList, setElementList] = useState(_.cloneDeep(initElementList));
 
-
   const { fillCount, needFillCount, onFieldsChange, onValuesChange } = useProgressShow(form, initialValues);
-
 
   return (
     <div>

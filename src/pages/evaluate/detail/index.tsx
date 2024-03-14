@@ -22,7 +22,7 @@ const DetailPage = () => {
       <div className="mb-[90px]">
         <div className="mt-[20px]">
           {data?.resDTO?.elementList &&
-            <EvaluateForm form={form} templateCode={templateCode} templateName={data.templateName}
+            <EvaluateForm disabled form={form} templateCode={templateCode} templateName={data.templateName}
                           elementList={data?.resDTO?.elementList} initialValues={initialValues} />}
         </div>
       </div>

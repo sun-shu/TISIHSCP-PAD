@@ -27,10 +27,10 @@ export default function userModel() {
   };
 
   const login = async (loginData) => {
-    const { data } = await userAPI.login({
+    const { data = {} } = await userAPI.login({
       ...loginData,
       password: encrypt(loginData.password),
-    })
+    });
 
     console.log('res', data);
 

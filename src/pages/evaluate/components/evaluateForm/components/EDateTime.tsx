@@ -13,7 +13,7 @@ const EDateTimePicker = (props) => {
         </div>
         <div>
           <div className=" text-zinc-700 text-xl font-semibold  leading-[30px] mb-[10px]">时/分</div>
-          <DatePicker picker="time" />
+          <DatePicker picker="time" onChange={onChange} value={value} />
         </div>
       </div>
     </div>

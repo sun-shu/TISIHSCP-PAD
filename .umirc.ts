@@ -37,7 +37,10 @@ export default defineConfig({
     dataField: 'data',
   },
   routes: [
-    { path: '/', component: 'evaluate/taskList/index' },
+    {
+      path: '/',
+      redirect: '/evaluate/task-list',
+    },
     { path: '/login', component: 'user/login/index', layout: false },
     { path: '/user-info', component: 'user/info/index' },
     {
@@ -62,6 +65,7 @@ export default defineConfig({
     {
       path: '/evaluate',
       routes: [
+
         {
           path: '/evaluate',
           redirect: '/evaluate/task-list',
