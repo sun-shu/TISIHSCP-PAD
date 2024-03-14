@@ -86,6 +86,7 @@ const EvaluateTemplateCard = ({ data = {}, customerId }) => {
     </div>
   );
 };
+
 const ListComponent = ({ data = [], customerId }) => {
   return (
     <>

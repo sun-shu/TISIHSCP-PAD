@@ -63,14 +63,17 @@ const EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
           },
         }}
       >
-        {elementList.map((item, index) => {
-          return (
-            <>
-              {item.elementIsShow === ElementVisibleEnum.SHOW &&
-                <FormItemComponent item={item} index={index} form={form} changeElementVisible={changeElementVisible} />}
-            </>
-          );
-        })}
+        {
+          // patch：后端暂时没有清洗数据，elementIsShow没有值，所以需要做一下反向判断
+          elementList.map((item, index) => {
+            return (
+              <>
+                {item.elementIsShow !== ElementVisibleEnum.HIDE &&
+                  <FormItemComponent item={item} index={index} form={form}
+                                     changeElementVisible={changeElementVisible} />}
+              </>
+            );
+          })}
       </ConfigProvider>
 
     </div>
