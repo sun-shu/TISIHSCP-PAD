@@ -56,8 +56,8 @@ const useSubmitAddForm = (form: FormInstance, params) => {
   const submitAddEvalute = async (values: any) => {
     const data = await submitAddForm();
     console.log('submitAddEvalute', data);
-    const { parentRecordMainId } = data;
-    history.push(`/elder/evaluation-report?recordMainId=${parentRecordMainId}&customerId=${customerId}`);
+    const { recordMainId } = data;
+    history.push(`/elder/evaluation-report?recordMainId=${recordMainId}&customerId=${customerId}`);
   };
 
   //综合评估-提交并返回
