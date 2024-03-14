@@ -26,6 +26,7 @@ const useSubmitEvaluateGroup = (params) => {
     await run({
       ...params,
       ...sourceParmas,
+      parentRecordMainId: params.recordMainId,
     });
 
     viewReport();
