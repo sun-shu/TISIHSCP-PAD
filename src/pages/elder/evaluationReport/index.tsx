@@ -113,7 +113,7 @@ const EvaluationReportPage = () => {
   console.log('EvaluationReportPage', data);
   return (
     <>
-      <ElderDetailLayout title={templateComposeCode ? '综合评估报告' : '评估报告'}>
+      <ElderDetailLayout title={templateComposeCode ? '综合评估报告' : '评估报告'} customerId={customerId}>
         <div className="w-[620px]">
           <div className="w-full  top-[184px]  justify-between items-start inline-flex">
             <div className="flex-col justify-start items-start gap-1 inline-flex">

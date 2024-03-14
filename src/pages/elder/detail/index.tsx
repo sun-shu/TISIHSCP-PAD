@@ -33,9 +33,9 @@ const LoadMoreDivider = ({ handleLoadMoreBtnClick }) => {
 };
 
 // 评估记录卡片
-const EvaluationRecordCard = ({ recordMainId, reportTitle = '', reportDate = '', evaluator = '', templateCode = '' }) => {
+const EvaluationRecordCard = ({ recordMainId, reportTitle = '', reportDate = '', evaluator = '', templateCode = '', customerId = '' }) => {
    const handleGoToReport = () => {
-    history.push(`/elder/evaluation-report?recordMainId=${recordMainId}&templateComposeCode=${templateCode}`);
+    history.push(`/elder/evaluation-report?recordMainId=${recordMainId}&templateComposeCode=${templateCode}&customerId=${customerId}`);
    }
   return (
     <div className="w-[620px] h-[76px] px-[20px] py-[10px] bg-white rounded justify-between items-center inline-flex">
@@ -108,7 +108,7 @@ const EvaluationTrendCard = () => {
 };
 
 // 评估记录列表
-const EvaluationRecordList = ({ data = [], defaultShowAll = false }) => {
+const EvaluationRecordList = ({ data = [], defaultShowAll = false, customerId = '' }) => {
   const [loadMoreBtnShow, setLoadMoreBtnShow] = useState(!defaultShowAll);
   const [recordList, setRecordList] = useState([]);
 
@@ -141,6 +141,7 @@ const EvaluationRecordList = ({ data = [], defaultShowAll = false }) => {
             evaluator={item.createUser}
             recordMainId={item.recordMainId}
             templateCode={item.templateCode}
+            customerId={customerId}
           />
         </div>
       ))}
@@ -250,7 +251,7 @@ const ElderDetail = () => {
           <div>
 
             <div hidden={currentTab !== TabTypeEnums.RECORD}>
-              <EvaluationRecordList defaultShowAll={true} data={data?.dataList} />
+              <EvaluationRecordList defaultShowAll={true} data={data?.dataList} customerId={customerId}/>
             </div>
 
             <div hidden={currentTab !== TabTypeEnums.TREND}>
