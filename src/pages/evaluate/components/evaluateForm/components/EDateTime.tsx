@@ -47,6 +47,7 @@ const EDateTimePicker = (props) => {
         <div>
           <DatePicker inputReadOnly showNow={false} renderExtraFooter={() => ''} placeholder="时/分" picker="time"
                       onChange={handleChangeTime}
+                      format={'HH:mm'}
                       value={value.answer && dayjs(value.answer)}
                       showTime={{ format: 'HH:mm', defaultValue: null }} />
         </div>
@@ -94,6 +95,7 @@ const ETimePicker = (props) => {
       <DatePicker inputReadOnly showNow={false} renderExtraFooter={null} placeholder="时/分" picker="time"
                   showTime={{ format: 'HH:mm', defaultValue: null }}
                   onChange={handleChange}
+                  format={'HH:mm'}
                   value={value.answer && dayjs(value.answer)} />
     </div>
   );

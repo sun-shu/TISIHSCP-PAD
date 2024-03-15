@@ -105,6 +105,14 @@ const FormItemComponent = ({
           }
         }
         //身份证号校验
+
+        if (elementDataType === ElementDataTypeEnum.IDCARD) {
+          console.log('身份证号校验value', value);
+          if (value.answer && !/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(value.answer)) {
+            return Promise.reject('身份证号格式错误');
+          }
+        }
+
         //数字校验
 
         return Promise.resolve();
@@ -128,6 +136,12 @@ const FormItemComponent = ({
         return (
           <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
             <EInput type="text" form={form} item={item} />
+          </FormItemBaseContainer>
+        );
+      case ElementDataTypeEnum.IDCARD:
+        return (
+          <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
+            <EInput form={form} item={item} />
           </FormItemBaseContainer>
         );
     }

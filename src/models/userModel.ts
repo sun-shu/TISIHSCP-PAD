@@ -32,28 +32,12 @@ export default function userModel() {
       password: encrypt(loginData.password),
     });
 
-    console.log('res', data);
+    setToken(data?.accessToken);
 
-    setToken(data.accessToken);
-
-    const currentUser = await getUserInfo();
-    console.log('currentUser', currentUser);
-    //login
-    //保存登录状态
-    //设置用户信息
-    flushSync(() => {
-      setInitialState((s) => ({
-        ...s,
-        currentUser: {
-          // id: userId,
-        },
-      }));
-    });
-    //跳转地址
+    await getUserInfo();
+ 
     const urlParams = new URL(window.location.href).searchParams;
     history.push(urlParams.get('redirect') || '/');
-    //fetchUser
-    //fetchConfig
   };
 
   const loginOut = async () => {

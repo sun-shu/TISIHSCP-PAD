@@ -24,6 +24,7 @@ const login = async (data: LoginParams, options?: { [key: string]: any }): Promi
     data,
     ...(options || {}),
   });
+
   console.log('loginRes', loginRes);
   return loginRes;
 };

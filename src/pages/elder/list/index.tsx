@@ -9,7 +9,7 @@ import EvaluateIcon from '@/assets/icon/evalute.png';
 import LevelOfCareTag from '@/components/LevelOfCareTag';
 import useLoadCustomerList from '@/pages/elder/list/hooks/useLoadCustomerList';
 import ManAvatar from '@/assets/avatar/man.png';
-import React from 'react';
+import React, { useState } from 'react';
 import { SexDescConst } from '@/const/SexDescConst';
 import EmptyDataContainer from '@/components/exception/EmptyDataContainer';
 
@@ -99,11 +99,14 @@ const ListComponent = ({ data = [] }) => {
   );
 };
 
-const SearchComponent = () => {
+const SearchComponent = ({ searchElder }) => {
+  const [keyword, setKeyword] = useState('');
+
   const resetFilter = () => {
     // 重置筛选条件
     //  重置列表数据
     console.log('resetFilter');
+    searchElder();
   };
   return (
     <>
@@ -127,9 +130,14 @@ const SearchComponent = () => {
               <SearchOutlined className="site-form-item-icon mr-[10px]" />
             }
             placeholder="搜索"
+            onChange={(e) => {
+              setKeyword(e.target.value);
+            }}
             allowClear
             suffix={
-              <Button type="primary" className="rounded-3xl">
+              <Button type="primary" className="rounded-3xl" onClick={() => {
+                searchElder(keyword);
+              }}>
                 搜索
               </Button>
             }
@@ -185,7 +193,8 @@ const SearchComponent = () => {
             />
           </div>
 
-          <div className="text-right" onClick={resetFilter}><CloseCircleOutlined className="mr-[8px] mt-[10px]" />清除筛选条件
+          <div className="text-right" onClick={resetFilter}><CloseCircleOutlined className="mr-[8px] mt-[10px]"
+          />清除筛选条件
           </div>
         </div>
       </ConfigProvider>
@@ -194,7 +203,7 @@ const SearchComponent = () => {
 };
 
 const ElderListPage = () => {
-  const { customerList = [], loading } = useLoadCustomerList();
+  const { customerList = [], loading, run } = useLoadCustomerList();
 
   console.log('customerList', customerList);
 
@@ -214,7 +223,7 @@ const ElderListPage = () => {
               </div>
 
               <div className=" border-b-[1px] border-solid border-bg- pb-[20px] mb-[20px]">
-                <SearchComponent />
+                <SearchComponent searchElder={run} />
               </div>
             </div>
           </Affix>

@@ -183,7 +183,7 @@ const ETable = (props) => {
   const [formVisible, setFormVisible] = useState(false);
   const [data, setData] = useState([]);
 
-  
+
   const openETableForm = (item) => {
     setCurrentSelectData({ ...item });
     setFormVisible(true);
