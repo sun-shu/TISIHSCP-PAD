@@ -1,10 +1,12 @@
-import { ProfileFilled, SearchOutlined } from '@ant-design/icons';
+import { CloseCircleOutlined, ProfileFilled, SearchOutlined } from '@ant-design/icons';
 import { Affix, Button, ConfigProvider, Input } from 'antd';
 import { history } from 'umi';
 import useLoadEvaluteTemplateList from '@/pages/evaluateTemplate/list/hooks/useLoadEvaluteTemplateList';
 import { useSearchParams } from '@@/exports';
 import { TemplateClassEnum } from '@/enums/TemplateClassEnum';
 import { EvluateRelativeTypeEnum } from '@/enums/EvluateRelativeTypeEnum';
+import EmptyDataContainer from '@/components/exception/EmptyDataContainer';
+import React, { useState } from 'react';
 
 const templateTypeDescConfig = {
   [TemplateClassEnum.Evaluate]: '评估',
@@ -12,7 +14,9 @@ const templateTypeDescConfig = {
   [TemplateClassEnum.Form]: '表单',
 };
 
-const SearchComponent = () => {
+const SearchComponent = ({ searchTemplate }) => {
+  const [keyword, setKeyword] = useState('');
+
   return (
     <>
       <ConfigProvider
@@ -34,10 +38,19 @@ const SearchComponent = () => {
             prefix={
               <SearchOutlined className="site-form-item-icon mr-[10px]" />
             }
+            onChange={(e) => {
+              setKeyword(e.target.value);
+            }}
+            allowClear={{
+              clearIcon: <CloseCircleOutlined onClick={() => {
+                searchTemplate('');
+              }} />,
+            }}
             placeholder="搜索"
-            allowClear
             suffix={
-              <Button type="primary" className="rounded-3xl">
+              <Button type="primary" className="rounded-3xl" onClick={() => {
+                searchTemplate(keyword);
+              }}>
                 搜索
               </Button>
             }
@@ -118,7 +131,7 @@ const ElderTemplateListPage = () => {
   const [searchParams] = useSearchParams();
   const customerId = searchParams.get('customerId');
 
-  const { data = {} } = useLoadEvaluteTemplateList({
+  const { data = {}, loading, run } = useLoadEvaluteTemplateList({
     customerId,
   });
 
@@ -139,11 +152,13 @@ const ElderTemplateListPage = () => {
               </div>
 
               <div className=" border-b-[1px] border-solid border-bg- pb-[20px] mb-[20px]">
-                <SearchComponent />
+                <SearchComponent searchTemplate={run} />
               </div>
             </div>
           </Affix>
-          <ListComponent data={data?.dataList} customerId={customerId}></ListComponent>
+          <EmptyDataContainer data={[data?.dataList]} loading={loading}>
+            <ListComponent data={data?.dataList} customerId={customerId}></ListComponent>
+          </EmptyDataContainer>
         </div>
       </div>
     </>

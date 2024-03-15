@@ -27,7 +27,7 @@ const ProgressInfo = ({ completeCount = 0, totalCount }) => {
   return (
     <>
       <div className="bg-slate-50 border-b border-zinc-300 pb-[20px]">
-        <div className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide mb-[5px]">
+        <div className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide ">
           已完成 {completeCount}/{totalCount}
         </div>
         <ProgressBar processRate={completeCount / totalCount * 100} />
@@ -169,7 +169,7 @@ const EditCompositeEvaluatePage = (props) => {
     relativeId,
     relativeType,
     customerId,
-    recordMainId
+    recordMainId,
   };
 
   const { filledListData, notFilledListData, templateData } = useLoadTemplateData(locationParams);
@@ -190,6 +190,7 @@ const EditCompositeEvaluatePage = (props) => {
                           totalCount={filledListData.length + notFilledListData.length} />
           </div>
         }
+        rowCardoffsetTop={155}
         classname="relative"
       >
         <div className="w-[620px] ">

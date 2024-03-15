@@ -31,13 +31,14 @@ const addPage = () => {
     relativeType,
     customerId,
     remaindIndex,
-    parentRecordMainId
+    parentRecordMainId,
   });
 
 
   return (
-    <Skeleton loading={loading}>
-      <div className="max-w-[620px] m-auto py-[20px]">
+
+    <div className="max-w-[620px] m-auto py-[20px]">
+      <Skeleton loading={loading} paragraph={{ rows: 10 }} active>
         <div className="mb-[90px]">
           <div className="mt-[20px]">
             {evaluateTemplateData?.resDTO?.elementList &&
@@ -59,8 +60,9 @@ const addPage = () => {
 
 
         </div>
-      </div>
-    </Skeleton>
+      </Skeleton>
+    </div>
+
 
   );
 };

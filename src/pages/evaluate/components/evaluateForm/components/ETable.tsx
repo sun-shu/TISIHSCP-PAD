@@ -37,7 +37,7 @@ const FormItemBaseContainer = ({ item, form = {}, children, formItemProps = {} }
 const ETableForm = (props) => {
   const [form] = Form.useForm();
   // 面板卡弹窗表单
-  const { data, onSubmit, disabled, title, defultValue, item, setFormVisible, setData, open } = props;
+  const { data, disabled, title, defultValue, item, setFormVisible, setData, open } = props;
   const handleDeleteBtnClick = () => {
     // 删除数据
     // onSubmit(data);
@@ -183,33 +183,15 @@ const ETable = (props) => {
   const [formVisible, setFormVisible] = useState(false);
   const [data, setData] = useState([]);
 
-  //  点击查看按钮
-  const handleClick = () => {
-    //...加载数据
-    //...打开ETableForm
-    setCurrentSelectData({});
-    setFormVisible(true);
-
-  };
-
-  const handleSubmit = (data) => {
-    //...提交数据
-    //...关闭ETableForm
-    let newData = { ...value };
-    //如果已经存在了selectDataIndex，就修改原数组，没有存在ID，证明是新增，需要追加在原数组后面,并递增selectDataIndex
-    if (data?.id) {
-
-
-      //修改value数组
-    }
-
-    onChange(data?.value);
-  };
-
-
+  
   const openETableForm = (item) => {
     setCurrentSelectData({ ...item });
     setFormVisible(true);
+  };
+
+  //渲染前两个字段
+  const renderAnswer = (answer) => {
+    return;
   };
 
   console.log(data, 'TableData');
@@ -230,7 +212,6 @@ const ETable = (props) => {
         setFormVisible={setFormVisible}
         setData={setData}
         data={data}
-        onSubmit={handleSubmit}
       />
       {/* 面板选项列表数据 */}
       <div className="grid grid-cols-2 gap-[20px] items-center" id={id}>

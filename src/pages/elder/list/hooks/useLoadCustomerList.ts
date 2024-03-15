@@ -8,6 +8,7 @@ const useLoadCustomerList = () => {
 
   return {
     customerList,
+    loading,
   };
 };
 

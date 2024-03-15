@@ -4,9 +4,10 @@ import { useState } from 'react';
 
 const useLoadEvaluteTemplateList = (locationParams) => {
   const [list, setList] = useState([]);
-  const { data, run } = useRequest(() => {
+  const { data, run, loading } = useRequest((keywords = '') => {
     return getTemplateMainSelect({
       customerId: locationParams.customerId,
+      name: keywords,
     });
   }, {
     ready: !!locationParams.customerId,
@@ -17,6 +18,8 @@ const useLoadEvaluteTemplateList = (locationParams) => {
 
   return {
     data,
+    loading,
+    run,
   };
 };
 

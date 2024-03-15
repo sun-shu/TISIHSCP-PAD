@@ -4,13 +4,14 @@ import {
   SearchOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Affix, Avatar, Button, ConfigProvider, Input, Select } from 'antd';
+import { Affix, Avatar, Button, ConfigProvider, Input, Select, Skeleton } from 'antd';
 import EvaluateIcon from '@/assets/icon/evalute.png';
 import LevelOfCareTag from '@/components/LevelOfCareTag';
 import useLoadCustomerList from '@/pages/elder/list/hooks/useLoadCustomerList';
 import ManAvatar from '@/assets/avatar/man.png';
 import React from 'react';
 import { SexDescConst } from '@/const/SexDescConst';
+import EmptyDataContainer from '@/components/exception/EmptyDataContainer';
 
 const ListComponent = ({ data = [] }) => {
   console.log('data', data);
@@ -193,14 +194,14 @@ const SearchComponent = () => {
 };
 
 const ElderListPage = () => {
-  const { customerList = [] } = useLoadCustomerList();
+  const { customerList = [], loading } = useLoadCustomerList();
 
   console.log('customerList', customerList);
 
   return (
     <>
-      <div className=" text-center flex justify-center flex-col items-center">
-        <div>
+      <div className=" text-center flex  flex-col items-center h-full ">
+        <div className="h-full ">
           <Affix offsetTop={50}>
             <div className="bg-gray-F6 pt-[10px]">
               <div className="flex flex-col items-start justify-start text-[1.75rem] mb-[10px]">
@@ -217,7 +218,11 @@ const ElderListPage = () => {
               </div>
             </div>
           </Affix>
-          <ListComponent data={customerList}></ListComponent>
+          <div className=" h-[1000px]">
+            <EmptyDataContainer data={customerList} emptyClassName="h-full mt-[30%]" loading={loading}>
+              <ListComponent data={customerList}></ListComponent>
+            </EmptyDataContainer>
+          </div>
         </div>
       </div>
     </>

@@ -209,13 +209,15 @@ const FormItemComponent = ({
     const rules = [
       {
         validator: (rule, value = {}) => {
-          if (value.optionType === OptionTypeEnum.OTHER) {
-            if (!value.answer) {
+          if (item?.elementRequireFlg === ElementRequireFlgEnum.YES) {
+            if (value.optionType === OptionTypeEnum.OTHER) {
+              if (!value.answer) {
+                return Promise.reject('必填项');
+              }
+            }
+            if (!value.optionValues) {
               return Promise.reject('必填项');
             }
-          }
-          if (!value.optionValues) {
-            return Promise.reject('必填项');
           }
 
           return Promise.resolve();
@@ -243,15 +245,17 @@ const FormItemComponent = ({
     const rules = [
       {
         validator: (rule, value = {}) => {
-          if (value.optionType === OptionTypeEnum.OTHER) {
-            if (!value.answer) {
+          if (item?.elementRequireFlg === ElementRequireFlgEnum.YES) {
+
+            if (value.optionType === OptionTypeEnum.OTHER) {
+              if (!value.answer) {
+                return Promise.reject('必填项');
+              }
+            }
+            if (!value.optionValues) {
               return Promise.reject('必填项');
             }
           }
-          if (!value.optionValues) {
-            return Promise.reject('必填项');
-          }
-
 
           return Promise.resolve();
         },

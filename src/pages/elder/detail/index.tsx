@@ -8,8 +8,9 @@ import LookIcon from '@/assets/icon/look.png';
 import { useSearchParams } from '@@/exports';
 import useLoadEvaluteList from '@/pages/elder/detail/hooks/useLoadEvaluteList';
 import dayjs from 'dayjs';
-import {TemplateClassEnum} from "@/enums/TemplateClassEnum";
+import { TemplateClassEnum } from '@/enums/TemplateClassEnum';
 
+import EmptyDataContainer from '@/components/exception/EmptyDataContainer';
 // 加载更多分割线
 const LoadMoreDivider = ({ handleLoadMoreBtnClick }) => {
   return (
@@ -34,11 +35,19 @@ const LoadMoreDivider = ({ handleLoadMoreBtnClick }) => {
 };
 
 // 评估记录卡片
-const EvaluationRecordCard = ({ templateClass, recordMainId, reportTitle = '', reportDate = '', evaluator = '', templateCode = '', customerId = '' }) => {
-   const handleGoToReport = (item = {}) => {
-     const url = templateClass === TemplateClassEnum.EvaluateGroup ? `/elder/evaluation-report?recordMainId=${recordMainId}&templateComposeCode=${templateCode}&customerId=${customerId}` : `/elder/evaluation-report?recordMainId=${recordMainId}&customerId=${customerId}`
+const EvaluationRecordCard = ({
+                                templateClass,
+                                recordMainId,
+                                reportTitle = '',
+                                reportDate = '',
+                                evaluator = '',
+                                templateCode = '',
+                                customerId = '',
+                              }) => {
+  const handleGoToReport = (item = {}) => {
+    const url = templateClass === TemplateClassEnum.EvaluateGroup ? `/elder/evaluation-report?recordMainId=${recordMainId}&templateComposeCode=${templateCode}&customerId=${customerId}` : `/elder/evaluation-report?recordMainId=${recordMainId}&customerId=${customerId}`;
     history.push(url);
-   }
+  };
   return (
     <div className="w-[620px] h-[76px] px-[20px] py-[10px] bg-white rounded justify-between items-center inline-flex">
       <div className=" flex-col justify-start items-start inline-flex">
@@ -138,7 +147,7 @@ const EvaluationRecordList = ({ data = [], defaultShowAll = false, customerId = 
       {data?.map((item) => (
         <div className="py-[10px]">
           <EvaluationRecordCard
-              templateClass={item.templateClass}
+            templateClass={item.templateClass}
             reportTitle={item.templateName}
             reportDate={dayjs(item.recordTime).format('YYYY-MM-DD')}
             evaluator={item.createUser}
@@ -195,7 +204,7 @@ const EvaluationTrendList = ({ defaultShowAll }) => {
 // 点击切换记录的展示状态按钮
 const MenuGroup = ({ currentTab, setCurrentTab }) => {
   return (
-    <div className="border-b border-solid border-b-[color:var(--BG-,#DBDBDB)] pb-5 flex gap-[10px]">
+    <div className="border-b border-solid border-b-[color:var(--BG-,#DBDBDB)] pb-5 flex gap-[10px] w-full">
       <Button
         className={classNames(
           currentTab === TabTypeEnums.RECORD
@@ -239,7 +248,7 @@ const ElderDetail = () => {
   const [searchParams] = useSearchParams();
   const customerId = searchParams.get('customerId');
 
-  const { data = {} } = useLoadEvaluteList({
+  const { data = {}, loading } = useLoadEvaluteList({
     customerId,
   });
   console.log(data, 'data');
@@ -248,13 +257,15 @@ const ElderDetail = () => {
   return (
     <>
       <ElderDetailLayout title="长者详情" customerId={customerId}>
-        <div>
+        <div className="w-full">
           <MenuGroup currentTab={currentTab} setCurrentTab={setCurrentTab} />
- 
+
           <div>
 
             <div hidden={currentTab !== TabTypeEnums.RECORD}>
-              <EvaluationRecordList defaultShowAll={true} data={data?.dataList} customerId={customerId}/>
+              <EmptyDataContainer data={data?.dataList} emptyClassName="h-full mt-[30%]" loading={loading}>
+                <EvaluationRecordList defaultShowAll={true} data={data?.dataList} customerId={customerId} />
+              </EmptyDataContainer>
             </div>
 
             <div hidden={currentTab !== TabTypeEnums.TREND}>

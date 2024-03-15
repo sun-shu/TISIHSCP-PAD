@@ -29,7 +29,7 @@ const useLoadEvaluteList = (locationParams) => {
   //   total: 0,
   // });
   // useLoadMoreScroll();
-  const { data } = useRequest(() => {
+  const { data, loading } = useRequest(() => {
     return getRecordList({
       templateClass: [TemplateClassEnum.Evaluate, TemplateClassEnum.EvaluateGroup, TemplateClassEnum.Form].join(','),
       ...locationParams,
@@ -40,6 +40,7 @@ const useLoadEvaluteList = (locationParams) => {
 
   return {
     data,
+    loading,
   };
 };
 

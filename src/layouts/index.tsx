@@ -4,6 +4,7 @@ import { history, Link, NavLink, Outlet } from 'umi';
 import styles from './index.less';
 import { Image } from 'antd';
 import Logo from '@/assets/logo.png';
+import { useModel } from '@@/exports';
 
 export default function Layout() {
   const px2rem = px2remTransformer({
@@ -17,12 +18,19 @@ export default function Layout() {
     return location.path.includes('elder');
   };
 
+  const { initialState = {}, loading, error, refresh, setInitialState } =
+    useModel('@@initialState');
+
+  const { currentUser = {} } = initialState;
+  console.log('initialState', initialState);
+
   return (
     <StyleProvider transformers={[px2rem]}>
       <div
-        className={classNames(styles.navs, 'bg-gray-F6 pt-[50px] min-h-screen')}
+        className={classNames('bg-gray-F6 pt-[50px] min-h-screen h-screen overscroll-y-auto')}
       >
-        <div className="bg-white fixed h-[50px] top-0 z-50 w-full flex justify-start items-center px-[24px] gap-[24px]">
+        <div
+          className={classNames(styles.navs, 'bg-white fixed h-[50px] top-0 z-50 w-full flex justify-start items-center px-[24px] gap-[24px]')}>
           <div
             onClick={() => {
               history.push('/evaluate/task-list');
@@ -63,13 +71,17 @@ export default function Layout() {
           <Link to="/user-info">
             <div className="flex items-center py-1 px-2 rounded bg-[#00adb8]">
               <div className=" text-white  text-sm leading-5">评估师：</div>
-              <div className=" text-white  text-sm leading-5">郑婷雅</div>
+              <div className=" text-white  text-sm leading-5">{currentUser.actName}</div>
             </div>
           </Link>
         </div>
 
-        <div className="">
+        <div className="bg-gray-F6" style={{
+          minHeight: 'calc(100vh - 50px)',
+        }}>
+
           <Outlet />
+
         </div>
       </div>
     </StyleProvider>
