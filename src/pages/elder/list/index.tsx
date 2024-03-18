@@ -9,9 +9,11 @@ import EvaluateIcon from '@/assets/icon/evalute.png';
 import LevelOfCareTag from '@/components/LevelOfCareTag';
 import useLoadCustomerList from '@/pages/elder/list/hooks/useLoadCustomerList';
 import ManAvatar from '@/assets/avatar/man.png';
+import WomanAvatar from '@/assets/avatar/woman.png';
 import React, { useState } from 'react';
 import { SexDescConst } from '@/const/SexDescConst';
 import EmptyDataContainer from '@/components/exception/EmptyDataContainer';
+import { SexEnum } from '@/enums/SexEnum';
 
 const ListComponent = ({ data = [] }) => {
   console.log('data', data);
@@ -49,9 +51,11 @@ const ListComponent = ({ data = [] }) => {
           >
             <div className=" flex flex-1 flex-row items-center justify-start gap-[20px] max-w-[620px]">
 
-              <Avatar src={item?.imageUrl} icon={<img src={ManAvatar} width={104} height={104} />}
+              <Avatar src={item?.imageUrl}
+                      icon={<img src={item.gender === SexEnum.FEMALE ? WomanAvatar : ManAvatar} width={104}
+                                 height={104} />}
                       shape="square"
-                      className="w-[104px] h-[104px] border-none">
+                      className="w-[104px] h-[104px] border-none bg-white">
 
               </Avatar>
 
@@ -227,7 +231,7 @@ const ElderListPage = () => {
               </div>
             </div>
           </Affix>
-          <div className=" h-[1000px]">
+          <div className="">
             <EmptyDataContainer data={customerList} emptyClassName="h-full mt-[30%]" loading={loading}>
               <ListComponent data={customerList}></ListComponent>
             </EmptyDataContainer>

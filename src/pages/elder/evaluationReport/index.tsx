@@ -5,7 +5,7 @@ import { useMatch, useSearchParams } from '@@/exports';
 
 const EvaluationReportSummer = ({ completeList = [] }) => {
   console.log(completeList, 'completeList');
- 
+
   const components = completeList.map((item, index) => {
     const component = (
       <div
@@ -113,7 +113,8 @@ const EvaluationReportPage = () => {
   console.log('EvaluationReportPage', data);
   return (
     <>
-      <ElderDetailLayout title={templateComposeCode ? '综合评估报告' : '评估报告'} customerId={customerId}>
+      <ElderDetailLayout title={templateComposeCode ? data.templateComposeName : data.templateName}
+                         customerId={customerId}>
         <div className="w-[620px]">
           <div className="w-full  top-[184px]  justify-between items-start inline-flex">
             <div className="flex-col justify-start items-start gap-1 inline-flex">

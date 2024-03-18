@@ -64,7 +64,6 @@ const FormItemBaseContainerDefault = ({ item, children, formItemProps = {} }: Fo
           <Form.Item name={item?.id} {...formItemProps} className="mb-0">
             {children}
           </Form.Item>
-
         </div>
       </div>
     </div>
@@ -76,16 +75,20 @@ interface FormItemComponentProps {
   item: TemplateElementResDTO,
   index: number,
   form: any,
+  commonFormItemProps?: any,
   changeElementVisible: (elementId: number, visible: boolean) => void,
   FormItemBaseContainer: React.FC<FormItemBaseContainerProps>,
+  disabled: boolean,
 }
 
 const FormItemComponent = ({
                              item,
-                             index,
                              form,
                              changeElementVisible = null,
+                             commonFormItemProps = {},
                              FormItemBaseContainer = FormItemBaseContainerDefault,
+                             disabled = false,
+
                            }: FormItemComponentProps) => {
   const options = React.useMemo(() => (
     item?.optionList?.map((option) => ({
@@ -113,6 +116,13 @@ const FormItemComponent = ({
           }
         }
 
+        if (elementDataType === ElementDataTypeEnum.PHONE) {
+          console.log('身份证号校验value', value);
+          if (value.answer && !/^1[3456789]\d{9}$/.test(value.answer)) {
+            return Promise.reject('手机号格式错误');
+          }
+        }
+
         //数字校验
 
         return Promise.resolve();
@@ -120,6 +130,7 @@ const FormItemComponent = ({
     }];
 
     const formItemProps = {
+      ...commonFormItemProps,
       rules,
     };
 
@@ -136,6 +147,12 @@ const FormItemComponent = ({
         return (
           <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
             <EInput type="text" form={form} item={item} />
+          </FormItemBaseContainer>
+        );
+      case ElementDataTypeEnum.PHONE:
+        return (
+          <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
+            <EInput form={form} item={item} />
           </FormItemBaseContainer>
         );
       case ElementDataTypeEnum.IDCARD:
@@ -164,6 +181,7 @@ const FormItemComponent = ({
     }];
 
     const formItemProps = {
+      ...commonFormItemProps,
       rules,
     };
 
@@ -208,6 +226,7 @@ const FormItemComponent = ({
     }];
 
     const formItemProps = {
+      ...commonFormItemProps,
       rules,
     };
 
@@ -240,8 +259,8 @@ const FormItemComponent = ({
     ];
 
     const formItemProps = {
+      ...commonFormItemProps,
       rules,
-
     };
 
     return (
@@ -278,6 +297,7 @@ const FormItemComponent = ({
 
     const formItemProps = {
       rules,
+      ...commonFormItemProps,
     };
 
     return (
@@ -299,8 +319,6 @@ const FormItemComponent = ({
 
   // 二级标题组件
   const createTwoSectionComponent = (item: TemplateElementResDTO) => {
-
-
     return (
       <TwoSection title={item?.elementName} />
     );
@@ -312,12 +330,10 @@ const FormItemComponent = ({
       {
         validator: (rule, value) => {
           if (item?.elementRequireFlg === ElementRequireFlgEnum.YES) {
-            if (!value.answer) {
+            if (!(value?.bodyList?.length > 0)) {
               return Promise.reject('必填项');
             }
           }
-          //身份证号校验
-          //数字校验
 
           return Promise.resolve();
         },
@@ -325,14 +341,14 @@ const FormItemComponent = ({
     ];
 
     const formItemProps = {
+      ...commonFormItemProps,
       rules,
-      valuePropName: 'checked',
     };
 
 
     return (
       <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
-        <ETable form={form} item={item} />
+        <ETable form={form} item={item} disabled={disabled} />
       </FormItemBaseContainer>
     );
   };

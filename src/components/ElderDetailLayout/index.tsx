@@ -1,28 +1,32 @@
-import CustomTag from '@/components/CustomTag';
 import { Affix, Image, Skeleton, Avatar } from 'antd';
-import { useEffect, useState } from 'react';
 
-// import ElderApi from '@/api/elder';
 import React from 'react';
 
 import useLoadCustomer from './useLoadCustomer';
 import { CustomerWechatDTO } from '@/api/customer/getCustomerWechat.interface';
 import LevelOfCareTag from '@/components/LevelOfCareTag';
 import ManAvatar from '@/assets/avatar/man.png';
+import WomanAvatar from '@/assets/avatar/woman.png';
+import { SexEnum } from '@/enums/SexEnum';
 
-const ElderInfoCardCol = (props: {
-  data: CustomerWechatDTO,
-  loading
-}) => {
-  const { data, loading = {} } = props;
+interface ElderInfoCardColProps {
+  data: CustomerWechatDTO;
+  loading: boolean;
+}
 
+const ElderInfoCardCol = (props: ElderInfoCardColProps) => {
+  const { data = {}, loading = false } = props;
+
+  console.log('ElderInfoCardCol', data, loading);
   return (
     <>
 
       <div
         className="w-[620px] h-[100px] px-5 py-2.5 bg-white rounded justify-between items-center gap-[10px] inline-flex">
         <Skeleton loading={loading} avatar active paragraph={{ rows: 1 }}>
-          <Avatar src={data.imageUrl} icon={<img src={ManAvatar} width={88} height={88} className="bg-white" />}
+          <Avatar src={data?.imageUrl}
+                  icon={<img src={data?.gender === SexEnum.FEMALE ? WomanAvatar : ManAvatar} width={88} height={88}
+                             className="bg-white" />}
                   shape="square"
                   className="w-[88px] h-[88px] border-none">
 
@@ -32,7 +36,7 @@ const ElderInfoCardCol = (props: {
             {data?.name}
           </div>
           <div className="w-max">
-            {data.age}岁
+            {data?.age}岁
           </div>
           <LevelOfCareTag level={data?.nurseGrade} />
 
@@ -55,14 +59,16 @@ const ElderInfoCardRow = (props: {
   loading: boolean
 }) => {
 
-  const { data, loading } = props;
+  const { data = {}, loading = false } = props;
 
   return (
     <>
 
       <div className="items-center rounded bg-white flex w-full flex-col  mx-auto p-5  w-[200px] ">
         <Skeleton loading={loading} avatar paragraph={{ rows: 4 }} active>
-          <Avatar src={data.imageUrl} icon={<img src={ManAvatar} width={160} height={160} className="bg-white" />}
+          <Avatar src={data?.imageUrl}
+                  icon={<img src={data?.gender === SexEnum.FEMALE ? WomanAvatar : ManAvatar} width={160} height={160}
+                             className="bg-white" />}
                   shape="square"
                   className="w-[160px] h-[160px] border-none">
 

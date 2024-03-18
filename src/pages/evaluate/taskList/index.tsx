@@ -12,8 +12,10 @@ import { TaskTypeEnum } from '@/enums/TaskTypeEnum';
 import { EvluateRelativeTypeEnum } from '@/enums/EvluateRelativeTypeEnum';
 import LevelOfCareTag from '@/components/LevelOfCareTag';
 import ManAvatar from '@/assets/avatar/man.png';
+import WomanAvatar from '@/assets/avatar/woman.png';
 
 import EvaluateIcon from '@/assets/icon/evalute-1.png';
+import { SexEnum } from '@/enums/SexEnum';
 
 // 选项卡Tab枚举
 enum TabTypeEnums {
@@ -174,14 +176,17 @@ const ElderListTemplate = ({ title, data = [], countDescription, loading }: {
                           templateCode,
                           taskType,
                           customerId,
+                          gender,
                         }) => (
               <div className=" landscape:w-[380px] portrait:w-[300px] p-5 bg-white rounded flex-center flex-col"
                    onClick={() => {
                      handleClickGoToEvaluePage(id, customerId, taskType, templateCode);
                    }}>
                 <div className="w-full justify-between items-center gap-5 flex">
-                  <Avatar src={imageUrl} icon={<img src={ManAvatar} width={160} height={160} />} shape="square"
-                          className="w-[104px] h-[104px] border-none">
+                  <Avatar src={imageUrl}
+                          icon={<img src={gender === SexEnum.FEMALE ? WomanAvatar : ManAvatar} width={160}
+                                     height={160} />} shape="square"
+                          className="w-[104px] h-[104px] border-none bg-white">
 
                   </Avatar>
                   <div className=" flex-1 flex-col justify-between h-full items-start flex">

@@ -11,6 +11,7 @@ const ERadio = (props) => {
     const selectedOption = options.find(option => option.value?.toString() === e.target.value);
 
     const newValue = {
+      ...config,
       optionValues: e.target.value,
       answer: config.optionType === OptionTypeEnum.OTHER ? value?.answer : '',
       elementId: config.id,
@@ -26,6 +27,7 @@ const ERadio = (props) => {
 
   const handleOtherTextChange = (e) => {
     onChange({
+      ...config,
       optionValues: value?.optionValues,
       answer: e.target.value,
       elementId: config.id,
