@@ -29,6 +29,7 @@ interface EvaluateFormTemplatesProps {
   setElementList: (elementList: TemplateResDTO[]) => void;
   elementList: TemplateResDTO[];
   form: FormInstance<any>;
+  disabled: boolean;
 }
 
 const EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
