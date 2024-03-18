@@ -185,7 +185,7 @@ const EditCompositeEvaluatePage = (props) => {
         customerId={customerId}
         title={
           <div>
-            <span>综合评估</span>
+            <span>{templateData.templateComposeName}</span>
             <ProgressInfo completeCount={filledListData.length}
                           totalCount={filledListData.length + notFilledListData.length} />
           </div>

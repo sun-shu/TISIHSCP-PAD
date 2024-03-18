@@ -29,10 +29,11 @@ interface EvaluateFormTemplatesProps {
   setElementList: (elementList: TemplateResDTO[]) => void;
   elementList: TemplateResDTO[];
   form: FormInstance<any>;
+  disabled: boolean;
 }
 
 const EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
-  const { elementList = [], form } = props;
+  const { elementList = [], form, disabled } = props;
   const { setElementList } = props;
 
   const { changeElementVisible } = useQuestionCalculate(elementList, setElementList);
@@ -70,7 +71,7 @@ const EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
               <>
                 {item?.elementIsShow !== ElementVisibleEnum.HIDE &&
                   <FormItemComponent item={item} index={index} form={form}
-                                     changeElementVisible={changeElementVisible} />}
+                                     changeElementVisible={changeElementVisible} disabled={disabled} />}
               </>
             );
           })}
@@ -120,7 +121,7 @@ const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
             disabled={disabled} onFieldsChange={onFieldsChange} onValuesChange={onValuesChange}>
         {elementList &&
           <EvaluateFormTemplates elementList={elementList} form={form}
-                                 setElementList={setElementList} />
+                                 setElementList={setElementList} disabled={disabled} />
         }
       </Form>
     </div>

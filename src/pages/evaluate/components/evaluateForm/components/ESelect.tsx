@@ -10,6 +10,7 @@ const ESelect = ({ selectProps, ...props }) => {
   const handleOnChange = (newValue, option) => {
     console.log(newValue, option, 'value');
     onChange({
+      ...config,
       optionValues: newValue,
       answer: config.optionType === OptionTypeEnum.OTHER ? value.answer : '',
       elementId: config.id,
@@ -24,6 +25,7 @@ const ESelect = ({ selectProps, ...props }) => {
 
   const handleOtherTextChange = (e) => {
     onChange({
+      ...config,
       optionValues: value.optionValues,
       answer: e.target.value,
       elementId: config.id,

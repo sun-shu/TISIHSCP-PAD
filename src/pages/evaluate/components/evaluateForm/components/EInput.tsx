@@ -9,6 +9,7 @@ const EInput = (props) => {
 
   const handleChange = (e) => {
     onChange({
+      ...config,
       answer: e.target.value,
       elementId: config.id,
       optionType: config.elementType,
@@ -45,6 +46,7 @@ const ETextArea = (props) => {
 
   const handleChange = (e) => {
     onChange({
+      ...config,
       answer: e.target.value,
       elementId: config.id,
       optionType: config.elementType,

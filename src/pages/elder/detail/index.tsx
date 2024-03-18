@@ -48,9 +48,17 @@ const EvaluationRecordCard = ({
     const url = templateClass === TemplateClassEnum.EvaluateGroup ? `/elder/evaluation-report?recordMainId=${recordMainId}&templateComposeCode=${templateCode}&customerId=${customerId}` : `/elder/evaluation-report?recordMainId=${recordMainId}&customerId=${customerId}`;
     history.push(url);
   };
+
+  const handleGoToDetail = () => {
+    const url = templateClass === TemplateClassEnum.EvaluateGroup ? `/evaluate/add-of-composite/${customerId}/${templateCode}?recordMainId=${recordMainId}` : `/evaluate/detail/${templateCode}/${recordMainId}?customerId=${customerId}`;
+
+    history.push(url);
+  };
+
   return (
-    <div className="w-[620px] h-[76px] px-[20px] py-[10px] bg-white rounded justify-between items-center inline-flex">
-      <div className=" flex-col justify-start items-start inline-flex">
+    <div className="w-[620px] h-[76px] px-[20px] py-[10px] bg-white rounded justify-between items-center inline-flex"
+    >
+      <div className=" flex-col justify-start items-start inline-flex" onClick={handleGoToDetail}>
         <div className="self-stretch h-9 text-zinc-700 text-lg font-semibold line-clamp-1 leading-[30px]">
           {reportTitle}
         </div>
@@ -72,7 +80,7 @@ const EvaluationRecordCard = ({
       </div>
       <div className=" gap-5  h-auto w-fit  ">
         <Button
-          onClick={handleGoToReport}
+          onClickCapture={handleGoToReport}
           type="primary"
           className="text-white text-sm flex w-max"
 

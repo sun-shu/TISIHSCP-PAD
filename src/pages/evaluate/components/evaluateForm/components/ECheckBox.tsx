@@ -16,6 +16,7 @@ const ECheckBox = (props) => {
     // 设置hasOther的默认
     const hasOther = value.optionValues?.split(',').some(item => item === otherOptionId);
     onChange({
+      ...config,
       ...value,
       hasOther: hasOther,
     });
@@ -25,6 +26,7 @@ const ECheckBox = (props) => {
     const hasOther = newValue.some(item => item === otherOptionId);
 
     const data = {
+      ...config,
       ...value,
       optionValues: newValue.join(','),
       elementId: config.id,
@@ -44,6 +46,7 @@ const ECheckBox = (props) => {
 
   const handleOtherTextChange = (e) => {
     onChange({
+      ...config,
       ...value,
       answer: e.target.value,
     });

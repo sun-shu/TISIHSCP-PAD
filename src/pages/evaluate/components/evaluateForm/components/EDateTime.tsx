@@ -7,31 +7,31 @@ const EDateTimePicker = (props) => {
   console.log(value, 'EDateTimePicker value1');
   const handleChangeDate = (newValue) => {
 
-    let answer = newValue.valueOf();
+    let answer = newValue;
     if (value?.answer) {
       const oldHour = dayjs(value.answer).hour();
       const oldMinute = dayjs(value.answer).minute();
-      answer = dayjs(newValue).hour(oldHour).minute(oldMinute).valueOf();
+      answer = dayjs(newValue).hour(oldHour).minute(oldMinute);
     }
 
     onChange({
       ...value,
       ...config,
-      answer,
+      answer: answer.format('YYYY-MM-DD HH:mm:ss'),
       elementId: config.id,
     });
   };
 
   const handleChangeTime = (newValue) => {
-    let answer = newValue.valueOf();
+    let answer = newValue;
     if (value?.answer) {
-      answer = dayjs(value.answer).hour(newValue.hour()).minute(newValue.minute()).valueOf();
+      answer = dayjs(value.answer).hour(newValue.hour()).minute(newValue.minute());
     }
 
     onChange({
       ...value,
       ...config,
-      answer: answer,
+      answer: answer.format('YYYY-MM-DD HH:mm:ss'),
       elementId: config.id,
     });
   };
@@ -64,7 +64,7 @@ const EDatePicker = (props) => {
     onChange({
       ...value,
       ...config,
-      answer: date.valueOf(),
+      answer: date.format('YYYY-MM-DD'),
       elementId: config.id,
     });
   };
@@ -81,11 +81,18 @@ const EDatePicker = (props) => {
 const ETimePicker = (props) => {
   const { id, value = {}, onChange, item: config } = props;
 
+  const timeStr = value.answer;
+
+  let timeObject = null;
+  if (timeStr) {
+    timeObject = dayjs().set('hour', Number(timeStr.split(':')[0])).set('minute', Number(timeStr.split(':')[1]));
+  }
+  console.log(value, 'ETimePicker value', timeObject);
   const handleChange = (date, dateString) => {
     onChange({
-      ...value,
       ...config,
-      answer: dayjs(date).valueOf(),
+      ...value,
+      answer: dayjs(date).format('HH:mm'),
       elementId: config.id,
     });
   };
@@ -96,7 +103,7 @@ const ETimePicker = (props) => {
                   showTime={{ format: 'HH:mm', defaultValue: null }}
                   onChange={handleChange}
                   format={'HH:mm'}
-                  value={value.answer && dayjs(value.answer)} />
+                  value={timeObject} />
     </div>
   );
 };
