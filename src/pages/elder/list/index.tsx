@@ -14,6 +14,8 @@ import React, { useState } from 'react';
 import { SexDescConst } from '@/const/SexDescConst';
 import EmptyDataContainer from '@/components/exception/EmptyDataContainer';
 import { SexEnum } from '@/enums/SexEnum';
+import dayjs from 'dayjs';
+
 
 const ListComponent = ({ data = [] }) => {
   console.log('data', data);
@@ -77,7 +79,7 @@ const ListComponent = ({ data = [] }) => {
                 </div>
                 <div className="flex flex-row items-center justify-start text-[0.75rem]">
                   <div className="relative tracking-[0.05em] leading-[1.13rem] line-clamp-1">
-                    入住日期：2023-12-02
+                    入住日期：{item?.checkInTime ? dayjs(item?.checkInTime).format('YYYY-MM-DD') : '-'}
                   </div>
                 </div>
               </div>

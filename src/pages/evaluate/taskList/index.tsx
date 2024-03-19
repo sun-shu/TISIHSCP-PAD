@@ -209,11 +209,11 @@ const ElderListTemplate = ({ title, data = [], countDescription, loading }: {
                         1号楼-3层-301-1床
                       </div>
 
-                      {checkInTime && (<div
+                      <div
                         className="text-zinc-700 text-xs  leading-[18px] tracking-wide">入院时间：{
-                        dayjs(checkInTime).format('YYYY-MM-DD')
+                        checkInTime ? dayjs(checkInTime).format('YYYY-MM-DD') : '-'
                       }
-                      </div>)}
+                      </div>
                     </div>
                   </div>
                 </div>

@@ -24,7 +24,7 @@ const EvaluationReportSummer = ({ completeList = [] }) => {
           <div className=" justify-start items-start gap-2.5 inline-flex">
             <div
               className="grow shrink basis-0 text-justify text-zinc-700 text-lg font-normal font-['PingFang SC'] leading-9">
-              {item?.commentaryName || '...'}
+              {item?.commentaryName || item?.templateName + '已完成'}
             </div>
           </div>
         </div>
