@@ -125,6 +125,8 @@ export default defineConfig({
       unitPrecision: 10,
     }),
   ],
+  devtool: process.env.NODE_ENV === 'development' ? 'source-map' : false,
+ 
 
   jsMinifier: 'none',
 });

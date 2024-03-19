@@ -10,8 +10,7 @@ const ECheckBox = (props) => {
   const { id, value = {}, onChange, options, changeElementVisible, item: config } = props;
 
   const otherOptionId = options.find(option => option.optionType === OptionTypeEnum.OTHER)?.value?.toString();
-  console.log(value, value?.optionValues?.split(','), 'checked');
-
+  console.log('otherOptionId', otherOptionId);
   if (!value.hasOwnProperty('hasOther')) {
     // 设置hasOther的默认
     const hasOther = value.optionValues?.split(',').some(item => item === otherOptionId);
@@ -21,6 +20,7 @@ const ECheckBox = (props) => {
       hasOther: hasOther,
     });
   }
+
   const handleOnChange = (newValue) => {
 
     const hasOther = newValue.some(item => item === otherOptionId);
@@ -66,7 +66,7 @@ const ECheckBox = (props) => {
               >
                         <span>
                           其他
-                          {value.hasOther ? (
+                          {value?.optionValues?.split(',').includes(otherOptionId) ? (
                             <> ：
                               <Input
                                 style={{
@@ -74,6 +74,7 @@ const ECheckBox = (props) => {
                                   marginLeft: 10,
                                   borderBottom: '1px solid #323746',
                                 }}
+                                value={value?.answer}
                                 onChange={handleOtherTextChange}
                                 variant="borderless"
                                 className=" absolute rounded-none flex-1"

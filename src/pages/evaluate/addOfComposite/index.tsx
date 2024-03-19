@@ -27,7 +27,7 @@ const ProgressInfo = ({ completeCount = 0, totalCount }) => {
   return (
     <>
       <div className="bg-slate-50 border-b border-zinc-300 pb-[20px]">
-        <div className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide ">
+        <div className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide  my-[5px] ">
           已完成 {completeCount}/{totalCount}
         </div>
         <ProgressBar processRate={completeCount / totalCount * 100} />
@@ -61,19 +61,6 @@ const FilledList = ({ compositeStatus = EvaluationStatusEnum.FINISHED, data = []
             {/*<div className="text-golden-F4 text-lg ">修改比例70%</div>*/}
             {compositeStatus === EvaluationStatusEnum.FINISHED ? (
               <Button
-                className="px-[10px] py-[4px] bg-golden-F4 flex text-black"
-                type="primary"
-                icon={
-                  <img src={FinishIcon} width={24} />
-                }
-                onClick={() => {
-                  handleGoToDetailBtnClick(templateCode, recordMainId);
-                }}
-              >
-                已完成
-              </Button>
-            ) : (
-              <Button
                 className="px-[10px] py-[4px] flex"
                 type="primary"
                 onClick={() => {
@@ -84,6 +71,19 @@ const FilledList = ({ compositeStatus = EvaluationStatusEnum.FINISHED, data = []
                 }
               >
                 查看
+              </Button>
+            ) : (
+              <Button
+                className="px-[10px] py-[4px] bg-golden-F4 flex text-black"
+                type="primary"
+                icon={
+                  <img src={FinishIcon} width={24} />
+                }
+                onClick={() => {
+                  handleGoToDetailBtnClick(templateCode, recordMainId);
+                }}
+              >
+                已完成
               </Button>
             )}
           </div>
@@ -127,7 +127,7 @@ const NotFilledList = ({ data, locationParams = {} }: NotFilledListProps) => {
               className="self-stretch h-[60px] text-zinc-700 text-xl font-semibold font-['PingFang SC'] leading-[30px] line-clamp-2">
               {templateName}
             </div>
-            <div className="text-zinc-700 text-lg font-normal font-['PingFang SC'] leading-9">
+            <div className="text-zinc-700 text-lg font-normal font-['PingFang SC'] leading-9  mt-[5px]">
               共{questionsCount}题
             </div>
           </div>

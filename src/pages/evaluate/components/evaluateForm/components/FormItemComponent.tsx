@@ -20,6 +20,7 @@ import {
 } from '@/pages/evaluate/components/evaluateForm/components/index';
 import { Form } from 'antd';
 import { OptionTypeEnum } from '@/pages/evaluate/components/evaluateForm/enums/OptionTypeEnum';
+import { c } from '@umijs/utils/compiled/tar';
 
 const { EDateTimePicker, ETimePicker } = EDateTime;
 const { ETextArea } = EInput;
@@ -82,7 +83,7 @@ interface FormItemComponentProps {
 }
 
 const FormItemComponent = ({
-                             item,
+                             item: config,
                              form,
                              changeElementVisible = null,
                              commonFormItemProps = {},
@@ -90,6 +91,14 @@ const FormItemComponent = ({
                              disabled = false,
 
                            }: FormItemComponentProps) => {
+
+  //PATCH by sunshu: 这里是给后端打的补丁，接口为了方便 需要elementId这个字段来做结果对应 2024-03-19
+  const item = {
+    ...config,
+    elementId: config.id,
+  };
+
+  // 组出选项列表需要的数据
   const options = React.useMemo(() => (
     item?.optionList?.map((option) => ({
       label: option.optionName,

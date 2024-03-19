@@ -2,14 +2,13 @@
 import React, { useEffect, useState } from 'react';
 
 //类型定义/枚举
-import { FormInstance } from 'antd';
+import { ConfigProvider, Form, Affix, FormInstance } from 'antd';
 import { TemplateResDTO } from '@/api/evaluateTemplate/seeTemplateData.interface';
 import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
 
 //接口
 
 //组件
-import { ConfigProvider, Form, Skeleton } from 'antd';
 import ProgressBar from '@/components/ProgressBar';
 import FormItemComponent from '@/pages/evaluate/components/evaluateForm/components/FormItemComponent';
 
@@ -71,6 +70,7 @@ const EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
               <>
                 {item?.elementIsShow !== ElementVisibleEnum.HIDE &&
                   <FormItemComponent item={item} index={index} form={form}
+                                     commonFormItemProps={{ initialValue: item }}
                                      changeElementVisible={changeElementVisible} disabled={disabled} />}
               </>
             );
@@ -107,16 +107,22 @@ const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
 
   return (
     <div>
-      <div className="text-[28px] font-semibold leading-10  bg-gray-F6 w-full">
-        {templateName}
-      </div>
+      <Affix offsetTop={50}>
+        <div className="bg-gray-F6">
+          <div className="text-[28px] font-semibold leading-10  bg-gray-F6 w-full">
+            {templateName}
+          </div>
 
-      <div
-        className="mb-[5px] text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide pt-[10px]">
-        已完成 {fillCount} / {needFillCount}
-      </div>
-      <ProgressBar processRate={fillCount / needFillCount * 100} />
-      <div className="text-right border-b-[1px] py-[10px]">※ 为必填项</div>
+          <div
+            className="mb-[5px] text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide pt-[10px]">
+            已完成 {fillCount} / {needFillCount}
+          </div>
+          <ProgressBar processRate={fillCount / needFillCount * 100} />
+          <div className="text-right border-b-[1px] py-[10px]">※ 为必填项</div>
+        </div>
+
+      </Affix>
+
       <Form scrollToFirstError form={form} colon={false}
             disabled={disabled} onFieldsChange={onFieldsChange} onValuesChange={onValuesChange}>
         {elementList &&
