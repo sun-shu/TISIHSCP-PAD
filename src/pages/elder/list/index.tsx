@@ -16,6 +16,7 @@ import EmptyDataContainer from '@/components/exception/EmptyDataContainer';
 import { SexEnum } from '@/enums/SexEnum';
 import dayjs from 'dayjs';
 
+
 const ListComponent = ({ data = [] }) => {
   console.log('data', data);
   const handleGoToDetailClick = (customerId) => {
