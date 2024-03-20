@@ -18,8 +18,7 @@ const useLoadDetailData = (form, params) => {
         };
         return acc;
       }, {});
-      console.log('initialValues', initialValues);
-      // form.setFieldsValue(initialValues);
+
       setInitialValues(initialValues);
     },
   });

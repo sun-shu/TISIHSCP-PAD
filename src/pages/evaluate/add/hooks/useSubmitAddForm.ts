@@ -43,6 +43,7 @@ const useSubmitAddForm = (form: FormInstance, params, elementList) => {
     const initialValues = elementList?.reduce((acc, cur) => {
       acc[cur.id] = {
         ...cur,
+        elementId: cur.id,
         optionValues: cur.optionValues ? cur.optionValues.toString() : '',
         elementIsShow: ElementVisibleEnum.HIDE,
       };

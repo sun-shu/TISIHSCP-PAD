@@ -32,7 +32,7 @@ const addPage = () => {
     remaindIndex,
     parentRecordMainId,
   };
-  const { data } = useGetLastRes(locationParams);
+  const { data } = useGetLastRes(locationParams, form);
 
   const {
     submitAddEvaluteGroupContinue,

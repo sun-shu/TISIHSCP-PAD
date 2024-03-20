@@ -22,6 +22,7 @@ import BedSelect from '@/components/entitySelects/BedSelect';
 
 import { debounce } from 'lodash';
 
+
 const ListComponent = ({ data = [] }) => {
   console.log('data', data);
   const handleGoToDetailClick = (customerId) => {
