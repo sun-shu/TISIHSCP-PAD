@@ -3,6 +3,7 @@ import { DictionaryAPI } from '@/api/sys/dictionary';
 import { useRequest } from 'ahooks';
 
 const DictionaryModel = () => {
+  console.log('DictionaryModel');
   const { data: dictionaryContent, loading: loading } = useRequest(async () => {
     const res = await DictionaryAPI.getDictionaryContent();
 

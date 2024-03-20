@@ -5,6 +5,7 @@ import React from 'react';
 import useSubmitAddForm from './hooks/useSubmitAddForm';
 import { useSearchParams } from '@@/exports';
 import useLoadFormTemplateData from '@/pages/evaluate/components/evaluateForm/hooks/useLoadFormTemplateData';
+import useGetLastRes from '@/pages/evaluate/add/hooks/useGetLastRes';
 
 // TODO: 1. 表单进度条 2. 长者信息 3.提交的结果展示
 const addPage = () => {
@@ -22,9 +23,7 @@ const addPage = () => {
   const [form] = Form.useForm();
 
   const { evaluateTemplateData = {}, loading, templateName } = useLoadFormTemplateData(templateCode, form);
-
-
-  const { submitAddEvaluteGroupContinue, submitAddEvaluteGroupReturn, submitAddEvalute } = useSubmitAddForm(form, {
+  const locationParams = {
     templateCode,
     templateComposeCode,
     relativeId,
@@ -32,7 +31,14 @@ const addPage = () => {
     customerId,
     remaindIndex,
     parentRecordMainId,
-  });
+  };
+  const { data } = useGetLastRes(locationParams);
+
+  const {
+    submitAddEvaluteGroupContinue,
+    submitAddEvaluteGroupReturn,
+    submitAddEvalute,
+  } = useSubmitAddForm(form, params, evaluateTemplateData?.resDTO?.elementList);
 
 
   return (

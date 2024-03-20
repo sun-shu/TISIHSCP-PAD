@@ -25,7 +25,7 @@
     "dayjs": "^1.11.10",
     "js-cookie": "^3.0.5",
     "umi": "^4.1.0",
-    "zustand": "^4.4.7"
+    "zustand": "^4.5.2"
   },
   "devDependencies": {
     "@antv/f2": "^5.4.0",

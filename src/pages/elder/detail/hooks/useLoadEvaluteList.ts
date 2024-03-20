@@ -6,36 +6,33 @@ import useLoadMoreScroll from '@/hooks/useLoadMoreScroll';
 import { useState } from 'react';
 
 
-const useLoadEvaluteList = (locationParams) => {
-  // const [currentPage, setCurrentPage] = useState(0);
-  //
-  // const request = useRequest(() => {
-  //   return getRecordList({
-  //     templateClass: [TemplateClassEnum.Evaluate, TemplateClassEnum.EvaluateGroup, TemplateClassEnum.Form].join(','),
-  //     ...locationParams,
-  //     pageSize: 5,
-  //     pageNumber: 1,
-  //   });
-  // }, {
-  //   manual: true,
-  //   onSuccess: (res) => {
-  //     console.log('useLoadEvaluteList', res);
-  //   },
-  // });
-  //
-  // const { data } = useLoadMoreScroll(request.run, {
-  //   currentPage,
-  //   pageSize: 5,
-  //   total: 0,
-  // });
-  // useLoadMoreScroll();
-  const { data, loading } = useRequest(() => {
+const useLoadEvaluteList = (locationParams, containerRef) => {
+  const { data, loading } = useRequest((page = {
+    currentPage: 0,
+    pageSize: 10,
+    total: 0,
+  }) => {
+    console.log('useLoadEvaluteList page', page);
     return getRecordList({
       templateClass: [TemplateClassEnum.Evaluate, TemplateClassEnum.EvaluateGroup, TemplateClassEnum.Form].join(','),
       ...locationParams,
-      pageSize: 5,
-      pageNumber: 1,
+      pageSize: 10,
+      pageNumber: page.currentPage + 1,
     });
+  }, {
+    loadMore: true,
+    ref: containerRef,
+    isNoMore: (d) => (d ? d.currentPage >= d.totalPage : false),
+    formatResult: (res) => {
+      console.log('formatResult', res);
+      return {
+        list: res.data?.dataList,
+        total: res.data?.totalNum,
+        totalPage: res.data?.totalPage,
+        currentPage: res.data?.currentPage,
+      };
+    },
+    // isNoMore: (d) => (d ? d.list.length >= d.total : false),
   });
 
   return {

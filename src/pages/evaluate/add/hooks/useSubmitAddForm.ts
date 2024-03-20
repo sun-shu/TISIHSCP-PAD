@@ -17,11 +17,12 @@ import { addResult } from '@/api/evalute/index';
 //工具
 import { history } from '@@/core/history';
 import { useRequest } from '@@/exports';
+import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
 
 //常量
 
 
-const useSubmitAddForm = (form: FormInstance, params) => {
+const useSubmitAddForm = (form: FormInstance, params, elementList) => {
   const { templateComposeCode, relativeType, relativeId, customerId, remaindIndex } = params;
 
   console.log('useSubmitAddForm', params);
@@ -39,11 +40,28 @@ const useSubmitAddForm = (form: FormInstance, params) => {
       customerTaskRecordId: params.relativeId,
     } : {};
 
+    const initialValues = elementList?.reduce((acc, cur) => {
+      acc[cur.id] = {
+        ...cur,
+        optionValues: cur.optionValues ? cur.optionValues.toString() : '',
+        elementIsShow: ElementVisibleEnum.HIDE,
+      };
+      return acc;
+    }, {});
+
+    console.log('initialValues', elementList, initialValues, values);
+
+    //PATCH： 这里是因为后端需要将没填写过的数据也带回去，所以需要额外打补丁，将原有的模板数据和已填写的数据进行合并
+    const resultDataList = Object.entries({
+      ...initialValues,
+      ...values,
+    }).map(([key, value]) => {
+      return value;
+    }).filter(item => item);
+
     const data = {
       ...params,
-      resultDataList: Object.entries(values).map(([key, value]) => {
-        return value;
-      }).filter(item => item),
+      resultDataList,
       ...sourceParmas,
     };
 
@@ -80,7 +98,7 @@ const useSubmitAddForm = (form: FormInstance, params) => {
       customerId: customerId,
       templateComposeCode: templateComposeCode,
       remaindIndex: nextRemaindIndex,
-      parentRecordMainId:parentRecordMainId
+      parentRecordMainId: parentRecordMainId,
     });
 
     history.replace(`/evaluate/add/${customerId}/${nextTemplateCode}?${queryParams}`);

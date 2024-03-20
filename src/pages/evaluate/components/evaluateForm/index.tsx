@@ -100,6 +100,7 @@ const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
     elementList: initElementList,
     templateName,
   } = props;
+
   //因为这里会有显隐变化，所以数据单独存储
   const [elementList, setElementList] = useState(_.cloneDeep(initElementList));
 

@@ -22,7 +22,7 @@ const ElderInfoCardCol = (props: ElderInfoCardColProps) => {
     <>
 
       <div
-        className="w-[620px] h-[100px] px-5 py-2.5 bg-white rounded justify-between items-center gap-[10px] inline-flex">
+        className="w-full h-[100px] px-5 py-2.5 bg-white rounded justify-between items-center gap-[10px] inline-flex">
         <Skeleton loading={loading} avatar active paragraph={{ rows: 1 }}>
           <Avatar src={data?.imageUrl}
                   icon={<img src={data?.gender === SexEnum.FEMALE ? WomanAvatar : ManAvatar} width={88} height={88}
@@ -122,7 +122,7 @@ const ElderDetailLayout = ({ title = '', children, customerId, rowCardoffsetTop 
             </div>
           </Affix>
 
-          <div className="portrait:block hidden">
+          <div className="portrait:block hidden w-full">
             {/*因为这里传入的title可以是元素，不能判断需要多大的空间，所以这里交给调用者判断*/}
             <Affix offsetTop={rowCardoffsetTop}>
               <div className="bg-gray-F6 py-[20px]">

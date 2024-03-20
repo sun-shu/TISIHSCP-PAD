@@ -36,8 +36,8 @@ dependencies:
     specifier: ^4.1.0
     version: 4.1.0(@babel/core@7.23.9)(@types/react@18.2.46)(eslint@8.56.0)(prettier@2.0.0)(react-dom@18.2.0)(react@18.2.0)(stylelint@16.1.0)(typescript@4.0.2)(webpack@5.90.2)
   zustand:
-    specifier: ^4.4.7
-    version: 4.4.7(@types/react@18.2.46)(react@18.2.0)
+    specifier: ^4.5.2
+    version: 4.5.2(@types/react@18.2.46)(react@18.2.0)
 
 devDependencies:
   '@antv/f2':
@@ -10397,12 +10397,12 @@ packages:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
 
-  /zustand@4.4.7(@types/react@18.2.46)(react@18.2.0):
-    resolution: {integrity: sha512-QFJWJMdlETcI69paJwhSMJz7PPWjVP8Sjhclxmxmxv/RYI7ZOvR5BHX+ktH0we9gTWQMxcne8q1OY8xxz604gw==}
+  /zustand@4.5.2(@types/react@18.2.46)(react@18.2.0):
+    resolution: {integrity: sha512-2cN1tPkDVkwCy5ickKrI7vijSjPksFRfqS6237NzT0vqSsztTNnQdHw9mmN7uBdk3gceVXU0a+21jFzFzAc9+g==}
     engines: {node: '>=12.7.0'}
     peerDependencies:
       '@types/react': '>=16.8'
-      immer: '>=9.0'
+      immer: '>=9.0.6'
       react: '>=16.8'
     peerDependenciesMeta:
       '@types/react':

@@ -110,7 +110,6 @@ const EvaluationReportPage = () => {
 
   const { data = {}, loading } = useLoadReportData(locationParams);
 
-  console.log('EvaluationReportPage', data);
   return (
     <>
       <ElderDetailLayout title={templateComposeCode ? data.templateComposeName : data.templateName}

@@ -1,5 +1,10 @@
 import { useModel } from 'umi';
-import { Button } from 'antd';
+import { Button, Avatar } from 'antd';
+import { SexEnum } from '@/enums/SexEnum';
+import WomanAvatar from '@/assets/avatar/woman.png';
+import ManAvatar from '@/assets/avatar/man.png';
+import React from 'react';
+import { UserOutlined } from '@ant-design/icons';
 
 const UserInfoPage = () => {
   const { initialState = {}, loading, error, refresh, setInitialState } =
@@ -22,10 +27,14 @@ const UserInfoPage = () => {
           </div>
         </div>
         <div className="w-[620px] p-5 bg-white rounded justify-start items-center gap-10 inline-flex">
-          <img
-            className="w-[110px] h-[110px] rounded"
-            src="https://via.placeholder.com/110x110"
-          />
+          <Avatar src={currentUser?.iconUrl}
+                  icon={<UserOutlined />}
+                  shape="square"
+                  size={110}
+                  className="w-[104px] h-[104px] border-none">
+
+          </Avatar>
+
           <div className="justify-start items-center gap-10 flex">
             <div className="text-zinc-700 text-[28px] font-semibold font-['PingFang SC'] leading-[42px]">
               {currentUser.actName}
@@ -34,7 +43,6 @@ const UserInfoPage = () => {
               <div className="w-[265px] justify-between items-center inline-flex">
                 <div
                   className="text-zinc-700 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">
-                  女 30岁
                 </div>
                 <div
                   className="text-zinc-700 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">

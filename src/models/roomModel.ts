@@ -10,7 +10,9 @@ import { showScoreResult } from '@/api/evalute';
 export default function roomModel() {
   const [buildingListForSelect, setBuildingListForSelect] = useState([]);
 
+  console.log('roomModel');
   // 单项评估结果评分
+
   const { data, loading, run } = useRequest(() => {
     return getBuildingList();
   }, {
@@ -22,5 +24,6 @@ export default function roomModel() {
 
   return {
     buildingListForSelect,
+    run,
   };
 }

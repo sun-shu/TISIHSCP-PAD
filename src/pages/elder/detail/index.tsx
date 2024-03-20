@@ -2,7 +2,7 @@ import ElderDetailLayout from '@/components/ElderDetailLayout/index';
 import { CaretDownFilled } from '@ant-design/icons';
 import { Button } from 'antd';
 import classNames from 'classnames';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { history } from 'umi';
 import LookIcon from '@/assets/icon/look.png';
 import { useSearchParams } from '@@/exports';
@@ -56,7 +56,7 @@ const EvaluationRecordCard = ({
   };
 
   return (
-    <div className="w-[620px] h-[76px] px-[20px] py-[10px] bg-white rounded justify-between items-center inline-flex"
+    <div className="w-full h-[76px] px-[20px] py-[10px] bg-white rounded justify-between items-center inline-flex"
     >
       <div className=" flex-col justify-start items-start inline-flex" onClick={handleGoToDetail}>
         <div className="self-stretch h-9 text-zinc-700 text-lg font-semibold line-clamp-1 leading-[30px]">
@@ -252,13 +252,14 @@ enum TabTypeEnums {
 
 // 长者详情
 const ElderDetail = () => {
+  const containerRef = useRef(null);
   const [currentTab, setCurrentTab] = useState(TabTypeEnums.RECORD);
   const [searchParams] = useSearchParams();
   const customerId = searchParams.get('customerId');
 
   const { data = {}, loading } = useLoadEvaluteList({
     customerId,
-  });
+  }, containerRef);
   console.log(data, 'data');
 
 
@@ -270,9 +271,10 @@ const ElderDetail = () => {
 
           <div>
 
-            <div hidden={currentTab !== TabTypeEnums.RECORD}>
-              <EmptyDataContainer data={data?.dataList} emptyClassName="h-full mt-[30%]" loading={loading}>
-                <EvaluationRecordList defaultShowAll={true} data={data?.dataList} customerId={customerId} />
+            <div hidden={currentTab !== TabTypeEnums.RECORD} ref={containerRef}
+                 className="w-full h-[800px] overflow-y-scroll">
+              <EmptyDataContainer data={data?.list} emptyClassName="h-full mt-[30%]" loading={loading}>
+                <EvaluationRecordList defaultShowAll={true} data={data?.list} customerId={customerId} />
               </EmptyDataContainer>
             </div>
 

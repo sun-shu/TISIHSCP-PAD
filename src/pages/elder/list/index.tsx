@@ -4,18 +4,23 @@ import {
   SearchOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Affix, Avatar, Button, ConfigProvider, Input, Select, Skeleton } from 'antd';
+import { Affix, Avatar, Button, ConfigProvider, Form, Input, Select, Skeleton } from 'antd';
 import EvaluateIcon from '@/assets/icon/evalute.png';
 import LevelOfCareTag from '@/components/LevelOfCareTag';
 import useLoadCustomerList from '@/pages/elder/list/hooks/useLoadCustomerList';
 import ManAvatar from '@/assets/avatar/man.png';
 import WomanAvatar from '@/assets/avatar/woman.png';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { SexDescConst } from '@/const/SexDescConst';
 import EmptyDataContainer from '@/components/exception/EmptyDataContainer';
 import { SexEnum } from '@/enums/SexEnum';
 import dayjs from 'dayjs';
+import BuildingSelect from '@/components/entitySelects/BuildingSelect';
+import FloorSelect from '@/components/entitySelects/FloorSelect';
+import RoomSelect from '@/components/entitySelects/RoomSelect';
+import BedSelect from '@/components/entitySelects/BedSelect';
 
+import { debounce } from 'lodash';
 
 const ListComponent = ({ data = [] }) => {
   console.log('data', data);
@@ -106,13 +111,63 @@ const ListComponent = ({ data = [] }) => {
 };
 
 const SearchComponent = ({ searchElder }) => {
-  const [keyword, setKeyword] = useState('');
+  const [form] = Form.useForm();
+  const [buildingId, setBuildingId] = useState('');
+  const [floorId, setFloorId] = useState('');
+  const [roomId, setRoomId] = useState('');
 
   const resetFilter = () => {
     // 重置筛选条件
     //  重置列表数据
     console.log('resetFilter');
+    setBuildingId('');
+    setFloorId('');
+    setRoomId('');
+    form.resetFields();
     searchElder();
+  };
+
+  const debounceFn = debounce((values) => searchElder(values), 800);
+
+  const onValuesChange = (changedValues, allValues) => {
+    // 关键字输入 使用防抖技术
+    if (changedValues.keyword) {
+      return debounceFn({
+        buildingId: allValues.buildingId,
+        floorId: allValues.floorId,
+        roomId: allValues.roomId,
+        bedId: allValues.bedId,
+        name: allValues.keyword,
+      });
+    }
+
+    if (changedValues.buildingId) {
+      form.setFieldsValue({
+        floorId: '',
+        roomId: '',
+        bedId: '',
+      });
+    }
+
+    if (changedValues.floorId) {
+      form.setFieldsValue({
+        roomId: '',
+        bedId: '',
+      });
+    }
+    if (changedValues.roomId) {
+      form.setFieldsValue({
+        bedId: '',
+      });
+    }
+
+    searchElder({
+      buildingId: allValues.buildingId,
+      floorId: allValues.floorId,
+      roomId: allValues.roomId,
+      bedId: allValues.bedId,
+      name: allValues.keyword,
+    });
   };
   return (
     <>
@@ -131,77 +186,66 @@ const SearchComponent = ({ searchElder }) => {
         }}
       >
         <div className=" min-w-[620px]">
-          <Input
-            prefix={
-              <SearchOutlined className="site-form-item-icon mr-[10px]" />
-            }
-            placeholder="搜索"
-            onChange={(e) => {
-              setKeyword(e.target.value);
-            }}
-            allowClear
-            suffix={
-              <Button type="primary" className="rounded-3xl" onClick={() => {
-                searchElder(keyword);
-              }}>
-                搜索
-              </Button>
-            }
-            size="large"
-            className="rounded-[100px] pd-[4px] mb-[10px]"
-          />
+          <Form form={form} onValuesChange={onValuesChange}>
+            <Form.Item name="keyword">
+              <Input
+                prefix={
+                  <SearchOutlined className="site-form-item-icon mr-[10px]" />
+                }
+                placeholder="搜索"
+                allowClear
+                size="large"
+                className="rounded-[100px] pd-[4px] mb-[10px]"
+              />
+            </Form.Item>
 
-          <div className="flex gap-[10px] justify-between">
 
-            <Select
-              placeholder="楼层"
-              style={{ width: '100%' }}
-              suffixIcon={<CaretDownOutlined className="pointer-events-none	" />}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'lucy', label: 'Lucy' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-                { value: 'disabled', label: 'Disabled', disabled: true },
-              ]}
-            />
-            <Select
-              placeholder="房间号"
-              style={{ width: '100%' }}
-              suffixIcon={<CaretDownOutlined className="pointer-events-none	" />}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'lucy', label: 'Lucy' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-                { value: 'disabled', label: 'Disabled', disabled: true },
-              ]}
-            />
-            <Select
-              placeholder="床位"
-              style={{ width: '100%' }}
-              suffixIcon={<CaretDownOutlined className="pointer-events-none	" />}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'lucy', label: 'Lucy' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-                { value: 'disabled', label: 'Disabled', disabled: true },
-              ]}
-            />
-            <Select
-              placeholder="护理等级"
-              style={{ width: '100%' }}
-              suffixIcon={<CaretDownOutlined className="pointer-events-none	" />}
-              options={[
-                { value: 'jack', label: 'Jack' },
-                { value: 'lucy', label: 'Lucy' },
-                { value: 'Yiminghe', label: 'yiminghe' },
-                { value: 'disabled', label: 'Disabled', disabled: true },
-              ]}
-            />
-          </div>
+            <div className="flex gap-[10px] justify-between">
+              <div className="flex gap-[10px]">
+                <Form.Item name="buildingId">
+                  <BuildingSelect
+                    onChange={(e) => {
+                      console.log('BuildingSelect', e);
+                      setBuildingId(e);
+                      form.setFieldsValue({
+                        floorId: '',
+                        roomId: '',
+                        bedId: '',
+                      });
+                    }}
+                  />
+                </Form.Item>
+                <Form.Item name="floorId">
+                  <FloorSelect onChange={(e) => {
+                    setFloorId(e);
+                    form.setFieldsValue({
+                      roomId: '',
+                      bedId: '',
+                    });
+                  }} buildingId={buildingId} />
+                </Form.Item>
+                <Form.Item name="roomId">
+                  <RoomSelect onChange={(e) => {
+                    setRoomId(e);
+                    form.setFieldsValue({
+                      bedId: '',
+                    });
 
-          <div className="text-right" onClick={resetFilter}><CloseCircleOutlined className="mr-[8px] mt-[10px]"
-          />清除筛选条件
-          </div>
+                  }} floorId={floorId} />
+                </Form.Item>
+                <Form.Item name="bedId">
+                  <BedSelect onChange={(e) => {
+                  }} roomId={roomId} />
+                </Form.Item>
+              </div>
+
+
+            </div>
+
+            <div className="text-right" onClick={resetFilter}><CloseCircleOutlined className="mr-[8px] mt-[10px]"
+            />清除筛选条件
+            </div>
+          </Form>
         </div>
       </ConfigProvider>
     </>
@@ -209,9 +253,10 @@ const SearchComponent = ({ searchElder }) => {
 };
 
 const ElderListPage = () => {
-  const { customerList = [], loading, run } = useLoadCustomerList();
+  const containerRef = useRef(null);
+  const { data = {}, loading, run } = useLoadCustomerList(containerRef);
 
-  console.log('customerList', customerList);
+  console.log('customerList', data);
 
   return (
     <>
@@ -219,12 +264,13 @@ const ElderListPage = () => {
         <div className="h-full ">
           <Affix offsetTop={50}>
             <div className="bg-gray-F6 pt-[10px]">
+
               <div className="flex flex-col items-start justify-start text-[1.75rem] mb-[10px]">
                 <div className="relative leading-[2.63rem] font-semibold">
                   长者列表
                 </div>
                 <div className="relative text-[0.75rem] tracking-[0.05em] leading-[1.13rem]">
-                  共有{customerList.length}位长者
+                  共有{data.list?.length}位长者
                 </div>
               </div>
 
@@ -233,9 +279,9 @@ const ElderListPage = () => {
               </div>
             </div>
           </Affix>
-          <div className="">
-            <EmptyDataContainer data={customerList} emptyClassName="h-full mt-[30%]" loading={loading}>
-              <ListComponent data={customerList}></ListComponent>
+          <div className="1 overflow-y-scroll h-[500px]" ref={containerRef}>
+            <EmptyDataContainer data={data.list} emptyClassName="h-full mt-[30%]" loading={loading}>
+              <ListComponent data={data.list}></ListComponent>
             </EmptyDataContainer>
           </div>
         </div>

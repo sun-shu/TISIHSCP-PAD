@@ -21,8 +21,8 @@ export default function buildingModel() {
 
   useEffect(() => {
     console.log('buildingModel1');
-
   }, []);
+
   return {
     run,
     buildingListForSelect,
