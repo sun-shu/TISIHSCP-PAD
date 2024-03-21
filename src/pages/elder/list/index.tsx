@@ -214,8 +214,8 @@ const SearchComponent = ({ searchElder }) => {
 
 
             <div className="flex gap-[10px] justify-between">
-              <div className="flex gap-[10px]">
-                <Form.Item name="buildingId">
+              <div className="grid grid-cols-4 gap-[10px] ">
+                <Form.Item name="buildingId" className="max-w-[150px]">
                   <BuildingSelect
                     onChange={(e) => {
                       console.log('BuildingSelect', e);
@@ -228,16 +228,17 @@ const SearchComponent = ({ searchElder }) => {
                     }}
                   />
                 </Form.Item>
-                <Form.Item name="floorId">
-                  <FloorSelect onChange={(e) => {
-                    setFloorId(e);
-                    form.setFieldsValue({
-                      roomId: '',
-                      bedId: '',
-                    });
-                  }} buildingId={buildingId} />
+                <Form.Item name="floorId" className="max-w-[150px]">
+                  <FloorSelect
+                    onChange={(e) => {
+                      setFloorId(e);
+                      form.setFieldsValue({
+                        roomId: '',
+                        bedId: '',
+                      });
+                    }} buildingId={buildingId} />
                 </Form.Item>
-                <Form.Item name="roomId">
+                <Form.Item name="roomId" className="max-w-[150px]">
                   <RoomSelect onChange={(e) => {
                     setRoomId(e);
                     form.setFieldsValue({
@@ -246,7 +247,7 @@ const SearchComponent = ({ searchElder }) => {
 
                   }} floorId={floorId} />
                 </Form.Item>
-                <Form.Item name="bedId">
+                <Form.Item name="bedId" className="max-w-[150px]">
                   <BedSelect onChange={(e) => {
                   }} roomId={roomId} />
                 </Form.Item>

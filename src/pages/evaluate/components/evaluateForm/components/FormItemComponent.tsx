@@ -274,7 +274,6 @@ const FormItemComponent = ({
 
     return (
       <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
-
         {item?.optionList?.length > 4 ?
           <ESelect options={options} changeElementVisible={changeElementVisible} form={form} item={item} /> :
           <ERadio options={options} changeElementVisible={changeElementVisible} form={form} item={item} />}

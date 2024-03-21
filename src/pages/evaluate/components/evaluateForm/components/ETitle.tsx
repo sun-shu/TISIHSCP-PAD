@@ -9,7 +9,7 @@ const OneSection = ({ title }) => {
 const TwoSection = ({ title }) => {
   return (
     <div className="flex flex-col ">
-      <div className="text-1xl font-bold text-gray-800">{title}</div>
+      <div className="text-[20px] font-bold text-gray-800 ">{title}</div>
     </div>
   );
 };

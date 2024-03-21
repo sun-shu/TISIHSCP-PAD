@@ -1,12 +1,15 @@
 import { useRequest } from '@@/exports';
 import { getCustomerListPad, getCustomerListWechat } from '@/api/customer';
+import { useState } from 'react';
 
 const useLoadCustomerList = (containerRef) => {
+  const [filter, setFilter] = useState();
   const { data, loading, run, loadMore } = useRequest((page = {
     currentPage: 0,
     pageSize: 2,
     total: 0,
   }, params) => {
+    setFilter(params);
     return getCustomerListPad({
       pageSize: 10,
       pageNumber: page.currentPage + 1,
@@ -26,6 +29,7 @@ const useLoadCustomerList = (containerRef) => {
         totalNum: res.data?.totalNum,
       };
     },
+    refreshDeps: [containerRef, filter],
   });
 
   return {
