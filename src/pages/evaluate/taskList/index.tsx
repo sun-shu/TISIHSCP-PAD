@@ -144,7 +144,7 @@ const ElderListTemplate = ({ title, data = [], countDescription, loading }: {
 }) => {
 
   const handleClickGoToEvaluePage = (id, customerId, taskType: TaskTypeEnum, templateCode: string) => {
-    const nextPath = taskType === TaskTypeEnum.COMPREHENSIVE_EVALUATION ? `/evaluate/add-of-composite/${customerId}/${templateCode}` : `/evaluate/add/${customerId}/${templateCode}`;
+    const nextPath = taskType === TaskTypeEnum.COMPREHENSIVE_EVALUATION ? `/evaluate/add-and-view-of-composite/${customerId}/${templateCode}` : `/evaluate/add/${customerId}/${templateCode}`;
     history.push({
       pathname: nextPath,
       search: `?relativeId=${id}&relativeType=${EvluateRelativeTypeEnum.TASK}`,

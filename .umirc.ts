@@ -79,8 +79,8 @@ export default defineConfig({
           component: 'evaluate/detail/index',
         },
         {
-          path: '/evaluate/add-of-composite/:customerId/:templateCode',
-          component: 'evaluate/addOfComposite/index',
+          path: '/evaluate/add-and-view-of-composite/:customerId/:templateCode',
+          component: 'evaluate/addAndViewOfComposite/index',
         },
         {
           path: '/evaluate/template-list',
@@ -126,7 +126,7 @@ export default defineConfig({
     }),
   ],
   devtool: process.env.NODE_ENV === 'development' ? 'source-map' : false,
- 
+
 
   jsMinifier: 'none',
 });

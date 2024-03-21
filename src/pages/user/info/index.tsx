@@ -23,7 +23,7 @@ const UserInfoPage = () => {
             评估师信息
           </div>
           <div className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide">
-            共负责评估15位长者
+            共负责评估{currentUser?.customerCnt}位长者
           </div>
         </div>
         <div className="w-[620px] p-5 bg-white rounded justify-start items-center gap-10 inline-flex">
@@ -37,7 +37,7 @@ const UserInfoPage = () => {
 
           <div className="justify-start items-center gap-10 flex">
             <div className="text-zinc-700 text-[28px] font-semibold font-['PingFang SC'] leading-[42px]">
-              {currentUser.actName}
+              {currentUser?.actName}
             </div>
             <div className="flex-col justify-start items-start gap-5 inline-flex">
               <div className="w-[265px] justify-between items-center inline-flex">
@@ -46,7 +46,7 @@ const UserInfoPage = () => {
                 </div>
                 <div
                   className="text-zinc-700 text-base font-semibold font-['PingFang SC'] leading-normal tracking-wide">
-                  一级评估师
+                  {currentUser?.employeeTypeName}
                 </div>
               </div>
             </div>

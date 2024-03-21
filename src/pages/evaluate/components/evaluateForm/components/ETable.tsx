@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, Button, Divider, ConfigProvider, Form, Input } from 'antd';
+import { Modal, Button, Divider, ConfigProvider, Form, Input, message } from 'antd';
 import { CloseCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { ElementRequireFlgEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementRequireFlgEnum';
 import FormItemComponent from '@/pages/evaluate/components/evaluateForm/components/FormItemComponent';
@@ -67,6 +67,13 @@ const ETableForm = (props) => {
 
   const handleSaveBtnClick = async () => {
     const res = await form.validateFields();
+
+    const hasContent = Object.values(res).some(value => value?.answer || value?.optionValues);
+
+    if (!hasContent) {
+      message.error('表单不能为空');
+      return;
+    }
 
     //没有数据的时候，直接新增一条数据
     if (defultValue.length === 0) {

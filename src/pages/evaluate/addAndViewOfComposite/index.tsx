@@ -1,7 +1,7 @@
 //基础类
 
 //类型定义/枚举
-import { EvaluationStatusEnum } from '@/pages/evaluate/addOfComposite/enums/EvaluationStatusEnum';
+import { EvaluationStatusEnum } from './enums/EvaluationStatusEnum';
 import {
   CustomerComposeResultResDTO,
 } from '@/api/evaluateTemplate/getCustomerComposeInfo.interface';
@@ -19,9 +19,8 @@ import useLoadTemplateData from './hooks/useLoadTemplateData';
 
 //工具
 import { history, useSearchParams } from 'umi';
-import { useMatch, useRequest } from '@@/exports';
-import useSubmitEvaluateGroup from '@/pages/evaluate/addOfComposite/hooks/useSubmitEvaluateGroup';
-
+import { useMatch } from '@@/exports';
+import useSubmitEvaluateGroup from './hooks/useSubmitEvaluateGroup';
 
 const ProgressInfo = ({ completeCount = 0, totalCount }) => {
   return (
@@ -37,7 +36,6 @@ const ProgressInfo = ({ completeCount = 0, totalCount }) => {
 };
 
 const FilledList = ({ compositeStatus = EvaluationStatusEnum.FINISHED, data = [] }) => {
-
   const handleGoToDetailBtnClick = (templateCode: string, recordMainId: string) => {
     history.push(`/evaluate/detail/${templateCode}/${recordMainId}`);
   };
@@ -155,8 +153,8 @@ const NotFilledList = ({ data, locationParams = {} }: NotFilledListProps) => {
 // relativeId: 关联对象ID customerIdstomerId: 客户ID, taskId: 任务ID, mainId: 记录ID
 // relativeType: 关联对象类型 对应枚举 EvluateRelativeTypeEnum
 // remaindIndex: 剩余未填写的模板数量
-const EditCompositeEvaluatePage = (props) => {
-  const { params } = useMatch('/evaluate/add-of-composite/:customerId/:templateCode');
+const AddAndViewOfCompositePage = (props) => {
+  const { params } = useMatch('/evaluate/add-and-view-of-composite/:customerId/:templateCode');
   const { templateCode: templateComposeCode, customerId } = params;
 
   const [searchParams] = useSearchParams();
@@ -233,4 +231,5 @@ const EditCompositeEvaluatePage = (props) => {
   );
 };
 
-export default EditCompositeEvaluatePage;
+// PS：该页面承担查看综合评估和新增综合评估 如果后期有较大差异，需要拆成两个页面
+export default AddAndViewOfCompositePage;

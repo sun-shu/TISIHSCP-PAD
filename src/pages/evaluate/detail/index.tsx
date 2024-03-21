@@ -21,9 +21,11 @@ const DetailPage = () => {
     <div className="max-w-[620px] m-auto py-[20px]">
       <div className="mb-[90px]">
         <div className="mt-[20px]">
-          {data?.resDTO?.elementList &&
+          {data?.templateObjectData?.resDTO
+              ?.elementList &&
             <EvaluateForm disabled form={form} templateCode={templateCode} templateName={data?.templateName}
-                          elementList={data?.resDTO?.elementList} initialValues={initialValues} />}
+                          elementList={data?.templateObjectData?.resDTO
+                            ?.elementList} initialValues={initialValues} />}
         </div>
       </div>
 

@@ -125,10 +125,18 @@ const SearchComponent = ({ searchElder }) => {
     setFloorId('');
     setRoomId('');
     form.resetFields();
-    searchElder();
+    searchElder({
+      currentPage: 0,
+      pageSize: 10,
+      total: 0,
+    });
   };
 
-  const debounceFn = debounce((values) => searchElder(values), 800);
+  const debounceFn = debounce((values) => searchElder({
+    currentPage: 0,
+    pageSize: 10,
+    total: 0,
+  }, values), 800);
 
   const onValuesChange = (changedValues, allValues) => {
     // 关键字输入 使用防抖技术
@@ -163,6 +171,10 @@ const SearchComponent = ({ searchElder }) => {
     }
 
     searchElder({
+      currentPage: 0,
+      pageSize: 10,
+      total: 0,
+    }, {
       buildingId: allValues.buildingId,
       floorId: allValues.floorId,
       roomId: allValues.roomId,
@@ -280,7 +292,7 @@ const ElderListPage = () => {
               </div>
             </div>
           </Affix>
-          <div className="1 overflow-y-scroll h-[500px]" ref={containerRef}>
+          <div className="1 overflow-y-scroll h-[800px]" ref={containerRef}>
             <EmptyDataContainer data={data.list} emptyClassName="h-full mt-[30%]" loading={loading}>
               <ListComponent data={data.list}></ListComponent>
             </EmptyDataContainer>

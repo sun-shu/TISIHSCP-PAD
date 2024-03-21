@@ -66,9 +66,9 @@ const SearchComponent = ({ searchTemplate }) => {
 const EvaluateTemplateCard = ({ data = {}, customerId }) => {
   const handleGoToDetailClick = (item) => {
     const nextUrl = {
-      [TemplateClassEnum.Evaluate]: `/evaluate/add/${customerId}/${item?.templateCode}`, // 评
-      [TemplateClassEnum.Form]: `/evaluate/add/${customerId}/${item?.templateCode}`, // 评
-      [TemplateClassEnum.EvaluateGroup]: `/evaluate/add-of-composite/${customerId}/${item?.templateCode}?relativeType=${EvluateRelativeTypeEnum.CUSTOMER}&relativeId=${customerId}`,// 估
+      [TemplateClassEnum.Evaluate]: `/evaluate/add/${customerId}/${item?.templateCode}`,
+      [TemplateClassEnum.Form]: `/evaluate/add/${customerId}/${item?.templateCode}`,
+      [TemplateClassEnum.EvaluateGroup]: `/evaluate/add-and-view-of-composite/${customerId}/${item?.templateCode}?relativeType=${EvluateRelativeTypeEnum.CUSTOMER}&relativeId=${customerId}`,
     };
     history.push(nextUrl[item?.templateClass]);
   };

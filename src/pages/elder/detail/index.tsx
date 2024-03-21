@@ -50,7 +50,7 @@ const EvaluationRecordCard = ({
   };
 
   const handleGoToDetail = () => {
-    const url = templateClass === TemplateClassEnum.EvaluateGroup ? `/evaluate/add-of-composite/${customerId}/${templateCode}?recordMainId=${recordMainId}` : `/evaluate/detail/${templateCode}/${recordMainId}?customerId=${customerId}`;
+    const url = templateClass === TemplateClassEnum.EvaluateGroup ? `/evaluate/add-and-view-of-composite/${customerId}/${templateCode}?recordMainId=${recordMainId}` : `/evaluate/detail/${templateCode}/${recordMainId}?customerId=${customerId}`;
 
     history.push(url);
   };
