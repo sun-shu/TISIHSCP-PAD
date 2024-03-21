@@ -33,6 +33,7 @@ const useSubmitAddForm = (form: FormInstance, params, elementList) => {
   });
 
   const submitAddForm = async () => {
+
     const values = await form.validateFields();
 
     const sourceParmas = params.relativeType === EvluateRelativeTypeEnum.TASK ? {
@@ -82,9 +83,9 @@ const useSubmitAddForm = (form: FormInstance, params, elementList) => {
     const data = await submitAddForm();
     const { parentRecordMainId } = data;
     //综合评估，返回到综合评估列表
-    history.replace(`/evaluate/add-of-composite/${customerId}/${templateComposeCode}?relativeId=${relativeId}&relativeType=${relativeType}&recordMainId=${parentRecordMainId}`);
+    history.replace(`/evaluate/add-and-view-of-composite/${customerId}/${templateComposeCode}?relativeId=${relativeId}&relativeType=${relativeType}&recordMainId=${parentRecordMainId}`);
   };
-
+ 
   //综合评估-提交并继续
   const submitAddEvaluteGroupContinue = async () => {
     const data = await submitAddForm();

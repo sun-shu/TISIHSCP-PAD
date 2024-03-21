@@ -38,7 +38,7 @@ const addPage = () => {
     submitAddEvaluteGroupContinue,
     submitAddEvaluteGroupReturn,
     submitAddEvalute,
-  } = useSubmitAddForm(form, params, evaluateTemplateData?.resDTO?.elementList);
+  } = useSubmitAddForm(form, locationParams, evaluateTemplateData?.resDTO?.elementList);
 
 
   return (
