@@ -283,7 +283,7 @@ const ElderListPage = () => {
                   长者列表
                 </div>
                 <div className="relative text-[0.75rem] tracking-[0.05em] leading-[1.13rem]">
-                  共有{data.list?.length}位长者
+                  共有{data.totalNum}位长者
                 </div>
               </div>
 

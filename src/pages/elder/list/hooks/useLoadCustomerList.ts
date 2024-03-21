@@ -23,6 +23,7 @@ const useLoadCustomerList = (containerRef) => {
         total: res.data?.totalNum,
         totalPage: res.data?.totalPage,
         currentPage: res.data?.currentPage,
+        totalNum: res.data?.totalNum,
       };
     },
   });

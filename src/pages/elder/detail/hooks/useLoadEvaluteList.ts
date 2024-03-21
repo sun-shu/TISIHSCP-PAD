@@ -30,6 +30,7 @@ const useLoadEvaluteList = (locationParams, containerRef) => {
         total: res.data?.totalNum,
         totalPage: res.data?.totalPage,
         currentPage: res.data?.currentPage,
+        totalNum: res.data?.totalNum,
       };
     },
     // isNoMore: (d) => (d ? d.list.length >= d.total : false),

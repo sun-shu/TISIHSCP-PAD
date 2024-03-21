@@ -127,7 +127,7 @@ const EvaluationTrendCard = () => {
 };
 
 // 评估记录列表
-const EvaluationRecordList = ({ data = [], defaultShowAll = false, customerId = '' }) => {
+const EvaluationRecordList = ({ data = {}, defaultShowAll = false, customerId = '' }) => {
   const [loadMoreBtnShow, setLoadMoreBtnShow] = useState(!defaultShowAll);
   const [recordList, setRecordList] = useState([]);
 
@@ -148,11 +148,12 @@ const EvaluationRecordList = ({ data = [], defaultShowAll = false, customerId = 
     setRecordList([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
     setLoadMoreBtnShow(false);
   };
+
   return (
     <div className="my-[20px]">
       <div className="text-xl font-semibold  leading-[30px]">评估记录</div>
-      <div>共{data?.length}条记录</div>
-      {data?.map((item) => (
+      <div>共{data?.totalNum}条记录</div>
+      {data?.list?.map((item) => (
         <div className="py-[10px]">
           <EvaluationRecordCard
             templateClass={item.templateClass}
@@ -273,8 +274,8 @@ const ElderDetail = () => {
 
             <div hidden={currentTab !== TabTypeEnums.RECORD} ref={containerRef}
                  className="w-full h-[800px] overflow-y-scroll">
-              <EmptyDataContainer data={data?.list} emptyClassName="h-full mt-[30%]" loading={loading}>
-                <EvaluationRecordList defaultShowAll={true} data={data?.list} customerId={customerId} />
+              <EmptyDataContainer data={data.list} emptyClassName="h-full mt-[30%]" loading={loading}>
+                <EvaluationRecordList defaultShowAll={true} data={data} customerId={customerId} />
               </EmptyDataContainer>
             </div>
 
