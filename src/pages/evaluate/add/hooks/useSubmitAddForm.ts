@@ -25,7 +25,6 @@ import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enu
 const useSubmitAddForm = (form: FormInstance, params, elementList) => {
   const { templateComposeCode, relativeType, relativeId, customerId, remaindIndex } = params;
 
-  console.log('useSubmitAddForm', params);
   const { loading, run, data } = useRequest(addResult, {
     manual: true,
     onSuccess: (result, params) => {
@@ -50,14 +49,16 @@ const useSubmitAddForm = (form: FormInstance, params, elementList) => {
       return acc;
     }, {});
 
-    console.log('initialValues', elementList, initialValues, values);
 
     //PATCH： 这里是因为后端需要将没填写过的数据也带回去，所以需要额外打补丁，将原有的模板数据和已填写的数据进行合并
     const resultDataList = Object.entries({
       ...initialValues,
       ...values,
     }).map(([key, value]) => {
-      return value;
+      return {
+        elementId: value.id,
+        ...value,
+      };
     }).filter(item => item);
 
     const data = {
@@ -66,15 +67,12 @@ const useSubmitAddForm = (form: FormInstance, params, elementList) => {
       ...sourceParmas,
     };
 
-
-    console.log('submitAddForm', data);
     return run(data);
   };
 
   //单项评估-提交
   const submitAddEvalute = async (values: any) => {
     const data = await submitAddForm();
-    console.log('submitAddEvalute', data);
     const { recordMainId } = data;
     history.push(`/elder/evaluation-report?recordMainId=${recordMainId}&customerId=${customerId}`);
   };

@@ -122,17 +122,19 @@ export const request: RequestConfig = {
   // 响应拦截器
   responseInterceptors: [
     [(response: any) => {
-      console.log('responseInterceptors', response);
-
       // 拦截响应数据，进行个性化处理 没有权限跳转登录页
       const { data, status, description } = response.data as Result<any>;
 
+      if ((status !== '0')) {
+        return Promise.reject({
+          name: 'BizError',
+          info: { status, description, data },
+        });
+      }
 
-      console.log('responseInterceptors', response, status);
       return response;
     },
       (error: Error) => {
-
         if (error.response.status === 401) {
           history.push('/login');
         }

@@ -16,9 +16,13 @@ const useGetLastRes = (locationParams, form) => {
         };
         return acc;
       }, {});
-      console.log('initialValues', initialValues);
-      // form.setFieldsValue(initialValues);
+
       form.setFieldsValue(initialValues);
+
+      // 触发验证状态，更新填写进度条
+      form.validateFields({
+        validateOnly: true,
+      });
     },
   });
 

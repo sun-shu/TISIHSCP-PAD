@@ -31,55 +31,56 @@ interface EvaluateFormTemplatesProps {
   disabled: boolean;
 }
 
-const EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
-  const { elementList = [], form, disabled } = props;
-  const { setElementList } = props;
+const
+  EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
+    const { elementList = [], form, disabled } = props;
+    const { setElementList } = props;
 
-  const { changeElementVisible } = useQuestionCalculate(elementList, setElementList);
+    const { changeElementVisible } = useQuestionCalculate(elementList, setElementList);
 
 //  PS by sunshu：这里使用elementList.map的原因是操作同一份数据，如果使用UseMemo，会导致重新渲染(计算验证进度和多选状态)
-  return (
-    <div>
-      <ConfigProvider
-        theme={{
-          token: {
-            colorBorder: '#5E5E5E',
-            colorText: '#5E5E5E',
-            borderRadius: 4,
-            fontSize: 18,
-            colorTextPlaceholder: '#5E5E5E',
-            colorBgContainerDisabled: 'none',
-          },
-          components: {
-            Input: {
-              activeShadow: 'none',
-              activeBorderColor: 'none',
-              paddingInline: 10,
-              paddingBlock: 2,
-            },
-            Select: {
+    return (
+      <div>
+        <ConfigProvider
+          theme={{
+            token: {
+              colorBorder: '#5E5E5E',
+              colorText: '#5E5E5E',
               borderRadius: 4,
+              fontSize: 18,
+              colorTextPlaceholder: '#5E5E5E',
+              colorBgContainerDisabled: 'none',
             },
-          },
-        }}
-      >
-        {
-          // patch：后端暂时没有清洗数据，elementIsShow没有值，所以需要做一下反向判断
-          elementList.map((item, index) => {
-            return (
-              <>
-                {item?.elementIsShow !== ElementVisibleEnum.HIDE &&
-                  <FormItemComponent item={item} index={index} form={form}
-                                     commonFormItemProps={{ initialValue: item }}
-                                     changeElementVisible={changeElementVisible} disabled={disabled} />}
-              </>
-            );
-          })}
-      </ConfigProvider>
+            components: {
+              Input: {
+                activeShadow: 'none',
+                activeBorderColor: 'none',
+                paddingInline: 10,
+                paddingBlock: 2,
+              },
+              Select: {
+                borderRadius: 4,
+              },
+            },
+          }}
+        >
+          {
+            // patch：后端暂时没有清洗数据，elementIsShow没有值，所以需要做一下反向判断
+            elementList.map((item, index) => {
+              return (
+                <>
+                  {item?.elementIsShow !== ElementVisibleEnum.HIDE &&
+                    <FormItemComponent item={item} index={index} form={form}
+                                       commonFormItemProps={{ initialValue: item }}
+                                       changeElementVisible={changeElementVisible} disabled={disabled} />}
+                </>
+              );
+            })}
+        </ConfigProvider>
 
-    </div>
-  );
-};
+      </div>
+    );
+  };
 
 interface EvaluateFormComponentProps {
   form: FormInstance<any>;
@@ -92,7 +93,6 @@ interface EvaluateFormComponentProps {
 }
 
 const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
-
   const {
     form,
     initialValues,
