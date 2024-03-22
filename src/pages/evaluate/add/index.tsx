@@ -32,7 +32,10 @@ const addPage = () => {
     remaindIndex,
     parentRecordMainId,
   };
-  const { data } = useGetLastRes(locationParams, form);
+  const { data: lastRes } = useGetLastRes(locationParams, form);
+
+  // 有上一次的回显结果 回显上一次的
+  const elementList = lastRes?.templateObjectData?.resDTO?.elementList || evaluateTemplateData?.resDTO?.elementList;
 
   const {
     submitAddEvaluteGroupContinue,
@@ -47,9 +50,9 @@ const addPage = () => {
       <Skeleton loading={loading} paragraph={{ rows: 10 }} active>
         <div className="mb-[90px]">
           <div className="mt-[20px]">
-            {evaluateTemplateData?.resDTO?.elementList &&
+            {elementList &&
               <EvaluateForm form={form} templateCode={templateCode} templateName={templateName}
-                            elementList={evaluateTemplateData?.resDTO?.elementList} />}
+                            elementList={elementList} />}
           </div>
         </div>
 
