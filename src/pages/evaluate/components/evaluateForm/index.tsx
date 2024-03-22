@@ -65,19 +65,17 @@ const
           }}
         >
           {
-            // patch：后端暂时没有清洗数据，elementIsShow没有值，所以需要做一下反向判断
             elementList.map((item, index) => {
               return (
                 <>
-
                   <FormItemComponent item={item} index={index} form={form}
                                      commonFormItemProps={{ initialValue: item }}
-                                     changeElementVisible={changeElementVisible} disabled={disabled} />
+                                     changeElementVisible={changeElementVisible}
+                                     disabled={disabled} />
                 </>
               );
             })}
         </ConfigProvider>
-
       </div>
     );
   };
@@ -104,7 +102,7 @@ const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
   //因为这里会有显隐变化，所以数据单独存储
   const [elementList, setElementList] = useState(_.cloneDeep(initElementList));
 
-  const { calculateTitleNum, changeElementVisible } = useQuestionCalculate(elementList, setElementList);
+  const { calculateTitleNum, changeElementVisible } = useQuestionCalculate(setElementList, form);
 
   useEffect(() => {
     //   组数据 遍历optionList,将里面的optionIsShow和NextElemtID放在对应ID的item中
@@ -117,13 +115,12 @@ const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
       if (item?.optionList) {
         item.optionList.forEach((option) => {
           const targetItem = elementMap[option.nextElementId];
-          if (targetItem) {
-            targetItem.condition = {
+          if (targetItem && option) {
+            targetItem.conditions = [...targetItem.conditions || [], {
               elementId: item.id,
               optionId: option.id,
-            };
-
-            option.nextElementIsShow = targetItem.elementIsShow;
+              isShow: option.optionIsShow,
+            }];
           }
         });
       }
@@ -131,10 +128,19 @@ const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
 
     // 使用_.values将elementMap 变为数组，赋值给elementList
     setElementList(calculateTitleNum(_.values(elementMap)));
+
+    form.validateFields({
+      validateOnly: true,
+    });
   }, [initElementList]);
 
 
-  const { fillCount, needFillCount, onFieldsChange, onValuesChange } = useProgressShow(form, initialValues);
+  const {
+    fillCount,
+    needFillCount,
+    onFieldsChange,
+    onValuesChange,
+  } = useProgressShow(form, initialValues, initElementList);
 
   return (
     <div>

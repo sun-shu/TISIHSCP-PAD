@@ -27,5 +27,4 @@ export enum ElementDataTypeEnum {
   YEAR_MONTH_DAY = '08',
   HOUR_MINUTE = '09',
   DATE_TIME = '10',
-
 }

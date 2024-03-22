@@ -369,9 +369,11 @@ const FormItemComponent = ({
   };
 
   const shouldUpdate = (prevValue, curValue) => {
-    if (item.condition) {
-      const { elementId, optionId } = item.condition;
-      return prevValue[elementId]?.optionValues !== curValue[elementId]?.optionValues;
+    if (item.conditions?.length > 0) {
+      return item.conditions?.some((condition) => {
+        const { elementId, optionId } = condition;
+        return prevValue[elementId]?.optionValues !== curValue[elementId]?.optionValues;
+      });
     }
 
     return false;
@@ -388,12 +390,18 @@ const FormItemComponent = ({
       <Form.Item noStyle shouldUpdate={shouldUpdate}>
         {
           ({ getFieldsValue }) => {
-
             // 展示的条件 ：{elementID: 1, optionId: 1}
-            if (item.condition) {
-              const { elementId, optionId } = item.condition;
-              const relatedValues = getFieldsValue([elementId])[elementId]?.optionValues?.split(',');
-              setIsShow(relatedValues?.includes(optionId?.toString()) ? ElementVisibleEnum.SHOW : ElementVisibleEnum.HIDE);
+            // 展示逻辑：有一个条件满足即展示
+            if (item?.conditions?.length > 0) {
+              const show = item.conditions?.some((condition) => {
+
+                const { elementId, optionId } = condition;
+                const relatedValues = getFieldsValue([elementId])[elementId]?.optionValues?.split(',');
+
+                return relatedValues?.includes(optionId?.toString());
+              });
+
+              setIsShow(show ? ElementVisibleEnum.SHOW : ElementVisibleEnum.HIDE);
             }
 
             return isShow !== ElementVisibleEnum.HIDE && (

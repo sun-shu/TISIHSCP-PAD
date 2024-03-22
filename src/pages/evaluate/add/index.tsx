@@ -46,7 +46,6 @@ const addPage = () => {
     submitAddEvalute,
   } = useSubmitAddForm(form, locationParams, evaluateTemplateData?.resDTO?.elementList);
 
-
   return (
 
     <div className="max-w-[620px] m-auto py-[20px]">

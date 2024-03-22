@@ -17,8 +17,8 @@ const useGetLastRes = (locationParams, form) => {
         return acc;
       }, {});
 
-      form.setFieldsValue(initialValues);
-
+      initialValues && form.setFieldsValue(initialValues);
+ 
       // 触发验证状态，更新填写进度条
       form.validateFields({
         validateOnly: true,

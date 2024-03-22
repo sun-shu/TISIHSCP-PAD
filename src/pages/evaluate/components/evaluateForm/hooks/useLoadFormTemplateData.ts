@@ -28,6 +28,7 @@ const useLoadFormTemplateData = (templateCode, form: FormInstance) => {
   useEffect(() => {
     run();
   }, [templateCode]);
+  
   return {
     evaluateTemplateData,
     templateName,

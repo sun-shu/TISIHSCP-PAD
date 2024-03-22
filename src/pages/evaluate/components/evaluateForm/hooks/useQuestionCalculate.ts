@@ -2,7 +2,7 @@ import { TemplateResDTO } from '@/api/evaluateTemplate/seeTemplateData.interface
 import { ElementTypeEnum } from '@/enums/ElementTypeEnum';
 import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
 
-const useQuestionCalculate = (elementList: TemplateResDTO[], setElementList) => {
+const useQuestionCalculate = (setElementList, form) => {
   //计算序号逻辑，遇到标题，序号就重新计算
   //更新显示的题目和进度
   const calculateTitleNum = (currentElementList: TemplateResDTO[]) => {
@@ -40,6 +40,10 @@ const useQuestionCalculate = (elementList: TemplateResDTO[], setElementList) => 
         }));
 
       return calculateTitleNum(visibleElementList);
+    });
+
+    form?.validateFields({
+      validateOnly: true,
     });
 
   };
