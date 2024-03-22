@@ -13,8 +13,6 @@ export default function Layout() {
   });
 
   const isActive = (match, location) => {
-    console.log('match', match, location);
-
     return location.path.includes('elder');
   };
 
@@ -22,7 +20,6 @@ export default function Layout() {
     useModel('@@initialState');
 
   const { currentUser = {} } = initialState;
-  console.log('initialState', initialState);
 
   return (
     <StyleProvider transformers={[px2rem]}>

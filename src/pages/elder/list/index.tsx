@@ -270,7 +270,6 @@ const ElderListPage = () => {
   const containerRef = useRef(null);
   const { data = {}, loading, run } = useLoadCustomerList(containerRef);
 
-  console.log('customerList', data);
 
   return (
     <>
@@ -293,7 +292,7 @@ const ElderListPage = () => {
               </div>
             </div>
           </Affix>
-          <div className="1 overflow-y-scroll h-[800px]" ref={containerRef}>
+          <div className="overflow-y-scroll h-[800px]" ref={containerRef}>
             <EmptyDataContainer data={data.list} emptyClassName="h-full mt-[30%]" loading={loading}>
               <ListComponent data={data.list}></ListComponent>
             </EmptyDataContainer>

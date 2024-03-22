@@ -17,7 +17,6 @@ interface ElderInfoCardColProps {
 const ElderInfoCardCol = (props: ElderInfoCardColProps) => {
   const { data = {}, loading = false } = props;
 
-  console.log('ElderInfoCardCol', data, loading);
   return (
     <>
 
@@ -98,7 +97,6 @@ const ElderDetailLayout = ({ title = '', children, customerId, rowCardoffsetTop 
   const { data = {}, loading } = useLoadCustomer(customerId);
 
 
-  console.log('ElderDetailLayout', data, loading);
   return (
     <>
 

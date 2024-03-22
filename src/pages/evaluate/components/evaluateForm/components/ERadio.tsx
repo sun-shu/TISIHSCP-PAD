@@ -6,7 +6,6 @@ import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enu
 const ERadio = (props) => {
   const { id, value = {}, onChange, options, changeElementVisible, item: config } = props;
 
-  console.log('ERadio', props);
   const handleOnChange = (e) => {
     const selectedOption = options.find(option => option.value?.toString() === e.target.value);
 
@@ -19,10 +18,6 @@ const ERadio = (props) => {
     };
 
     onChange(newValue);
-
-    if ([ElementVisibleEnum.HIDE, ElementVisibleEnum.SHOW].includes(selectedOption.optionIsShow) && selectedOption.nextElementId) {
-      changeElementVisible(selectedOption.nextElementId, selectedOption.optionIsShow);
-    }
   };
 
   const handleOtherTextChange = (e) => {
@@ -41,7 +36,6 @@ const ERadio = (props) => {
         <Space direction="vertical" className="w-full">
           {
             options?.map((item) => {
-              console.log(item, 'item');
               if (item?.optionType === OptionTypeEnum.OTHER) {
                 return (
                   <Radio value={item?.value?.toString()} className="w-full flex flex-1 relative">

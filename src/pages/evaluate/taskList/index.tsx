@@ -168,6 +168,7 @@ const ElderListTemplate = ({ title, data = [], countDescription, loading }: {
                           imageUrl,
                           name,
                           id,
+                          bedName,
                           nurseGrade,
                           templateName,
                           age,
@@ -206,7 +207,7 @@ const ElderListTemplate = ({ title, data = [], countDescription, loading }: {
                       </div>
                       <div
                         className="w-full justify-between line-clamp-1 text-zinc-700 text-sm font-semibold font-['PingFang SC'] leading-normal tracking-wide">
-                        1号楼-3层-301-1床
+                        {bedName ? bedName : '-'}
                       </div>
 
                       <div

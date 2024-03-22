@@ -10,7 +10,6 @@ const ECheckBox = (props) => {
   const { id, value = {}, onChange, options, changeElementVisible, item: config } = props;
 
   const otherOptionId = options.find(option => option.optionType === OptionTypeEnum.OTHER)?.value?.toString();
-  console.log('otherOptionId', otherOptionId);
   if (!value.hasOwnProperty('hasOther')) {
     // 设置hasOther的默认
     const hasOther = value.optionValues?.split(',').some(item => item === otherOptionId);
@@ -37,13 +36,6 @@ const ECheckBox = (props) => {
     onChange(data);
   };
 
-  const handleOneItemChange = (e) => {
-    const selectedOption = options.find(option => option.value.toString() == e.target.value);
-    if ([ElementVisibleEnum.HIDE, ElementVisibleEnum.SHOW].includes(selectedOption.optionIsShow) && selectedOption.nextElementId) {
-      changeElementVisible(selectedOption.nextElementId, selectedOption.optionIsShow);
-    }
-  };
-
   const handleOtherTextChange = (e) => {
     onChange({
       ...config,
@@ -61,7 +53,7 @@ const ECheckBox = (props) => {
 
           {options?.map((item) => {
             if (item?.optionType === OptionTypeEnum.OTHER) {
-              return (<Checkbox value={item?.value.toString()} onChange={handleOneItemChange}
+              return (<Checkbox value={item?.value.toString()}
                                 className="w-full flex flex-1 relative"
               >
                         <span>
@@ -85,7 +77,7 @@ const ECheckBox = (props) => {
               </Checkbox>);
             }
 
-            return <Checkbox value={item?.value.toString()} onChange={handleOneItemChange}
+            return <Checkbox value={item?.value.toString()}
             >{item?.label} </Checkbox>;
           })}
         </Space>

@@ -16,8 +16,6 @@ const useProgressShow = (form: FormInstance, initialValues) => {
   }, [initialValues]);
 
   const onFieldsChange = (changedFields, allFields) => {
-    console.log('allFields', allFields);
-
     setFillCount(allFields.filter((field) => {
       const hasContent = field.value?.answer || field.value?.optionValues;
       return hasContent && !field.validating && field.errors.length === 0;

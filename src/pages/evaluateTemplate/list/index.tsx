@@ -6,7 +6,7 @@ import { useSearchParams } from '@@/exports';
 import { TemplateClassEnum } from '@/enums/TemplateClassEnum';
 import { EvluateRelativeTypeEnum } from '@/enums/EvluateRelativeTypeEnum';
 import EmptyDataContainer from '@/components/exception/EmptyDataContainer';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 const templateTypeDescConfig = {
   [TemplateClassEnum.Evaluate]: '评估',
@@ -43,13 +43,21 @@ const SearchComponent = ({ searchTemplate }) => {
             }}
             allowClear={{
               clearIcon: <CloseCircleOutlined onClick={() => {
-                searchTemplate('');
+                searchTemplate({
+                  currentPage: 0,
+                  pageSize: 2,
+                  total: 0,
+                }, '');
               }} />,
             }}
             placeholder="搜索"
             suffix={
               <Button type="primary" className="rounded-3xl" onClick={() => {
-                searchTemplate(keyword);
+                searchTemplate({
+                  currentPage: 0,
+                  pageSize: 2,
+                  total: 0,
+                }, keyword);
               }}>
                 搜索
               </Button>
@@ -128,14 +136,15 @@ const ListComponent = ({ data = [], customerId }) => {
 
 
 const ElderTemplateListPage = () => {
+  const containerRef = useRef(null);
+
   const [searchParams] = useSearchParams();
   const customerId = searchParams.get('customerId');
 
   const { data = {}, loading, run } = useLoadEvaluteTemplateList({
     customerId,
-  });
+  }, containerRef);
 
-  console.log('ElderTemplateListPage', data?.dataList);
   return (
     <>
       <div className=" text-center flex justify-center flex-col items-center">
@@ -147,7 +156,7 @@ const ElderTemplateListPage = () => {
                   评估模版
                 </div>
                 <div className="relative text-[0.75rem] tracking-[0.05em] leading-[1.13rem]">
-                  共有 {data?.dataList?.length}个模版
+                  共有 {data?.totalNum}个模版
                 </div>
               </div>
 
@@ -156,9 +165,10 @@ const ElderTemplateListPage = () => {
               </div>
             </div>
           </Affix>
-          <EmptyDataContainer data={[data?.dataList]} loading={loading}>
-            <ListComponent data={data?.dataList} customerId={customerId}></ListComponent>
-          </EmptyDataContainer>
+          <div className="1 overflow-y-scroll h-[800px]" ref={containerRef}>
+            <EmptyDataContainer data={[data?.list]} loading={loading}>
+              <ListComponent data={data?.list} customerId={customerId}></ListComponent>
+            </EmptyDataContainer></div>
         </div>
       </div>
     </>

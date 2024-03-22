@@ -1,5 +1,5 @@
 //基础类
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 //类型定义
 import { ElementTypeEnum } from '@/enums/ElementTypeEnum';
@@ -21,6 +21,7 @@ import {
 import { Form } from 'antd';
 import { OptionTypeEnum } from '@/pages/evaluate/components/evaluateForm/enums/OptionTypeEnum';
 import { c } from '@umijs/utils/compiled/tar';
+import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
 
 const { EDateTimePicker, ETimePicker } = EDateTime;
 const { ETextArea } = EInput;
@@ -40,7 +41,12 @@ interface FormItemBaseContainerProps {
   formItemProps?: any,
 }
 
-const FormItemBaseContainerDefault = ({ item, children, formItemProps = {} }: FormItemBaseContainerProps) => {
+const FormItemBaseContainerDefault = ({
+                                        item,
+                                        children,
+                                        formItemProps = {},
+                                      }: FormItemBaseContainerProps) => {
+
   return (
     <div>
       <div
@@ -77,7 +83,7 @@ interface FormItemComponentProps {
   index: number,
   form: any,
   commonFormItemProps?: any,
-  changeElementVisible: (elementId: number, visible: boolean) => void,
+  changeElementVisible: (elementId: number, visible: ElementVisibleEnum) => void,
   FormItemBaseContainer: React.FC<FormItemBaseContainerProps>,
   disabled: boolean,
 }
@@ -89,9 +95,9 @@ const FormItemComponent = ({
                              commonFormItemProps = {},
                              FormItemBaseContainer = FormItemBaseContainerDefault,
                              disabled = false,
-
                            }: FormItemComponentProps) => {
 
+  console.log('FormItemComponent', config);
   //PATCH by sunshu: 这里是给后端打的补丁，接口为了方便 需要elementId这个字段来做结果对应 2024-03-19
   const item = {
     ...config,
@@ -119,14 +125,12 @@ const FormItemComponent = ({
         //身份证号校验
 
         if (elementDataType === ElementDataTypeEnum.IDCARD) {
-          console.log('身份证号校验value', value);
           if (value.answer && !/(^\d{15}$)|(^\d{18}$)|(^\d{17}(\d|X|x)$)/.test(value.answer)) {
             return Promise.reject('身份证号格式错误');
           }
         }
 
         if (elementDataType === ElementDataTypeEnum.PHONE) {
-          console.log('身份证号校验value', value);
           if (value.answer && !/^1[3456789]\d{9}$/.test(value.answer)) {
             return Promise.reject('手机号格式错误');
           }
@@ -146,7 +150,8 @@ const FormItemComponent = ({
     switch (elementDataType) {
       case ElementDataTypeEnum.NUMBER:
         return (
-          <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
+          <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}
+          >
             <EInput componentProps={{
               type: 'number',
             }} form={form} item={item} />
@@ -252,11 +257,6 @@ const FormItemComponent = ({
       {
         validator: (rule, value = {}) => {
           if (item?.elementRequireFlg === ElementRequireFlgEnum.YES) {
-            if (value.optionType === OptionTypeEnum.OTHER) {
-              if (!value.answer) {
-                return Promise.reject('必填项');
-              }
-            }
             if (!value.optionValues) {
               return Promise.reject('必填项');
             }
@@ -275,8 +275,8 @@ const FormItemComponent = ({
     return (
       <FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
         {item?.optionList?.length > 4 ?
-          <ESelect options={options} changeElementVisible={changeElementVisible} form={form} item={item} /> :
-          <ERadio options={options} changeElementVisible={changeElementVisible} form={form} item={item} />}
+          <ESelect options={options} form={form} item={item} /> :
+          <ERadio options={options} form={form} item={item} />}
       </FormItemBaseContainer>
     );
   };
@@ -287,12 +287,6 @@ const FormItemComponent = ({
       {
         validator: (rule, value = {}) => {
           if (item?.elementRequireFlg === ElementRequireFlgEnum.YES) {
-
-            if (value.optionType === OptionTypeEnum.OTHER) {
-              if (!value.answer) {
-                return Promise.reject('必填项');
-              }
-            }
             if (!value.optionValues) {
               return Promise.reject('必填项');
             }
@@ -310,7 +304,7 @@ const FormItemComponent = ({
 
     return (
       <FormItemBaseContainer item={item} form={form} formItemProps={formItemProps}>
-        <ECheckBox form={form} item={item} options={options} changeElementVisible={changeElementVisible} />
+        <ECheckBox form={form} item={item} options={options} />
       </FormItemBaseContainer>
     );
   };
@@ -374,9 +368,39 @@ const FormItemComponent = ({
     // ...
   };
 
+  const shouldUpdate = (prevValue, curValue) => {
+    if (item.condition) {
+      const { elementId, optionId } = item.condition;
+      return prevValue[elementId]?.optionValues !== curValue[elementId]?.optionValues;
+    }
+
+    return false;
+  };
+
+  const [isShow, setIsShow] = useState(item.elementIsShow);
+
+  useEffect(() => {
+    changeElementVisible?.(item.id, isShow);
+  }, [isShow]);
+
   return (
     <>
-      <div className="mt-[20px]" key={item?.id}>{templateConfig[item?.elementType]?.(item)}</div>
+      <Form.Item noStyle shouldUpdate={shouldUpdate}>
+        {
+          ({ getFieldsValue }) => {
+
+            // 展示的条件 ：{elementID: 1, optionId: 1}
+            if (item.condition) {
+              const { elementId, optionId } = item.condition;
+              const relatedValues = getFieldsValue([elementId])[elementId]?.optionValues?.split(',');
+              setIsShow(relatedValues?.includes(optionId?.toString()) ? ElementVisibleEnum.SHOW : ElementVisibleEnum.HIDE);
+            }
+
+            return isShow !== ElementVisibleEnum.HIDE && (
+              <div className="mt-[20px]" key={item?.id}>{templateConfig[item?.elementType]?.(item)}</div>);
+          }
+        }
+      </Form.Item>
     </>
   );
 };

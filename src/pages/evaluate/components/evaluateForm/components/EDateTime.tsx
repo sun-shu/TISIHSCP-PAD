@@ -68,7 +68,7 @@ const ETimePicker = (props) => {
     onChange({
       ...config,
       ...value,
-      answer: dayjs(date)?.format('HH:mm'),
+      answer: date ? dayjs(date)?.format('HH:mm') : '',
       elementId: config.id,
     });
   };

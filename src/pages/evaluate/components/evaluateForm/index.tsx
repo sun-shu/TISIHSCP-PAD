@@ -20,6 +20,7 @@ import useQuestionCalculate from '@/pages/evaluate/components/evaluateForm/hooks
 //样式
 //工具
 import _ from 'lodash';
+import { ElementTypeEnum } from '@/enums/ElementTypeEnum';
 
 //常量
 
@@ -28,15 +29,14 @@ interface EvaluateFormTemplatesProps {
   setElementList: (elementList: TemplateResDTO[]) => void;
   elementList: TemplateResDTO[];
   form: FormInstance<any>;
+  changeElementVisible: (elementId: number, visible: boolean) => void;
+  calculateTitleNum: (elementList: TemplateResDTO[]) => TemplateResDTO[];
   disabled: boolean;
 }
 
 const
   EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
-    const { elementList = [], form, disabled } = props;
-    const { setElementList } = props;
-
-    const { changeElementVisible } = useQuestionCalculate(elementList, setElementList);
+    const { elementList = [], form, disabled, changeElementVisible } = props;
 
 //  PS by sunshu：这里使用elementList.map的原因是操作同一份数据，如果使用UseMemo，会导致重新渲染(计算验证进度和多选状态)
     return (
@@ -69,10 +69,10 @@ const
             elementList.map((item, index) => {
               return (
                 <>
-                  {item?.elementIsShow !== ElementVisibleEnum.HIDE &&
-                    <FormItemComponent item={item} index={index} form={form}
-                                       commonFormItemProps={{ initialValue: item }}
-                                       changeElementVisible={changeElementVisible} disabled={disabled} />}
+
+                  <FormItemComponent item={item} index={index} form={form}
+                                     commonFormItemProps={{ initialValue: item }}
+                                     changeElementVisible={changeElementVisible} disabled={disabled} />
                 </>
               );
             })}
@@ -104,9 +104,36 @@ const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
   //因为这里会有显隐变化，所以数据单独存储
   const [elementList, setElementList] = useState(_.cloneDeep(initElementList));
 
+  const { calculateTitleNum, changeElementVisible } = useQuestionCalculate(elementList, setElementList);
+
   useEffect(() => {
-    setElementList(_.cloneDeep(initElementList));
+    //   组数据 遍历optionList,将里面的optionIsShow和NextElemtID放在对应ID的item中
+    const newElementList = _.cloneDeep(initElementList);
+
+    //1. 讲数组变为ID为key的对象
+    const elementMap = _.keyBy(newElementList, 'id');
+    //2. 遍历optionList，将里面的optionIsShow和NextElemtID放在对应ID的item中
+    newElementList.forEach((item) => {
+      if (item?.optionList) {
+        item.optionList.forEach((option) => {
+          const targetItem = elementMap[option.nextElementId];
+          if (targetItem) {
+            targetItem.condition = {
+              elementId: item.id,
+              optionId: option.id,
+            };
+
+            option.nextElementIsShow = targetItem.elementIsShow;
+          }
+        });
+      }
+    });
+
+    // 使用_.values将elementMap 变为数组，赋值给elementList
+    setElementList(calculateTitleNum(_.values(elementMap)));
   }, [initElementList]);
+
+
   const { fillCount, needFillCount, onFieldsChange, onValuesChange } = useProgressShow(form, initialValues);
 
   return (
@@ -131,6 +158,7 @@ const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
             disabled={disabled} onFieldsChange={onFieldsChange} onValuesChange={onValuesChange}>
         {elementList &&
           <EvaluateFormTemplates elementList={elementList} form={form}
+                                 changeElementVisible={changeElementVisible}
                                  setElementList={setElementList} disabled={disabled} />
         }
       </Form>

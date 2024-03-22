@@ -1,5 +1,4 @@
 const OneSection = ({ title }) => {
-  console.log(title, 'title');
   return (
     <div className="flex flex-col ">
       <div className="text-2xl font-bold text-gray-800">{title}</div>

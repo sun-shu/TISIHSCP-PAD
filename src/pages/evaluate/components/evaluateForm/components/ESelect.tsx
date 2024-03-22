@@ -6,9 +6,7 @@ import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enu
 const ESelect = ({ selectProps, ...props }) => {
   const { id, value = {}, onChange, options, changeElementVisible, item: config } = props;
 
-  console.log('ESelect', props);
   const handleOnChange = (newValue, option) => {
-    console.log(newValue, option, 'value');
     onChange({
       ...config,
       optionValues: newValue,
@@ -16,11 +14,6 @@ const ESelect = ({ selectProps, ...props }) => {
       elementId: config.id,
       optionType: option.optionType,
     });
-
-    console.log(option, 'option.optionIsShow');
-    if ([ElementVisibleEnum.HIDE, ElementVisibleEnum.SHOW].includes(option.optionIsShow) && option.nextElementId) {
-      changeElementVisible(option.nextElementId, option.optionIsShow);
-    }
   };
 
   const handleOtherTextChange = (e) => {

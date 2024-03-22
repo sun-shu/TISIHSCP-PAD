@@ -16,7 +16,6 @@ const useLoadMoreScroll = (fetchData: () => Promise<any>, pageinfo = {
       pageSize: pageinfo.pageSize,
       pageNumber: pageinfo.currentPage + 1,
     }).then((res) => {
-      console.log('res', res);
       setData([...data, ...res.data]);
     });
 
@@ -27,7 +26,6 @@ const useLoadMoreScroll = (fetchData: () => Promise<any>, pageinfo = {
           pageSize: pageinfo.pageSize,
           pageNumber: pageinfo.currentPage + 1,
         }).then((res) => {
-          console.log('res', res);
           setData([...data, ...res.data]);
           setHasMore(data.length === res.total);
           setLoading(false);
