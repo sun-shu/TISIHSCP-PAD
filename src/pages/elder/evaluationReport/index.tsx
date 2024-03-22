@@ -118,13 +118,12 @@ const EvaluationReportPage = () => {
           <div className="w-full  top-[184px]  justify-between items-start inline-flex">
             <div className="flex-col justify-start items-start gap-1 inline-flex">
               <div className="flex-col justify-start items-start flex">
-                <div className="text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide">
-                  综合评分
+                <div
+                  className="text-zinc-700 text-[28px] font-semibold font-['PingFang SC'] leading-[18px] tracking-wide">
+                  综合评分: {data?.recordScore}
                 </div>
               </div>
-              <div className="text-zinc-700 text-[28px] font-semibold font-['PingFang SC'] leading-[42px]">
-                {data?.recordScore}
-              </div>
+           
             </div>
 
           </div>

@@ -109,6 +109,7 @@ const NotFilledList = ({ data, locationParams = {} }: NotFilledListProps) => {
       relativeType: locationParams.relativeType,
       templateComposeCode: locationParams.templateComposeCode,
       remaindIndex: data?.length,
+      parentRecordMainId: locationParams.recordMainId,
     };
 
     // 使用模板字符串和展开运算符构建URL
