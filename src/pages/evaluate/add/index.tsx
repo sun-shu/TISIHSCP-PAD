@@ -22,7 +22,6 @@ const addPage = () => {
 
   const [form] = Form.useForm();
 
-  const { evaluateTemplateData = {}, loading, templateName } = useLoadFormTemplateData(templateCode, form);
   const locationParams = {
     templateCode,
     templateComposeCode,
@@ -32,10 +31,14 @@ const addPage = () => {
     remaindIndex,
     parentRecordMainId,
   };
+
+  // 这里的加载顺序要保持，否则会先读到模板，渲染结果错误
   const { data: lastRes } = useGetLastRes(locationParams, form);
+  const { evaluateTemplateData = {}, loading, templateName } = useLoadFormTemplateData(templateCode, form);
 
   // 有上一次的回显结果 回显上一次的
-  const elementList = lastRes?.templateObjectData?.resDTO?.elementList || evaluateTemplateData?.resDTO?.elementList;
+  const hasLastRes = lastRes?.resultDataList?.length > 0;
+  const elementList = hasLastRes ? lastRes?.templateObjectData?.resDTO?.elementList : evaluateTemplateData?.resDTO?.elementList;
 
   const {
     submitAddEvaluteGroupContinue,

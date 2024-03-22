@@ -104,6 +104,9 @@ const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
   //因为这里会有显隐变化，所以数据单独存储
   const [elementList, setElementList] = useState(_.cloneDeep(initElementList));
 
+  useEffect(() => {
+    setElementList(_.cloneDeep(initElementList));
+  }, [initElementList]);
   const { fillCount, needFillCount, onFieldsChange, onValuesChange } = useProgressShow(form, initialValues);
 
   return (
