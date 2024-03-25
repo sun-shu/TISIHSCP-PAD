@@ -1,17 +1,12 @@
 import CustomTag from '@/components/CustomTag';
-import { LevelOfCareEnum } from '@/enums/LevelOfCareEnum';
+import { useModel } from 'umi';
 
 const LevelOfCareTag = ({ level = '' }) => {
-  const levelMap = {
-    [LevelOfCareEnum.Level1]: '正常',
-    [LevelOfCareEnum.Level2]: '轻度',
-    [LevelOfCareEnum.Level3]: '中度I',
-    [LevelOfCareEnum.Level4]: '中度II',
-    [LevelOfCareEnum.Level5]: '重度I',
-    [LevelOfCareEnum.Level6]: '重度II',
-  };
+  const { getDictionaryItemsCodeNameDesc } = useModel('dictionaryModel');
 
-  return (level ? <CustomTag text={levelMap[level]} /> : null);
+  const [nurseGradeCodeNameDesc] = getDictionaryItemsCodeNameDesc(['nurseGrade']);
+
+  return (level ? <CustomTag text={nurseGradeCodeNameDesc[level]} /> : null);
 };
 
 export default LevelOfCareTag;

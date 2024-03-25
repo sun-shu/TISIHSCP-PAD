@@ -1,6 +1,5 @@
-import CustomTag from '@/components/CustomTag';
 import { CloseCircleOutlined, SearchOutlined } from '@ant-design/icons';
-import { Affix, Avatar, Button, ConfigProvider, Input } from 'antd';
+import { Affix, Avatar, Button, ConfigProvider, Image, Input } from 'antd';
 import classNames from 'classnames';
 import React, { ReactNode, useEffect, useRef, useState } from 'react';
 import { history, useRequest } from 'umi';
@@ -186,10 +185,14 @@ const ElderListTemplate = ({ title, data = [], countDescription, loading }: {
                 <div className="w-full justify-between items-center gap-5 flex">
                   <Avatar src={imageUrl}
                           icon={<img src={gender === SexEnum.FEMALE ? WomanAvatar : ManAvatar} width={160}
-                                     height={160} />} shape="square"
+                                     height={160} />}
+                          shape="square"
                           className="w-[104px] h-[104px] border-none bg-white">
-
                   </Avatar>
+                  {/*TODO by sunshu 头像这里，如果不加这个隐藏的头像，上面头像的默认展示会失效，暂时没找到原因*/}
+                  <Image hidden src={gender === SexEnum.FEMALE ? WomanAvatar : ManAvatar} width={160}
+
+                         height={160} />
                   <div className=" flex-1 flex-col justify-between h-full items-start flex">
                     <div className="flex-col justify-between w-full items-start gap-2 flex">
                       <div className="w-full justify-between items-center gap-5 flex">

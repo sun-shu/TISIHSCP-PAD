@@ -35,7 +35,7 @@ export default function userModel() {
     setToken(data?.accessToken);
 
     await getUserInfo();
- 
+
     const urlParams = new URL(window.location.href).searchParams;
     history.push(urlParams.get('redirect') || '/');
   };
