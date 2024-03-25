@@ -115,7 +115,7 @@ const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
       if (item?.optionList) {
         item.optionList.forEach((option) => {
           const targetItem = elementMap[option.nextElementId];
-          if (targetItem && option) {
+          if (targetItem && option.optionIsShow === ElementVisibleEnum.SHOW) {
             targetItem.conditions = [...targetItem.conditions || [], {
               elementId: item.id,
               optionId: option.id,
