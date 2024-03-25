@@ -66,6 +66,7 @@ const ECheckBox = (props) => {
                                   marginLeft: 10,
                                   borderBottom: '1px solid #323746',
                                 }}
+                                maxLength={100}
                                 value={value?.answer}
                                 onChange={handleOtherTextChange}
                                 variant="borderless"

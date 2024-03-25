@@ -47,6 +47,7 @@ const ERadio = (props) => {
                             <Input
                               value={value?.answer}
                               onChange={handleOtherTextChange}
+                              maxLength={100}
                               style={{
                                 width: '80%',
                                 marginLeft: 10,

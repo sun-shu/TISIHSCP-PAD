@@ -41,7 +41,7 @@ const ESelect = ({ selectProps, ...props }) => {
 
 
       </Select>
-      {value.optionType == OptionTypeEnum.OTHER && <Input onChange={handleOtherTextChange} />}
+      {value.optionType == OptionTypeEnum.OTHER && <Input onChange={handleOtherTextChange} maxLength={100} />}
     </div>
   );
 };
