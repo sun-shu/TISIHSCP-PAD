@@ -17,14 +17,14 @@ const useProgressShow = (form: FormInstance, initialValues, initElementList) => 
 
   const onFieldsChange = (changedFields, allFields) => {
     setFillCount(allFields.filter((field) => {
-      const hasContent = field.value?.answer || field.value?.optionValues;
+      const hasContent = field.value?.answer || field.value?.optionValues || field.value?.bodyList?.length > 0;
       return hasContent && !field.validating && field.errors.length === 0;
     }).length);
     setNeedFillCount(allFields.length);
   };
 
   const onValuesChange = async (changedValues, allValues = []) => {
-    form?.validateFields({
+    await form?.validateFields({
       validateOnly: true,
     });
   };
