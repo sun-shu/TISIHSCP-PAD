@@ -176,7 +176,7 @@ const AddAndViewOfCompositePage = (props) => {
   const disabled = !(notFilledListData.length === 0);
 
   const { submitEvaluateGroup, viewReport, loading } = useSubmitEvaluateGroup(locationParams);
-
+ 
 
   return (
     <>
@@ -210,6 +210,7 @@ const AddAndViewOfCompositePage = (props) => {
               <Button
                 className="px-[10px] py-[4px] flex"
                 type="primary"
+                loading={loading}
                 disabled={disabled}
                 onClick={submitEvaluateGroup}
               >

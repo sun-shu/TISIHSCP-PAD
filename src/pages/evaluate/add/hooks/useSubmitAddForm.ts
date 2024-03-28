@@ -85,7 +85,7 @@ const useSubmitAddForm = (form: FormInstance, params, elementList) => {
     //综合评估，返回到综合评估列表
     history.replace(`/evaluate/add-and-view-of-composite/${customerId}/${templateComposeCode}?relativeId=${relativeId}&relativeType=${relativeType}&recordMainId=${parentRecordMainId}`);
   };
- 
+
   //综合评估-提交并继续
   const submitAddEvaluteGroupContinue = async () => {
     const data = await submitAddForm();
@@ -109,6 +109,7 @@ const useSubmitAddForm = (form: FormInstance, params, elementList) => {
     submitAddEvaluteGroupReturn,
     submitAddEvaluteGroupContinue,
     submitAddEvalute,
+    loading,
   };
 };
 
