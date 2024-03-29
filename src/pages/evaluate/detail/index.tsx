@@ -7,7 +7,7 @@ import useLoadDetailData from '@/pages/evaluate/detail/hooks/useLoadDetailData';
 
 const DetailPage = () => {
   const { params } = useMatch('/evaluate/detail/:templateCode/:recordMainId');
-  const { recordMainId = '28030065433N', templateCode } = params;
+  const { recordMainId = '', templateCode } = params;
 
   console.log('DetailPage', params);
 
@@ -17,11 +17,13 @@ const DetailPage = () => {
     recordMainId,
   });
 
+  console.log('initialValues', data?.templateObjectData?.resDTO
+    ?.elementList);
   return (
     <div className="max-w-[620px] m-auto py-[20px]">
       <div className="mb-[90px]">
         <div className="mt-[20px]">
-          {data?.templateObjectData?.resDTO
+          {initialValues && data?.templateObjectData?.resDTO
               ?.elementList &&
             <EvaluateForm disabled form={form} templateCode={templateCode} templateName={data?.templateName}
                           elementList={data?.templateObjectData?.resDTO

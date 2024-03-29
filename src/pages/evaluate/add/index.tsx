@@ -1,7 +1,7 @@
 import EvaluateForm from '@/pages/evaluate/components/evaluateForm';
 import { useMatch } from 'umi';
 import { Button, Form, Skeleton } from 'antd';
-import React from 'react';
+import React, { useMemo } from 'react';
 import useSubmitAddForm from './hooks/useSubmitAddForm';
 import { useSearchParams } from '@@/exports';
 import useLoadFormTemplateData from '@/pages/evaluate/components/evaluateForm/hooks/useLoadFormTemplateData';
@@ -12,7 +12,6 @@ const addPage = () => {
   const { params } = useMatch('/evaluate/add/:customerId/:templateCode');
   const { templateCode = '', customerId } = params;
 
-  console.log(customerId, 'customerId');
   const [searchParams] = useSearchParams();
   const relativeId = searchParams.get('relativeId');
   const relativeType = searchParams.get('relativeType');
@@ -33,24 +32,34 @@ const addPage = () => {
   };
 
   // 这里的加载顺序要保持，否则会先读到模板，渲染结果错误
-  const { data: lastRes } = useGetLastRes(locationParams, form);
-  const { evaluateTemplateData = {}, loading, templateName } = useLoadFormTemplateData(templateCode, form);
+  const { data: lastRes, loading: lastResLoading } = useGetLastRes(locationParams, form);
+  const {
+    evaluateTemplateData = {},
+    loading: templateLoading,
+    templateName,
+  } = useLoadFormTemplateData(templateCode, form);
 
-  // 有上一次的回显结果 回显上一次的
-  const hasLastRes = lastRes?.resultDataList?.length > 0;
-  const elementList = hasLastRes ? lastRes?.templateObjectData?.resDTO?.elementList : evaluateTemplateData?.resDTO?.elementList;
+
+  const elementList = useMemo(() => {
+    // 有上一次的回显结果 回显上一次的
+    const finsh = lastRes && evaluateTemplateData;
+    if (!finsh) return [];
+
+    const hasLastRes = lastRes?.resultDataList?.length > 0;
+    return hasLastRes ? lastRes?.templateObjectData?.resDTO?.elementList : evaluateTemplateData?.resDTO?.elementList;
+  }, [lastRes, evaluateTemplateData]);
 
   const {
     submitAddEvaluteGroupContinue,
     submitAddEvaluteGroupReturn,
     submitAddEvalute,
     loading: submitLoading,
-  } = useSubmitAddForm(form, locationParams, evaluateTemplateData?.resDTO?.elementList);
+  } = useSubmitAddForm(form, locationParams, elementList);
 
   return (
 
     <div className="max-w-[620px] m-auto py-[20px]">
-      <Skeleton loading={loading} paragraph={{ rows: 10 }} active>
+      <Skeleton loading={templateLoading || lastResLoading} paragraph={{ rows: 10 }} active>
         <div className="mb-[90px]">
           <div className="mt-[20px]">
             {elementList &&

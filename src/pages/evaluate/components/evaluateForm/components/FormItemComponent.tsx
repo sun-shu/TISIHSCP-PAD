@@ -68,7 +68,8 @@ const FormItemBaseContainerDefault = ({
 
       <div className="px-[60px]  bg-white flex-center rounded-[4px]">
         <div className="w-full my-[20px]">
-          <Form.Item name={item?.id} {...formItemProps} className="mb-0">
+          {/*preserve false防止字段隐藏后值依然遗留 */}
+          <Form.Item name={item?.id} preserve={false} {...formItemProps} className="mb-0">
             {children}
           </Form.Item>
         </div>
@@ -402,6 +403,21 @@ const FormItemComponent = ({
               });
 
               setIsShow(show ? ElementVisibleEnum.SHOW : ElementVisibleEnum.HIDE);
+
+              const setElementVisible = async (elementId: number, elementIsShow: ElementVisibleEnum) => {
+                const element = await form.getFieldValue(elementId);
+                console.log('changeElementVisible element', element);
+
+                //  这里是为了提交时能够从表单中获取显隐状态，不需要进行二次合并
+                form.setFieldValue(elementId, {
+                  ...element,
+                  elementIsShow,
+                });
+
+              };
+
+              // 设置表单的显隐值，用于提交时显隐数据的获取
+              setElementVisible(item.id, show ? ElementVisibleEnum.SHOW : ElementVisibleEnum.HIDE);
             }
 
             return isShow !== ElementVisibleEnum.HIDE && (

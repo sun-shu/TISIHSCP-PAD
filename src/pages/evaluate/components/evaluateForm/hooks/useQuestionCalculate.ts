@@ -30,7 +30,7 @@ const useQuestionCalculate = (setElementList, form) => {
   };
 
   // 修改题目显示状态
-  const changeElementVisible = (elementId: number, elementIsShow: ElementVisibleEnum) => {
+  const changeElementVisible = async (elementId: number, elementIsShow: ElementVisibleEnum) => {
     // 这里采用了函数式更新，避免多次触发造成的state覆盖，序号更新错误问题
     setElementList(prevState => {
       const visibleElementList =
@@ -42,10 +42,10 @@ const useQuestionCalculate = (setElementList, form) => {
       return calculateTitleNum(visibleElementList);
     });
 
+
     form?.validateFields({
       validateOnly: true,
     });
-
   };
 
 
