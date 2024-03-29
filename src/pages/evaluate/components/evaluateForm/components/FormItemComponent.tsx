@@ -98,7 +98,6 @@ const FormItemComponent = ({
                              disabled = false,
                            }: FormItemComponentProps) => {
 
-  console.log('FormItemComponent', config);
   //PATCH by sunshu: 这里是给后端打的补丁，接口为了方便 需要elementId这个字段来做结果对应 2024-03-19
   const item = {
     ...config,
@@ -406,13 +405,21 @@ const FormItemComponent = ({
 
               const setElementVisible = async (elementId: number, elementIsShow: ElementVisibleEnum) => {
                 const element = await form.getFieldValue(elementId);
-                console.log('changeElementVisible element', element);
+                console.log('changeElementVisible element', element, item);
 
-                //  这里是为了提交时能够从表单中获取显隐状态，不需要进行二次合并
-                form.setFieldValue(elementId, {
-                  ...element,
-                  elementIsShow,
-                });
+                if (elementIsShow === ElementVisibleEnum.SHOW) {
+                  form.setFieldValue(elementId, {
+                    ...item,
+                    ...element,
+                    elementIsShow,
+                  });
+                } else {
+                  //  这里是为了提交时能够从表单中获取显隐状态，不需要进行二次合并
+                  form.setFieldValue(elementId, {
+                    ...item,
+                    elementIsShow,
+                  });
+                }
 
               };
 

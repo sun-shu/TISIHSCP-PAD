@@ -49,12 +49,14 @@ const addPage = () => {
     return hasLastRes ? lastRes?.templateObjectData?.resDTO?.elementList : evaluateTemplateData?.resDTO?.elementList;
   }, [lastRes, evaluateTemplateData]);
 
+
+  // PATCH：这里使用evaluateTemplateData?.resDTO?.elementList作为初始化数据，因为上一次的回显结果里，后端可能携带默认数据
   const {
     submitAddEvaluteGroupContinue,
     submitAddEvaluteGroupReturn,
     submitAddEvalute,
     loading: submitLoading,
-  } = useSubmitAddForm(form, locationParams, elementList);
+  } = useSubmitAddForm(form, locationParams, evaluateTemplateData?.resDTO?.elementList);
 
   return (
 
