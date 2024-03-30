@@ -90,14 +90,14 @@ const ListComponent = ({ data = [] }) => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-row items-center justify-end gap-[1.25rem] text-[0.88rem] text-fg-main-bluegreen">
+            <div className="flex flex-row items-center justify-end gap-[1.25rem] text-[0.88rem] text-fg-main-bluegreen" onClickCapture={() => {
+
+              handleGoToEvaluateTemplateClick(item?.customerId);
+            }}>
               <Button
                 className="px-[10px] py-[4px] flex"
                 type="primary"
-                onClickCapture={() => {
 
-                  handleGoToEvaluateTemplateClick(item?.customerId);
-                }}
                 icon={<img src={EvaluateIcon} width={24} height={24} />
                 }
               >

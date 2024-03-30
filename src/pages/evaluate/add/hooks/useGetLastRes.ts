@@ -1,13 +1,15 @@
 import { useRequest } from '@@/exports';
 import { checkTemplateAnswerDisplay } from '@/api/evalute';
+import {useEffect} from "react";
 
 const useGetLastRes = (locationParams, form) => {
   // TODO by sunshu 这里需要拉取到上一次填写的结果 赋值于表单
-  const { data, loading } = useRequest(() => {
+  const { data, loading, run } = useRequest(() => {
     return checkTemplateAnswerDisplay({
       ...locationParams,
     });
   }, {
+    manual: true,
     onSuccess: (data) => {
       const initialValues = data.resultDataList?.reduce((acc, cur) => {
         acc[cur.elementId] = {
@@ -25,6 +27,11 @@ const useGetLastRes = (locationParams, form) => {
       });
     },
   });
+
+  useEffect(() => {
+    run()
+  }, [locationParams.templateCode]);
+
 
   //拉取上一次评估结果，返回
   return {
