@@ -10,7 +10,7 @@ const useGetLastRes = (locationParams, form) => {
     });
   }, {
     manual: true,
-    onSuccess: async (data) => {
+    onSuccess:  (data) => {
       const initialValues = data.resultDataList?.reduce((acc, cur) => {
         acc[cur.elementId] = {
           ...cur,
@@ -19,14 +19,14 @@ const useGetLastRes = (locationParams, form) => {
         return acc;
       }, {});
 
-      initialValues && await form.setFieldsValue(initialValues);
+      console.log('initialValues', initialValues);
+      initialValues &&  form.setFieldsValue(initialValues);
 
       // 触发验证状态，更新填写进度条
-      const checkRes = await form.validateFields({
+      form.validateFields({
         validateOnly: true,
       });
 
-      console.log('checkRes', checkRes);
     },
   });
 

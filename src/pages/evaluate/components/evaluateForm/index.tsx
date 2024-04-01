@@ -38,7 +38,7 @@ const
   EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
     const { elementList = [], form, disabled, changeElementVisible } = props;
 
-//  PS by sunshu：这里使用elementList.map的原因是操作同一份数据，如果使用UseMemo，会导致重新渲染(计算验证进度和多选状态)
+    //  PS by sunshu：这里使用elementList.map的原因是操作同一份数据，如果使用UseMemo，会导致重新渲染(计算验证进度和多选状态)
     return (
       <div>
         <ConfigProvider
@@ -67,12 +67,12 @@ const
           {
             elementList.map((item, index) => {
               return (
-                <>
+                <div key={item.id}>
                   <FormItemComponent item={item} index={index} form={form}
                                      commonFormItemProps={{ initialValue: item }}
                                      changeElementVisible={changeElementVisible}
                                      disabled={disabled} />
-                </>
+                </div>
               );
             })}
         </ConfigProvider>
@@ -95,11 +95,12 @@ const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
     form,
     initialValues,
     disabled = false,
-    elementList: initElementList,
+    elementList: initElementList = [],
     templateName,
   } = props;
   console.log('elementList', initElementList);
-  //因为这里会有显隐变化，所以数据单独存储
+
+  //  因为这里会有显隐变化，所以数据单独存储
   const [elementList, setElementList] = useState(_.cloneDeep(initElementList));
 
   const { calculateTitleNum, changeElementVisible } = useQuestionCalculate(setElementList, form);
