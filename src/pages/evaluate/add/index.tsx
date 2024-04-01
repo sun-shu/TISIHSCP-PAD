@@ -4,10 +4,9 @@ import { Button, Form, Skeleton } from 'antd';
 import React, { useMemo } from 'react';
 import useSubmitAddForm from './hooks/useSubmitAddForm';
 import { useSearchParams } from '@@/exports';
-import useLoadFormTemplateData from '@/pages/evaluate/components/evaluateForm/hooks/useLoadFormTemplateData';
+import useLoadFormTemplateData from './hooks/useLoadFormTemplateData';
 import useGetLastRes from '@/pages/evaluate/add/hooks/useGetLastRes';
 
-// TODO: 1. 表单进度条 2. 长者信息 3.提交的结果展示
 const addPage = () => {
   const { params } = useMatch('/evaluate/add/:customerId/:templateCode');
   const { templateCode = '', customerId } = params;

@@ -19,7 +19,13 @@ const useLoadDetailData = (form, params) => {
         return acc;
       }, {});
 
+      initialValues && form.setFieldsValue(initialValues);
       setInitialValues(initialValues);
+
+      // 触发验证状态，更新填写进度条
+      form.validateFields({
+        validateOnly: true,
+      });
     },
   });
 
