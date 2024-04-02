@@ -3,14 +3,13 @@ import { checkTemplateAnswerDisplay } from '@/api/evalute';
 import { useEffect } from 'react';
 
 const useGetLastRes = (locationParams, form) => {
-  // TODO by sunshu 这里需要拉取到上一次填写的结果 赋值于表单
   const { data, loading, run } = useRequest(() => {
     return checkTemplateAnswerDisplay({
       ...locationParams,
     });
   }, {
     manual: true,
-    onSuccess:  (data) => {
+    onSuccess: (data) => {
       const initialValues = data.resultDataList?.reduce((acc, cur) => {
         acc[cur.elementId] = {
           ...cur,
@@ -20,7 +19,7 @@ const useGetLastRes = (locationParams, form) => {
       }, {});
 
       console.log('initialValues', initialValues);
-      initialValues &&  form.setFieldsValue(initialValues);
+      initialValues && form.setFieldsValue(initialValues);
 
       // 触发验证状态，更新填写进度条
       form.validateFields({

@@ -8,6 +8,7 @@ const RoomSelect = ({ value, onChange, floorId }) => {
 
   return (<>
     <Select placeholder="房间" loading={loading}
+            notFoundContent="暂无数据"
             style={{ width: '100%', minWidth: '150px' }}
             suffixIcon={<CaretDownOutlined className="pointer-events-none	" />}
             options={options} value={value} onChange={onChange} />

@@ -1,10 +1,9 @@
 import { history } from '@@/core/history';
 import {
-  CaretDownOutlined, CloseCircleOutlined,
+  CloseCircleOutlined,
   SearchOutlined,
-  UserOutlined,
 } from '@ant-design/icons';
-import { Affix, Avatar, Button, ConfigProvider, Form, Input, Select, Skeleton } from 'antd';
+import { Affix, Avatar, Button, ConfigProvider, Form, Input } from 'antd';
 import EvaluateIcon from '@/assets/icon/evalute.png';
 import LevelOfCareTag from '@/components/LevelOfCareTag';
 import useLoadCustomerList from '@/pages/elder/list/hooks/useLoadCustomerList';
@@ -90,10 +89,12 @@ const ListComponent = ({ data = [] }) => {
                 </div>
               </div>
             </div>
-            <div className="flex flex-row items-center justify-end gap-[1.25rem] text-[0.88rem] text-fg-main-bluegreen" onClickCapture={() => {
+            <div
+              className="px-[12px] py-[24px] flex flex-row items-center justify-end gap-[1.25rem] text-[0.88rem] text-fg-main-bluegreen"
+              onClickCapture={() => {
 
-              handleGoToEvaluateTemplateClick(item?.customerId);
-            }}>
+                handleGoToEvaluateTemplateClick(item?.customerId);
+              }}>
               <Button
                 className="px-[10px] py-[4px] flex"
                 type="primary"

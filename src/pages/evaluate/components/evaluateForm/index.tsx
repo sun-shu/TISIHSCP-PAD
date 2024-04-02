@@ -127,8 +127,8 @@ const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
       }
     });
 
-    // 使用_.values将elementMap 变为数组，赋值给elementList
-    setElementList(calculateTitleNum(_.values(elementMap)));
+    // 这里使用_.map是为了保证数组的顺序是按照已经配置好的顺序来渲染。用_.values()的话会导致顺序不一致问题。
+    setElementList(calculateTitleNum(_.map(newElementList, item => elementMap[item.id])));
 
     form.validateFields({
       validateOnly: true,
