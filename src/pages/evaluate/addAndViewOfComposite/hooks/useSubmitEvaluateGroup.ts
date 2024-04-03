@@ -6,8 +6,12 @@ import { useRequest } from '@@/exports';
 import { addComposeResult } from '@/api/evalute';
 import { EvluateRelativeTypeEnum } from '@/enums/EvluateRelativeTypeEnum';
 import { message } from 'antd';
+import { useEffect, useState } from 'react';
+import _ from 'lodash';
 
 const useSubmitEvaluateGroup = (params) => {
+  const [canSubmit, setCanSubmit] = useState(true);
+  
   const { loading, run } = useRequest(addComposeResult, {
     manual: true,
     onSuccess: (result, params) => {
@@ -33,13 +37,13 @@ const useSubmitEvaluateGroup = (params) => {
   };
 
   const viewReport = () => {
-    const queryParams = new URLSearchParams({
+    const queryParams = new URLSearchParams(_.omitBy({
       relativeId: params.relativeId,
       relativeType: params.relativeType,
       customerId: params.customerId,
       templateComposeCode: params.templateComposeCode,
       recordMainId: params.recordMainId,
-    });
+    }, _.isNil));
 
     history.push(`/elder/evaluation-report?${queryParams}`);
   };
@@ -48,6 +52,7 @@ const useSubmitEvaluateGroup = (params) => {
     submitEvaluateGroup,
     viewReport,
     loading,
+    canSubmit,
   };
 };
 

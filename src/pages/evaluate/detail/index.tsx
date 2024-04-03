@@ -30,14 +30,7 @@ const DetailPage = () => {
                             ?.elementList} initialValues={initialValues} />}
         </div>
       </div>
-
-      <div className="fixed bottom-0 left-0 w-full flex items-center justify-center bg-white p-5">
-        <div className="w-full flex-center">
-
-        </div>
-
-
-      </div>
+      
     </div>
   );
 };

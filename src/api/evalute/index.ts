@@ -10,6 +10,8 @@ export const addResult = async (data: addResultInterface.Request = {}, options?:
     method: 'POST',
     errorShowType: ErrorShowTypeEnum.ERROR_MESSAGE,
     data: data,
+    filterEmptyData: true,
+
     ...(options || {}),
   });
 

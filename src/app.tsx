@@ -11,6 +11,8 @@ import { history } from 'umi';
 import type { RequestConfig, AxiosResponse } from 'umi';
 // import mock from "mock"
 
+import _ from 'lodash';
+
 type Result<T> = {
   status: string
   code: number
@@ -21,6 +23,7 @@ type Result<T> = {
 const loginPath = '/login';
 
 const authHeaderInterceptor = (url: string, options: RequestConfig) => {
+  console.log('authHeaderInterceptor', url, options);
   const authHeader = { 'X-Authorization': Cookies.get('TOKEN') };
   return {
     url: `${url}`,
@@ -106,7 +109,6 @@ export const request: RequestConfig = {
   // 请求拦截器
   requestInterceptors: [
     (config) => {
-      console.log('requestInterceptors', config);
       // 拦截请求配置，进行个性化处理。
       const url = config.url.concat('');
 
@@ -115,6 +117,22 @@ export const request: RequestConfig = {
         params.lang = 'zh';
       }
       return { ...config, url, params };
+    },
+    (url, options) => {
+      if (!options.filterEmptyData) {
+        return {
+          url: `${url}`,
+          options: { ...options },
+        };
+      }
+
+      const filteredParams = _.omitBy(options.params, _.isNil);
+      const filteredData = _.omitBy(options.data, _.isNil);
+
+      return {
+        url: `${url}`,
+        options: { ...options, filteredParams, data: filteredData },
+      };
     },
     authHeaderInterceptor,
   ],

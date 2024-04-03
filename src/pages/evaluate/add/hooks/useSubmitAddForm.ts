@@ -18,12 +18,14 @@ import { addResult } from '@/api/evalute/index';
 import { history } from '@@/core/history';
 import { useRequest } from '@@/exports';
 import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
+import { useEffect, useState } from 'react';
 
 //常量
 
 
 const useSubmitAddForm = (form: FormInstance, params, elementList) => {
   const { templateComposeCode, relativeType, relativeId, customerId, remaindIndex } = params;
+  const [canSubmit, setCanSubmit] = useState(true);
 
   const { loading, run, data } = useRequest(addResult, {
     manual: true,
@@ -32,9 +34,15 @@ const useSubmitAddForm = (form: FormInstance, params, elementList) => {
     },
   });
 
+  useEffect(() => {
+    setCanSubmit(true);
+  }, [params.templateCode]);
+
   const submitAddForm = async () => {
 
     const values = await form.validateFields();
+
+    setCanSubmit(false);
 
     const sourceParmas = params.relativeType === EvluateRelativeTypeEnum.TASK ? {
       customerTaskRecordId: params.relativeId,
@@ -110,6 +118,7 @@ const useSubmitAddForm = (form: FormInstance, params, elementList) => {
     submitAddEvaluteGroupContinue,
     submitAddEvalute,
     loading,
+    canSubmit,
   };
 };
 

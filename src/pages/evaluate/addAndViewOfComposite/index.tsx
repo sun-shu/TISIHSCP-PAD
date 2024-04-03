@@ -175,9 +175,9 @@ const AddAndViewOfCompositePage = (props) => {
 
   const disabled = !(notFilledListData.length === 0);
 
-  const { submitEvaluateGroup, viewReport, loading } = useSubmitEvaluateGroup(locationParams);
- 
+  const { submitEvaluateGroup, canSubmit, viewReport, loading } = useSubmitEvaluateGroup(locationParams);
 
+ 
   return (
     <>
       <ElderDetailLayout
@@ -211,7 +211,7 @@ const AddAndViewOfCompositePage = (props) => {
                 className="px-[10px] py-[4px] flex"
                 type="primary"
                 loading={loading}
-                disabled={disabled}
+                disabled={disabled || !canSubmit}
                 onClick={submitEvaluateGroup}
               >
                 生成报告
@@ -220,6 +220,7 @@ const AddAndViewOfCompositePage = (props) => {
               <Button
                 className="px-[10px] py-[4px] flex"
                 type="primary"
+                disabled={disabled}
                 onClick={viewReport}
               >
                 查看报告

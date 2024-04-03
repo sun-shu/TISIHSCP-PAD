@@ -55,6 +55,7 @@ const addPage = () => {
     submitAddEvaluteGroupReturn,
     submitAddEvalute,
     loading: submitLoading,
+    canSubmit,
   } = useSubmitAddForm(form, locationParams, evaluateTemplateData?.resDTO?.elementList);
 
   return (
@@ -74,12 +75,13 @@ const addPage = () => {
             {
               templateComposeCode ? (<> <Button type="primary" className="mr-10 w-[240px] h-[48px]"
                                                 onClick={submitAddEvaluteGroupReturn}
-                                                loading={submitLoading}>提交并返回</Button>
+                                                loading={submitLoading} disabled={!canSubmit}>提交并返回</Button>
                   {Number(remaindIndex) > 1 && <Button type="primary" ghost className="mr-10 w-[240px] h-[48px]"
                                                        onClick={submitAddEvaluteGroupContinue}
-                                                       loading={submitLoading}>继续填写</Button>}</>) :
+                                                       loading={submitLoading}
+                                                       disabled={!canSubmit}>继续填写</Button>}</>) :
                 <Button type="primary" className="mr-10 w-[240px] h-[48px]" onClick={submitAddEvalute}
-                        loading={submitLoading}>提交</Button>
+                        loading={submitLoading} disabled={!canSubmit}>提交</Button>
             }
           </div>
 
