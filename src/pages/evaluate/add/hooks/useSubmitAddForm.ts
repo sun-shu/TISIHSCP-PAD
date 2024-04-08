@@ -19,6 +19,7 @@ import { history } from '@@/core/history';
 import { useRequest } from '@@/exports';
 import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
 import { useEffect, useState } from 'react';
+import { TitleComponentArrConst } from '@/pages/evaluate/const/TitleComponentConst';
 
 //常量
 
@@ -48,12 +49,16 @@ const useSubmitAddForm = (form: FormInstance, params, elementList) => {
       customerTaskRecordId: params.relativeId,
     } : {};
 
+    // 初始化数据 将表单元素设为隐藏，只有在表单元素有值的时候才会显示。是为了保证表单元素被隐藏时，展示的状态为隐藏，数据是初始化数据
     const initialValues = elementList?.reduce((acc, cur) => {
+      // 标题组件采用其默认展示状态
+      const initShowStatus = TitleComponentArrConst.includes(cur.elementType) ? cur.elementIsShow : ElementVisibleEnum.HIDE;
+
       acc[cur.id] = {
         ...cur,
         elementId: cur.id,
         optionValues: cur.optionValues ? cur.optionValues.toString() : '',
-        elementIsShow: ElementVisibleEnum.HIDE,
+        elementIsShow: initShowStatus,
       };
       return acc;
     }, {});
