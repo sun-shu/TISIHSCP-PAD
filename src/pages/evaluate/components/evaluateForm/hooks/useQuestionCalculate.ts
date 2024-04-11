@@ -4,55 +4,55 @@ import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enu
 import { TitleComponentArrConst } from '@/pages/evaluate/const/TitleComponentConst';
 
 const useQuestionCalculate = (setElementList, form) => {
-  //计算序号逻辑，遇到标题，序号就重新计算
-  //更新显示的题目和进度
-  const calculateTitleNum = (currentElementList: TemplateResDTO[]) => {
-    let elementIndex = 0;
+	//计算序号逻辑，遇到标题，序号就重新计算
+	//更新显示的题目和进度
+	const calculateTitleNum = (currentElementList: TemplateResDTO[]) => {
+		let elementIndex = 0;
 
-    return currentElementList.map((item) => {
-      // 如果当前元素是标题类型，则重置索引
-      if (TitleComponentArrConst.includes(item.elementType)) {
-        elementIndex = 0;
-      }
+		return currentElementList.map((item) => {
+			// 如果当前元素是标题类型，则重置索引
+			if (TitleComponentArrConst.includes(item.elementType) && item.elementIsShow !== ElementVisibleEnum.HIDE) {
+				elementIndex = 0;
+			}
 
-      // 如果当前元素是显示状态且不是标题类型，则增加索引
-      else if (item.elementIsShow !== ElementVisibleEnum.HIDE) {
-        elementIndex++;
-      }
+			// 如果当前元素是显示状态且不是标题类型，则增加索引
+			else if (item.elementIsShow !== ElementVisibleEnum.HIDE) {
+				elementIndex++;
+			}
 
-      const elementNum = TitleComponentArrConst.includes(item.elementType) ? 0 : elementIndex;
+			const elementNum = TitleComponentArrConst.includes(item.elementType) ? 0 : elementIndex;
 
-      return {
-        ...item,
-        elementNum,
-      };
-    });
-  };
+			return {
+				...item,
+				elementNum,
+			};
+		});
+	};
 
-  // 修改题目显示状态
-  const changeElementVisible = async (elementId: number, elementIsShow: ElementVisibleEnum) => {
-    // 这里采用了函数式更新，避免多次触发造成的state覆盖，序号更新错误问题
-    setElementList(prevState => {
-      const visibleElementList =
-        prevState.map((item) => ({
-          ...item,
-          elementIsShow: item.id === elementId ? elementIsShow : item.elementIsShow,
-        }));
+	// 修改题目显示状态
+	const changeElementVisible = async (elementId: number, elementIsShow: ElementVisibleEnum) => {
+		// 这里采用了函数式更新，避免多次触发造成的state覆盖，序号更新错误问题
+		setElementList(prevState => {
+			const visibleElementList =
+				prevState.map((item) => ({
+					...item,
+					elementIsShow: item.id === elementId ? elementIsShow : item.elementIsShow,
+				}));
 
-      return calculateTitleNum(visibleElementList);
-    });
-
-
-    form?.validateFields({
-      validateOnly: true,
-    });
-  };
+			return calculateTitleNum(visibleElementList);
+		});
 
 
-  return {
-    calculateTitleNum,
-    changeElementVisible,
-  };
+		form?.validateFields({
+			validateOnly: true,
+		});
+	};
+
+
+	return {
+		calculateTitleNum,
+		changeElementVisible,
+	};
 };
 
 export default useQuestionCalculate;
