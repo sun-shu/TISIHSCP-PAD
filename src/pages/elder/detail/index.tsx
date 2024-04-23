@@ -6,7 +6,7 @@ import { history } from 'umi';
 import LookIcon from '@/assets/icon/look.png';
 import { useSearchParams } from '@@/exports';
 import useLoadEvaluteList from '@/pages/elder/detail/hooks/useLoadEvaluteList';
-import useLoadTrendList from '@/pages/elder/detail/hooks/useLoadTrendList';
+import useLoadTrendList from '@/hooks/domain/useLoadTrendList';
 import dayjs from 'dayjs';
 
 import { TemplateClassEnum } from '@/enums/TemplateClassEnum';
@@ -84,18 +84,18 @@ const EvaluationRecordCard = ({
 };
 
 // 评估趋势卡片
-const EvaluationTrendCard = () => {
+const EvaluationTrendCard = ({ item, customerId }) => {
 	return (
-		<div className="w-[620px] h-[76px] flex-col justify-start items-start gap-2.5 inline-flex">
-			<div className="w-[620px] px-5 py-2.5 bg-white rounded justify-between items-center inline-flex">
+		<div className="w-full h-[76px] flex-col justify-start items-start gap-2.5 inline-flex">
+			<div className="w-full px-5 py-2.5 bg-white rounded justify-between items-center inline-flex">
 				<div className="w-[300px] flex-col justify-start items-start inline-flex">
 					<div className="self-stretch h-9 text-zinc-700 text-lg font-semibold  leading-9">
-						养老照护分级评估趋势
+						{item.templateName}
 					</div>
 					<div className="justify-start items-start inline-flex">
 						<div className="justify-start items-start gap-5 flex">
 							<div className="text-zinc-700 text-sm font-normal  leading-tight tracking-wide">
-								2024-01-07
+								{dayjs(item.recordTime).format('YYYY-MM-DD')}
 							</div>
 						</div>
 					</div>
@@ -104,7 +104,7 @@ const EvaluationTrendCard = () => {
 					type="primary"
 					className="text-white text-sm flex"
 					onClick={() => {
-						history.push('/elder/evaluation-trend');
+						history.push('/elder/evaluation-trend?customerId=' + customerId + '&templateCode=' + item.templateCode);
 					}}
 					icon={<img src={LookIcon} width={24} height={24} />}
 
@@ -145,10 +145,11 @@ const EvaluationTrendList = ({ data = {}, customerId = '' }) => {
 	return (
 		<div className="my-[20px]">
 			<div className="text-xl font-semibold  leading-[30px]">评估趋势</div>
-			<div>共{data?.totalNum}条记录</div>
-			{data?.list?.map((item) => (
+			<div>共{data?.length}条记录</div>
+			{data?.map((item) => (
 				<div className="py-[10px]">
 					<EvaluationTrendCard
+						item={item}
 						reportTitle={item.templateName}
 						reportDate={dayjs(item.recordTime).format('YYYY-MM-DD')}
 						evaluator={item.createUser}
@@ -218,8 +219,8 @@ const ElderDetail = () => {
 
 	const { data: trendListData = {}, loading: trendLoading } = useLoadTrendList({
 		customerId,
-	}, trendContainerRef, () => currentTab === TabTypeEnums.TREND);
-	console.log(data, 'data');
+	}, () => currentTab === TabTypeEnums.TREND);
+	console.log(trendListData, 'trendListData');
 
 
 	return (
@@ -238,7 +239,7 @@ const ElderDetail = () => {
 						</div>
 
 						<div hidden={currentTab !== TabTypeEnums.TREND} ref={trendContainerRef}>
-							<EmptyDataContainer data={trendListData.list} emptyClassName="h-full mt-[30%]" loading={trendLoading}>
+							<EmptyDataContainer data={trendListData} emptyClassName="h-full mt-[30%]" loading={trendLoading}>
 								<EvaluationTrendList data={trendListData} customerId={customerId} />
 							</EmptyDataContainer>
 

@@ -147,7 +147,7 @@ const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
 		<div>
 			<Affix offsetTop={50}>
 				<div className="bg-gray-F6">
-					<div className="text-[34px] font-bold leading-10  bg-gray-F6 w-full">
+					<div className="text-[28px] font-semibold leading-10  bg-gray-F6 w-full">
 						{templateName}
 					</div>
 

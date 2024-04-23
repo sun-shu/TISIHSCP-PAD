@@ -87,6 +87,32 @@ export const getAssessTrendList = async (params: any, options?: {
 	return res;
 };
 
+export const getAssessTrendDateList = async (params: any, options?: {
+	[key: string]: any
+}): Promise<any> => {
+	const res = request('/hcsp-gateway/evaluateApi/v1/EvaluateTrends/getAssessTrendDateList', {
+		method: 'GET',
+		errorShowType: ErrorShowTypeEnum.ERROR_MESSAGE,
+		params,
+		...(options || {}),
+	});
+
+	return res;
+};
+
+export const getAssessTrendChart = async (params: any, options?: {
+	[key: string]: any
+}): Promise<any> => {
+	const res = request('/hcsp-gateway/evaluateApi/v1/EvaluateTrends/getAssessTrendChart', {
+		method: 'GET',
+		errorShowType: ErrorShowTypeEnum.ERROR_MESSAGE,
+		params,
+		...(options || {}),
+	});
+
+	return res;
+};
+
 export const checkTemplateAnswerDisplay = async (params: any, options?: {
 	[key: string]: any
 }): Promise<any> => {
