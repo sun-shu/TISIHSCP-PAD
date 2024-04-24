@@ -195,6 +195,8 @@ const TestTrend = ({ data, activeYear }) => {
 			}
 		}
 
+		console.log('series', series, dataByYear);
+
 		const legend = {
 			data: Object.keys(dataByYear),
 			formatter: function(value) {
@@ -219,13 +221,13 @@ const TestTrend = ({ data, activeYear }) => {
 		const tooltip = {
 			trigger: 'axis',
 			formatter: function(params) {
-				params = params[0];
-				return '时间：' + dayjs(params.value[0]).format('YYYY-MM-DD') + '<br/>' + '分数：' + params.value[1] + '';
+				const data = params[0];
+				return '时间：' + dayjs(data.value[0]).format('YYYY-MM-DD') + '<br/>' + '分数：' + data.value[1] + '';
 			},
 			axisPointer: {
 				lineStyle: {
 					color: '#F9AD9B', // 自定义分割线颜色
-					width: 2,
+					type: 'solid',
 				},
 			},
 			// position: [10, 10],
@@ -252,11 +254,11 @@ const TestTrend = ({ data, activeYear }) => {
 						}
 						return `${dayjs(value).format('M')}月`;
 					},
-					showMinLabel: true,
+					showMinLabel: false,
 				},
 				minInterval: 3600 * 24 * 1000 * 30,
-				min: 'dataMin',
-				max: 'dataMax',
+				// min: 'dataMin',
+				// max: 'dataMax',
 			},
 			yAxis: {
 				type: 'value',
@@ -345,10 +347,12 @@ const TestTrend = ({ data, activeYear }) => {
 		let dayList = [];
 		let dataFormat = [];
 		// 根据选中年份，获取对应的dayList
-		if (activeYear === '') {
+		if (!activeYear) {
 			dataFormat = dataSort
 				.map((item) => [item.recordTime, item.recordScore])
 				.sort((a, b) => dayjs(a[0]).valueOf() - dayjs(b[0]).valueOf());
+
+			console.log('dataFormat', dataFormat);
 			dayList = dataFormat.map((item) => {
 				return { date: item[0] };
 			});
@@ -403,6 +407,7 @@ const TestTrend = ({ data, activeYear }) => {
 				},
 				lineStyle: {
 					color: '#F9AD9B', // 自定义分割线颜色
+					type: 'solid',
 				},
 			};
 			let markPoint = {
