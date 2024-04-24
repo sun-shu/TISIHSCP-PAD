@@ -26,152 +26,152 @@ import { ElementTypeEnum } from '@/enums/ElementTypeEnum';
 
 
 interface EvaluateFormTemplatesProps {
-  setElementList: (elementList: TemplateResDTO[]) => void;
-  elementList: TemplateResDTO[];
-  form: FormInstance<any>;
-  changeElementVisible: (elementId: number, visible: boolean) => void;
-  calculateTitleNum: (elementList: TemplateResDTO[]) => TemplateResDTO[];
-  disabled: boolean;
+	setElementList: (elementList: TemplateResDTO[]) => void;
+	elementList: TemplateResDTO[];
+	form: FormInstance<any>;
+	changeElementVisible: (elementId: number, visible: boolean) => void;
+	calculateTitleNum: (elementList: TemplateResDTO[]) => TemplateResDTO[];
+	disabled: boolean;
 }
 
 const
-  EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
-    const { elementList = [], form, disabled, changeElementVisible } = props;
+	EvaluateFormTemplates = (props: EvaluateFormTemplatesProps) => {
+		const { elementList = [], form, disabled, changeElementVisible } = props;
 
-    //  PS by sunshu：这里使用elementList.map的原因是操作同一份数据，如果使用UseMemo，会导致重新渲染(计算验证进度和多选状态)
-    return (
-      <div>
-        <ConfigProvider
-          theme={{
-            token: {
-              colorBorder: '#5E5E5E',
-              colorText: '#5E5E5E',
-              borderRadius: 4,
-              fontSize: 18,
-              colorTextPlaceholder: '#5E5E5E',
-              colorBgContainerDisabled: 'none',
-            },
-            components: {
-              Input: {
-                activeShadow: 'none',
-                activeBorderColor: 'none',
-                paddingInline: 10,
-                paddingBlock: 2,
-              },
-              Select: {
-                borderRadius: 4,
-              },
-            },
-          }}
-        >
-          {
-            elementList.map((item, index) => {
-              return (
-                <div key={item.id}>
-                  <FormItemComponent item={item} index={index} form={form}
-                                     commonFormItemProps={{ initialValue: item }}
-                                     changeElementVisible={changeElementVisible}
-                                     disabled={disabled} />
-                </div>
-              );
-            })}
-        </ConfigProvider>
-      </div>
-    );
-  };
+		//  PS by sunshu：这里使用elementList.map的原因是操作同一份数据，如果使用UseMemo，会导致重新渲染(计算验证进度和多选状态)
+		return (
+			<div>
+				<ConfigProvider
+					theme={{
+						token: {
+							colorBorder: '#5E5E5E',
+							colorText: '#5E5E5E',
+							borderRadius: 4,
+							fontSize: 18,
+							colorTextPlaceholder: '#5E5E5E',
+							colorBgContainerDisabled: 'none',
+						},
+						components: {
+							Input: {
+								activeShadow: 'none',
+								activeBorderColor: 'none',
+								paddingInline: 10,
+								paddingBlock: 2,
+							},
+							Select: {
+								borderRadius: 4,
+							},
+						},
+					}}
+				>
+					{
+						elementList.map((item, index) => {
+							return (
+								<div key={item.id}>
+									<FormItemComponent item={item} index={index} form={form}
+																		 commonFormItemProps={{ initialValue: item }}
+																		 changeElementVisible={changeElementVisible}
+																		 disabled={disabled} />
+								</div>
+							);
+						})}
+				</ConfigProvider>
+			</div>
+		);
+	};
 
 interface EvaluateFormComponentProps {
-  form: FormInstance<any>;
-  initialValues: any;
-  disabled: boolean;
-  elementList: TemplateResDTO[];
-  templateName: string;
+	form: FormInstance<any>;
+	initialValues: any;
+	disabled: boolean;
+	elementList: TemplateResDTO[];
+	templateName: string;
 
-  [key: string]: any;
+	[key: string]: any;
 }
 
 const EvaluateFormComponent = (props: EvaluateFormComponentProps) => {
-  const {
-    form,
-    initialValues,
-    disabled = false,
-    elementList: initElementList = [],
-    templateName,
-  } = props;
-  console.log('elementList', initElementList);
+	const {
+		form,
+		initialValues,
+		disabled = false,
+		elementList: initElementList = [],
+		templateName,
+	} = props;
+	console.log('elementList', initElementList);
 
-  //  因为这里会有显隐变化，所以数据单独存储
-  const [elementList, setElementList] = useState(_.cloneDeep(initElementList));
+	//  因为这里会有显隐变化，所以数据单独存储
+	const [elementList, setElementList] = useState(_.cloneDeep(initElementList));
 
-  const { calculateTitleNum, changeElementVisible } = useQuestionCalculate(setElementList, form);
+	const { calculateTitleNum, changeElementVisible } = useQuestionCalculate(setElementList, form);
 
-  useEffect(() => {
-    //   组数据 遍历optionList,将里面的optionIsShow和NextElemtID放在对应ID的item中
-    const newElementList = _.cloneDeep(initElementList);
+	useEffect(() => {
+		//   组数据 遍历optionList,将里面的optionIsShow和NextElemtID放在对应ID的item中
+		const newElementList = _.cloneDeep(initElementList);
 
-    //1. 讲数组变为ID为key的对象
-    const elementMap = _.keyBy(newElementList, 'id');
-    //2. 遍历optionList，将里面的optionIsShow和NextElemtID放在对应ID的item中
-    newElementList.forEach((item) => {
-      if (item?.optionList) {
-        item.optionList.forEach((option) => {
-          const targetItem = elementMap[option.nextElementId];
-          if (targetItem && option.optionIsShow === ElementVisibleEnum.SHOW) {
-            targetItem.conditions = [...targetItem.conditions || [], {
-              elementId: item.id,
-              optionId: option.id,
-              isShow: option.optionIsShow,
-            }];
-          }
-        });
-      }
-    });
+		//1. 讲数组变为ID为key的对象
+		const elementMap = _.keyBy(newElementList, 'id');
+		//2. 遍历optionList，将里面的optionIsShow和NextElemtID放在对应ID的item中
+		newElementList.forEach((item) => {
+			if (item?.optionList) {
+				item.optionList.forEach((option) => {
+					const targetItem = elementMap[option.nextElementId];
+					if (targetItem && option.optionIsShow === ElementVisibleEnum.SHOW) {
+						targetItem.conditions = [...targetItem.conditions || [], {
+							elementId: item.id,
+							optionId: option.id,
+							isShow: option.optionIsShow,
+						}];
+					}
+				});
+			}
+		});
 
-    // 这里使用_.map是为了保证数组的顺序是按照已经配置好的顺序来渲染。用_.values()的话会导致顺序不一致问题。
-    setElementList(calculateTitleNum(_.map(newElementList, item => elementMap[item.id])));
+		// 这里使用_.map是为了保证数组的顺序是按照已经配置好的顺序来渲染。用_.values()的话会导致顺序不一致问题。
+		setElementList(calculateTitleNum(_.map(newElementList, item => elementMap[item.id])));
 
-    form.validateFields({
-      validateOnly: true,
-    });
-  }, [initElementList]);
+		form.validateFields({
+			validateOnly: true,
+		});
+	}, [initElementList]);
 
 
-  const {
-    fillCount,
-    needFillCount,
-    onFieldsChange,
-    onValuesChange,
-  } = useProgressShow(form, initialValues, initElementList);
+	const {
+		fillCount,
+		needFillCount,
+		onFieldsChange,
+		onValuesChange,
+	} = useProgressShow(form, initialValues, initElementList);
 
-  return (
-    <div>
-      <Affix offsetTop={50}>
-        <div className="bg-gray-F6">
-          <div className="text-[28px] font-semibold leading-10  bg-gray-F6 w-full">
-            {templateName}
-          </div>
+	return (
+		<div>
+			<Affix offsetTop={50}>
+				<div className="bg-gray-F6">
+					<div className="text-[28px] font-semibold leading-10  bg-gray-F6 w-full">
+						{templateName}
+					</div>
 
-          <div
-            className="mb-[5px] text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide pt-[10px]">
-            已完成 {fillCount} / {needFillCount}
-          </div>
-          <ProgressBar processRate={fillCount / needFillCount * 100} />
-          <div className="text-right border-b-[1px] py-[10px]">※ 为必填项</div>
-        </div>
+					<div
+						className="mb-[5px] text-zinc-700 text-xs font-normal font-['PingFang SC'] leading-[18px] tracking-wide pt-[10px]">
+						已完成 {fillCount} / {needFillCount}
+					</div>
+					<ProgressBar processRate={fillCount / needFillCount * 100} />
+					<div className="text-right border-b-[1px] py-[10px]">※ 为必填项</div>
+				</div>
 
-      </Affix>
+			</Affix>
 
-      <Form scrollToFirstError form={form} colon={false}
-            disabled={disabled} onFieldsChange={onFieldsChange} onValuesChange={onValuesChange}>
-        {elementList &&
-          <EvaluateFormTemplates elementList={elementList} form={form}
-                                 changeElementVisible={changeElementVisible}
-                                 setElementList={setElementList} disabled={disabled} />
-        }
-      </Form>
-    </div>
+			<Form scrollToFirstError form={form} colon={false}
+						disabled={disabled} onFieldsChange={onFieldsChange} onValuesChange={onValuesChange}>
+				{elementList &&
+					<EvaluateFormTemplates elementList={elementList} form={form}
+																 changeElementVisible={changeElementVisible}
+																 setElementList={setElementList} disabled={disabled} />
+				}
+			</Form>
+		</div>
 
-  );
+	);
 };
 
 export default EvaluateFormComponent;
