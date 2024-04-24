@@ -30,7 +30,7 @@
         /* 自定义滚动条的滑块（thumb） */
 
         ::-webkit-scrollbar-thumb {
-            background-color: #40979c; /* 滑块的背景色 */
+            background-color: #80d6dc; /* 滑块的背景色 */
             border-radius: 10px; /* 滑块的圆角 */
             /*border: 1px solid #ffffff; !* 滑块边框 *!*/
         }

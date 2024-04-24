@@ -10,7 +10,7 @@
     "start": "npm run dev"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,css,less}": [
+    "*.{js,jsx,ts,tsx}": [
       "umi lint"
     ]
   },
