@@ -26,7 +26,6 @@ const useLoadTrendChartData = (customerId, currentTemplateCode, year) => {
 		});
 	}, {
 		refreshDeps: [currentTemplateCode, year],
-
 	});
 
 	return {
