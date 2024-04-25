@@ -248,15 +248,19 @@ const TestTrend = ({ data, activeYear }) => {
 				axisLabel: {
 					// 可自定义x轴展示字段
 					formatter: function(value) {
+						if (data.length === 1 && dayjs(value).day() !== dayjs(data[0].recordTime).day()) {
+							return '';
+						}
 						if (!activeYear) {
 							// 选择全部时，可能出现重复月，为区分，则加上了年的展示
 							return `${dayjs(value).format('YYYY/MM')}`;
 						}
 						return `${dayjs(value).format('M')}月`;
 					},
-					showMinLabel: false,
+					showMinLabel: true,
 				},
 				minInterval: 3600 * 24 * 1000 * 30,
+				maxInterval: data.length === 1 ? 3600 * 24 * 1000 : 3600 * 24 * 1000 * 30,
 				// min: 'dataMin',
 				// max: 'dataMax',
 			},
