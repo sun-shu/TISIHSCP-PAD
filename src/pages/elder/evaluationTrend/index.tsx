@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { useLoadTrendChartData, useLoadTrendTimeLine } from '@/pages/elder/evaluationTrend/hooks/useLoadTrendTimeLine';
 import { useSearchParams } from '@@/exports';
 import useLoadTrendList from '@/hooks/domain/useLoadTrendList';
+import _ from 'lodash';
 
 enum TabTypeEnums {
 	ALL = 'ALL',
@@ -143,6 +144,51 @@ const colorByYear = {
 	lastYear: '#FAD4A6',
 };
 
+// const data = [{
+// 	'recordTime': 1681228800000,
+// 	'year': 2023,
+// 	'month': 4,
+// 	'type': '01',
+// 	'recordScore': 18.0,
+// 	'formattedDate': '2023-04-09',
+// 	'timeStamp': 1681265533000,
+// },
+// 	{
+// 		'recordTime': 1713421956435,
+// 		'year': 2023,
+// 		'month': 4,
+// 		'type': '01',
+// 		'recordScore': 18.0,
+// 		'formattedDate': '2023-04-18',
+// 		'timeStamp': 1713421956435,
+// 	},
+// 	{
+// 		'recordTime': 1712419200000,
+// 		'year': 2024,
+// 		'month': 4,
+// 		'type': '01',
+// 		'recordScore': 22.0,
+// 		'formattedDate': '2024-04-07',
+// 		'timeStamp': 1712483848000,
+// 	},
+// 	{
+// 		'recordTime': 1712505600000,
+// 		'year': 2024,
+// 		'month': 4,
+// 		'type': '01',
+// 		'recordScore': 20.0,
+// 		'formattedDate': '2024-04-08',
+// 		'timeStamp': 1712558234000,
+// 	},
+// 	{
+// 		'recordTime': 1712851200000,
+// 		'year': 2024,
+// 		'month': 4,
+// 		'type': '01',
+// 		'recordScore': 16.0,
+// 		'formattedDate': '2024-04-12',
+// 		'timeStamp': 1712887819000,
+// 	}];
 const TestTrend = ({ data, activeYear }) => {
 	const chartRef = useRef();
 	const [option, setOption] = useState({});
@@ -156,9 +202,10 @@ const TestTrend = ({ data, activeYear }) => {
 	const getColorByYear = (year) => {
 		return isThisYear(year) ? colorByYear.thisYear : colorByYear.lastYear;
 	};
-	const initOptionFn = (dataByYear, dayList, dataFormat) => {
+	const initOptionFn = (dataByYear, dataFormat) => {
 		// 根据dataByYear 生成series 暂时默认展示所有数据
 		let series = [];
+
 		if (!activeYear) {
 			series.push({
 				type: 'line',
@@ -196,8 +243,6 @@ const TestTrend = ({ data, activeYear }) => {
 			}
 		}
 
-		console.log('series', series, dataByYear);
-
 		const legend = {
 			data: Object.keys(dataByYear),
 			formatter: function(value) {
@@ -233,6 +278,16 @@ const TestTrend = ({ data, activeYear }) => {
 			},
 			// position: [10, 10],
 		};
+
+		const months = _.uniq(data.map((item) => {
+			return dayjs(item.recordTime).format('M');
+		}));
+
+		const years = _.uniq(data.map((item) => {
+			return dayjs(item.recordTime).format('YYYY');
+		}));
+
+
 		return {
 			tooltip: activeYear ? {
 				show: false,
@@ -241,27 +296,40 @@ const TestTrend = ({ data, activeYear }) => {
 				axisTick: {
 					show: false,
 				},
-
 				type: 'time',
 				axisLine: {
 					show: false,
 				},
 				axisLabel: {
+
 					// 可自定义x轴展示字段
 					formatter: function(value) {
 						if (data.length === 1 && dayjs(value).day() !== dayjs(data[0].recordTime).day()) {
 							return '';
 						}
+
+
+						if (years.length === 1 && months.length === 1) {
+							return `${dayjs(value).format('YYYY/MM/DD')}`;
+						}
+
 						if (!activeYear) {
 							// 选择全部时，可能出现重复月，为区分，则加上了年的展示
 							return `${dayjs(value).format('YYYY/MM')}`;
 						}
+
+						//如果只有一个月份的情况，展示月日
+						if (months.length === 1) {
+							return `${dayjs(value).format('YYYY/MM/DD')}`;
+						}
+
 						return `${dayjs(value).format('M')}月`;
 					},
 					showMinLabel: true,
 				},
 				minInterval: 3600 * 24 * 1000 * 30,
 				maxInterval: data.length === 1 ? 3600 * 24 * 1000 : 3600 * 24 * 1000 * 30,
+
 				// min: 'dataMin',
 				// max: 'dataMax',
 			},
@@ -295,7 +363,7 @@ const TestTrend = ({ data, activeYear }) => {
 
 			const { dataByYear, dayList = [], dataFormat } = remakeData();
 
-			chartInstance.setOption(initOptionFn(dataByYear, dayList, dataFormat));
+			chartInstance.setOption(initOptionFn(dataByYear, dataFormat));
 			// setOption(initOptionFn(dataByYear, dayList));
 
 			const monthOfFirstDay = parseInt(dayjs(dayList?.[0]?.date).format('MM'));
@@ -317,53 +385,54 @@ const TestTrend = ({ data, activeYear }) => {
 		return `${dayjs().format('YYYY')}-${dayjs(date).format('MM-DD')}`;
 	};
 
-	const getYear = (date) => {
-		return dayjs(date).format('YYYY');
-	};
-
 	const remakeData = () => {
-		// 按照日期排序
+		// 按照日期排序,从小到大
 		const dataSort = data.sort((a, b) => {
 			return a.recordTime - b.recordTime;
 		});
 
+		// 根据年度分组
 		const yearMap = new Map();
 		const dateMap = new Map();
 		dataSort.forEach((item) => {
-			const { recordTime: date, recordScore: value } = item;
+			const { recordTime, recordScore, year } = item;
 
-			// const value = Math.random();
-			const dateStr = formatDate(date);
-
-			const year = getYear(date);
+			//格式化成一个轴，在一个轴上展示PS： 这里是格式化为今年的
+			const dateStr = formatDate(recordTime);
 
 			// 根据年度分别压入更新日期后数据
 			if (yearMap.has(year)) {
-				yearMap.set(year, yearMap.get(year).concat([[dateStr, value]]));
+				// 压入[日期，分数]， 压入[日期，年份]
+				yearMap.set(year, yearMap.get(year).concat([[dateStr, recordScore]]));
 				dateMap.set(year, dateMap.get(year).concat([{ date: dateStr, year }]));
 			} else {
-				yearMap.set(year, [[dateStr, value]]);
+				yearMap.set(year, [[dateStr, recordScore]]);
 				dateMap.set(year, [{ date: dateStr, year }]);
 			}
 		});
+
+		// 将Map转化为对象
 		const dataByYear = Object.fromEntries(yearMap);
 		const dateByYear = Object.fromEntries(dateMap);
 
+		// 生成dayList
 		let dayList = [];
 		let dataFormat = [];
 		// 根据选中年份，获取对应的dayList
 		if (!activeYear) {
+			// 生成[item.recordTime, item.recordScore]格式的数据
 			dataFormat = dataSort
 				.map((item) => [item.recordTime, item.recordScore])
 				.sort((a, b) => dayjs(a[0]).valueOf() - dayjs(b[0]).valueOf());
 
-			console.log('dataFormat', dataFormat);
+			// 生成日期列表(时间戳)
 			dayList = dataFormat.map((item) => {
 				return { date: item[0] };
 			});
 		} else {
 			dayList = dateByYear[activeYear];
 		}
+		//两个dayList的区别是
 
 		dayList = dayList?.sort((a, b) => {
 			return dayjs(a.date).valueOf() - dayjs(b.date).valueOf();
@@ -385,17 +454,19 @@ const TestTrend = ({ data, activeYear }) => {
 	const addMarkLine = (xAxisIndex, dayList) => {
 		const chartInstance = chartRef?.current?.getEchartsInstance();
 
-		const date = dayList[xAxisIndex]?.date;
-		const dataList = getDataInDate(date);
-		const markPointData = dataList.map((item) => {
-			return {
-				xAxis: formatDate(item.recordTime),
-				yAxis: item.recordScore,
-				value: item.recordScore,
-			};
-		});
 
 		if (activeYear) {
+			const date = dayList[xAxisIndex]?.date;
+			const dataList = getDataInDate(date);
+			const markPointData = dataList.map((item) => {
+				return {
+					xAxis: formatDate(item.recordTime),
+					yAxis: item.recordScore,
+					value: item.recordScore,
+				};
+			});
+
+
 			let markLine = {
 				symbol: 'none', // 去掉箭头
 				data: [
@@ -407,7 +478,7 @@ const TestTrend = ({ data, activeYear }) => {
 					show: false, // 分割线是否展示对应日期
 					position: 'start', // 标签位置  start/end
 					formatter: function(params) {
-						return `${dayjs(params.data.coord[0]).format('MM-DD')}`;
+						return `${dayjs(params?.data?.coord[0]).format('MM-DD')}`;
 					},
 				},
 				lineStyle: {
@@ -445,6 +516,7 @@ const TestTrend = ({ data, activeYear }) => {
 		setActiveDate(item);
 		const { startValue, endValue } = getStartEndValues(date);
 		const chartInstance = chartRef?.current?.getEchartsInstance(); // 更新echarts图表的dataZoom
+
 		chartInstance.setOption({
 			dataZoom: [
 				{
@@ -542,10 +614,16 @@ const EvaluationTrendPage = () => {
 		loading: trendLoading,
 	} = useLoadTrendList({ customerId, currentTemplateCode }, true);
 
+	const count = trendListData.find(item => item.templateCode === currentTemplateCode)?.count;
 	return (
 		<>
-			<ElderDetailLayout title="评估趋势" customerId={customerId}>
-				<div>共评估{chartData?.length}次</div>
+			<ElderDetailLayout title={
+				<div className="">
+					<div>评估趋势</div>
+					<div className="relative text-[0.75rem] tracking-[0.05em] leading-[1.13rem] font-normal">共评估{count}次</div>
+				</div>
+			} customerId={customerId}>
+
 				<div className="w-full">
 					<div className="w-full text-right">
 						<Select className="max-w-[200px]" value={currentTemplateCode} onChange={(value) => {
