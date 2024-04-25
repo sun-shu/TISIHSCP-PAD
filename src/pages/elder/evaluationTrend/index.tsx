@@ -142,6 +142,7 @@ const colorByYear = {
 	thisYear: '#00ADB8',
 	lastYear: '#FAD4A6',
 };
+
 const TestTrend = ({ data, activeYear }) => {
 	const chartRef = useRef();
 	const [option, setOption] = useState({});
@@ -204,7 +205,7 @@ const TestTrend = ({ data, activeYear }) => {
 				if (yearArr.length === 1) {
 					return '本年度';
 				}
-				return value === yearArr[0] ? '本年度' : '上一年';
+				return value === yearArr[0] ? '上一年' : '本年度';
 			},
 			orient: 'vertical', // 设置图例垂直排布
 			right: 0,
@@ -544,6 +545,7 @@ const EvaluationTrendPage = () => {
 	return (
 		<>
 			<ElderDetailLayout title="评估趋势" customerId={customerId}>
+				<div>共评估{chartData?.length}次</div>
 				<div className="w-full">
 					<div className="w-full text-right">
 						<Select className="max-w-[200px]" value={currentTemplateCode} onChange={(value) => {
