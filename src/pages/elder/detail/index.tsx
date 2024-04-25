@@ -12,8 +12,6 @@ import dayjs from 'dayjs';
 import { TemplateClassEnum } from '@/enums/TemplateClassEnum';
 
 import EmptyDataContainer from '@/components/exception/EmptyDataContainer';
-// 加载更多分割线
-
 
 // 评估记录卡片
 const EvaluationRecordCard = ({
@@ -95,7 +93,7 @@ const EvaluationTrendCard = ({ item, customerId }) => {
 					<div className="justify-start items-start inline-flex">
 						<div className="justify-start items-start gap-5 flex">
 							<div className="text-zinc-700 text-sm font-normal  leading-tight tracking-wide">
-								{dayjs(item.recordTime).format('YYYY-MM-DD')}
+								{dayjs(item.updateTime).format('YYYY-MM-DD')}
 							</div>
 						</div>
 					</div>
@@ -150,11 +148,6 @@ const EvaluationTrendList = ({ data = {}, customerId = '' }) => {
 				<div className="py-[10px]">
 					<EvaluationTrendCard
 						item={item}
-						reportTitle={item.templateName}
-						reportDate={dayjs(item.recordTime).format('YYYY-MM-DD')}
-						evaluator={item.createUser}
-						recordMainId={item.recordMainId}
-						templateCode={item.templateCode}
 						customerId={customerId}
 					/>
 				</div>

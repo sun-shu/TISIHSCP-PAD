@@ -195,6 +195,8 @@ const TestTrend = ({ data, activeYear }) => {
 			}
 		}
 
+		console.log('series', series, dataByYear);
+
 		const legend = {
 			data: Object.keys(dataByYear),
 			formatter: function(value) {
@@ -219,13 +221,13 @@ const TestTrend = ({ data, activeYear }) => {
 		const tooltip = {
 			trigger: 'axis',
 			formatter: function(params) {
-				params = params[0];
-				return '时间：' + dayjs(params.value[0]).format('YYYY-MM-DD') + '<br/>' + '分数：' + params.value[1] + '';
+				const data = params[0];
+				return '时间：' + dayjs(data.value[0]).format('YYYY-MM-DD') + '<br/>' + '分数：' + data.value[1] + '';
 			},
 			axisPointer: {
 				lineStyle: {
 					color: '#F9AD9B', // 自定义分割线颜色
-					width: 2,
+					type: 'solid',
 				},
 			},
 			// position: [10, 10],
@@ -246,6 +248,9 @@ const TestTrend = ({ data, activeYear }) => {
 				axisLabel: {
 					// 可自定义x轴展示字段
 					formatter: function(value) {
+						if (data.length === 1 && dayjs(value).day() !== dayjs(data[0].recordTime).day()) {
+							return '';
+						}
 						if (!activeYear) {
 							// 选择全部时，可能出现重复月，为区分，则加上了年的展示
 							return `${dayjs(value).format('YYYY/MM')}`;
@@ -255,8 +260,9 @@ const TestTrend = ({ data, activeYear }) => {
 					showMinLabel: true,
 				},
 				minInterval: 3600 * 24 * 1000 * 30,
-				min: 'dataMin',
-				max: 'dataMax',
+				maxInterval: data.length === 1 ? 3600 * 24 * 1000 : 3600 * 24 * 1000 * 30,
+				// min: 'dataMin',
+				// max: 'dataMax',
 			},
 			yAxis: {
 				type: 'value',
@@ -345,10 +351,12 @@ const TestTrend = ({ data, activeYear }) => {
 		let dayList = [];
 		let dataFormat = [];
 		// 根据选中年份，获取对应的dayList
-		if (activeYear === '') {
+		if (!activeYear) {
 			dataFormat = dataSort
 				.map((item) => [item.recordTime, item.recordScore])
 				.sort((a, b) => dayjs(a[0]).valueOf() - dayjs(b[0]).valueOf());
+
+			console.log('dataFormat', dataFormat);
 			dayList = dataFormat.map((item) => {
 				return { date: item[0] };
 			});
@@ -403,6 +411,7 @@ const TestTrend = ({ data, activeYear }) => {
 				},
 				lineStyle: {
 					color: '#F9AD9B', // 自定义分割线颜色
+					type: 'solid',
 				},
 			};
 			let markPoint = {
