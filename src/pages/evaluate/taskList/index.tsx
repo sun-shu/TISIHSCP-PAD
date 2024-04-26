@@ -1,7 +1,7 @@
 import { CloseCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import { Affix, Avatar, Button, ConfigProvider, Image, Input } from 'antd';
 import classNames from 'classnames';
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 import { history, useRequest } from 'umi';
 import { CustomerTaskRecordPadItemDTO } from '@/api/task/getTaskList.interface';
 import { getTaskList } from '@/api/task';
@@ -86,7 +86,9 @@ const MenuGroup = ({ currentTab, setCurrentTab }) => {
 	);
 };
 
-const SearchComponent = ({ searchElder }) => {
+
+const SearchComponent = (props) => {
+	const { searchElder } = props;
 	const [keyword, setKeyword] = useState('');
 
 	return (
@@ -134,7 +136,6 @@ const SearchComponent = ({ searchElder }) => {
 		</>
 	);
 };
-
 
 const ElderListTemplate = ({ title, data = [], countDescription, loading }: {
 	title: string | ReactNode,
@@ -317,15 +318,12 @@ const TaskListPage = () => {
 	});
 
 	const searchElder = (keyword: string = '') => {
-		console.log('搜索', keyword);
 		run(keyword);
 	};
-	console.log('taskList', taskList);
-
 
 	return (
 		<>
-			<div className="flex  items-stretch pb-12 justify-center landscape:gap-[20px]" key={currentTab}>
+			<div className="flex  items-stretch pb-12 justify-center landscape:gap-[20px]">
 				<Affix offsetTop={50}>
 					<div className="portrait:hidden pt-[120px]  bg-gray-F6 pr-[20px]">
 						<MenuGroup
