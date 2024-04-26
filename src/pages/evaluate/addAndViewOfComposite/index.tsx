@@ -64,7 +64,7 @@ const FilledList = ({ compositeStatus = EvaluationStatusEnum.FINISHED, data = []
 
 					</div>
 					<div className="h-[30px]  justify-between items-center gap-2.5 flex w-full">
-						<div className="text-golden-F4 text-lg ">修改比例{Math.floor(answerChangeCount / questionsCount) * 100}%
+						<div className="text-golden-F4 text-lg ">修改比例{Math.floor(answerChangeCount / questionsCount * 100)}%
 						</div>
 						{compositeStatus === EvaluationStatusEnum.FINISHED ? (
 							<Button
