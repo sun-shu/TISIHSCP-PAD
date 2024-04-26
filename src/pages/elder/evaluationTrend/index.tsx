@@ -269,7 +269,7 @@ const TestTrend = ({ data, activeYear }) => {
 			trigger: 'axis',
 			formatter: function(params) {
 				const data = params[0];
-				return '时间：' + dayjs(data.value[0]).format('YYYY-MM-DD') + '<br/>' + '分数：' + data.value[1] + '';
+				return '时间：' + dayjs(data.value[0]).format('MM-DD') + '<br/>' + '分数：' + data.value[1] + '';
 			},
 			axisPointer: {
 				lineStyle: {
