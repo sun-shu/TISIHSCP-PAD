@@ -264,6 +264,7 @@ const TestTrend = ({ data, activeYear }) => {
 		//改为
 		legend.show = !!activeYear;
 
+
 		const tooltip = {
 			trigger: 'axis',
 			formatter: function(params) {
@@ -273,7 +274,8 @@ const TestTrend = ({ data, activeYear }) => {
 			axisPointer: {
 				lineStyle: {
 					color: '#F9AD9B', // 自定义分割线颜色
-					type: 'solid',
+					type: [5, 10],
+					dashOffset: 100,
 				},
 			},
 			// position: [10, 10],
@@ -289,12 +291,10 @@ const TestTrend = ({ data, activeYear }) => {
 
 
 		return {
-			tooltip: activeYear ? {
-				show: false,
-			} : tooltip,
+			tooltip: tooltip,
 			xAxis: {
 				axisTick: {
-					show: false,
+					show: true,
 				},
 				type: 'time',
 				axisLine: {
@@ -304,7 +304,7 @@ const TestTrend = ({ data, activeYear }) => {
 
 					// 可自定义x轴展示字段
 					formatter: function(value) {
-						if (data.length === 1 && dayjs(value).day() !== dayjs(data[0].recordTime).day()) {
+						if (data.length === 1 && dayjs(value).format('MM-DD') !== dayjs(data[0].recordTime).format('MM-DD')) {
 							return '';
 						}
 
@@ -325,7 +325,7 @@ const TestTrend = ({ data, activeYear }) => {
 
 						return `${dayjs(value).format('M')}月`;
 					},
-					showMinLabel: true,
+					// showMinLabel: true,
 				},
 				minInterval: 3600 * 24 * 1000 * 30,
 				maxInterval: data.length === 1 ? 3600 * 24 * 1000 : 3600 * 24 * 1000 * 30,
@@ -484,6 +484,7 @@ const TestTrend = ({ data, activeYear }) => {
 				lineStyle: {
 					color: '#F9AD9B', // 自定义分割线颜色
 					type: 'solid',
+					width: 2,
 				},
 			};
 			let markPoint = {
@@ -493,9 +494,22 @@ const TestTrend = ({ data, activeYear }) => {
 				itemStyle: {
 					color: '#F9AD9B', // 自定义标记点颜色
 				},
+
 				label: {
 					offset: [20, 0],
 					color: colorByYear.thisYear,
+					// color: '#666666',
+					// borderRadius: 4,
+					// backgroundColor: '#FFFFFF',
+					// // position: 'top',
+					// padding: [20, 20],
+					// shadowColor: 'rgba(0, 0, 0, 0.2)',
+					// shadowBlur: 5,
+					// align: 'left',
+					// formatter: function(params) {
+					// 	console.log(params, 'params');
+					// 	return '时间：' + params.data.xAxis + '\n' + '分数：' + params.data.value + '';
+					// },
 					fontSize: 14,
 				},
 			};
