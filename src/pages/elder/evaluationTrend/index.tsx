@@ -303,13 +303,16 @@ const TestTrend = ({ data, activeYear }) => {
 				axisLabel: {
 
 					// 可自定义x轴展示字段
-					formatter: function(value) {
+					formatter: function(value, index) {
 						if (data.length === 1 && dayjs(value).format('MM-DD') !== dayjs(data[0].recordTime).format('MM-DD')) {
 							return '';
 						}
 
 
 						if (years.length === 1 && months.length === 1) {
+							if (!activeYear && index > 0 && data.length > 1) {
+								return '';
+							}
 							return `${dayjs(value).format('YYYY/MM/DD')}`;
 						}
 
@@ -325,7 +328,7 @@ const TestTrend = ({ data, activeYear }) => {
 
 						return `${dayjs(value).format('M')}月`;
 					},
-					// showMinLabel: true,
+					showMinLabel: !activeYear,
 				},
 				minInterval: 3600 * 24 * 1000 * 30,
 				maxInterval: data.length === 1 ? 3600 * 24 * 1000 : 3600 * 24 * 1000 * 30,
