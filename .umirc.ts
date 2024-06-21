@@ -2,131 +2,133 @@ import pxtorem from 'postcss-pxtorem';
 import { defineConfig } from 'umi';
 
 export default defineConfig({
-  plugins: [
-    '@umijs/plugins/dist/antd',
-    '@umijs/plugins/dist/request',
+	plugins: [
+		'@umijs/plugins/dist/antd',
+		'@umijs/plugins/dist/request',
 
-    '@umijs/plugins/dist/initial-state',
-    '@umijs/plugins/dist/model',
+		'@umijs/plugins/dist/initial-state',
+		'@umijs/plugins/dist/model',
 
-    '@umijs/plugins/dist/tailwindcss',
-    '@umijs/plugins/dist/react-query',
-  ],
-  publicPath: process.env.NODE_ENV === 'production' ? '/evaluation/' : '/',
-  base: process.env.NODE_ENV === 'production' ? '/evaluation/' : '/',
-  antd: {
-    configProvider: {},
-    theme: {
-      colorPrimary: '#00ADB8',
-      token: {
-        colorPrimary: '#00ADB8',
-      },
-      components: {
-        Button: {
-          colorPrimary: '#00ADB8',
-          borderRadius: 4,
-        },
-      },
-    },
-    style: 'less',
-    appConfig: {},
-  },
-  initialState: {},
-  model: {},
-  request: {
-    dataField: 'data',
-  },
-  routes: [
-    {
-      path: '/',
-      redirect: '/evaluate/task-list',
-    },
-    { path: '/login', component: 'user/login/index', layout: false },
-    { path: '/user-info', component: 'user/info/index' },
-    {
-      path: '/elder',
-      routes: [
-        {
-          path: '/elder',
-          redirect: '/elder/list',
-        },
-        { path: '/elder/list', component: 'elder/list/index' },
-        { path: '/elder/detail', component: 'elder/detail/index' },
-        {
-          path: '/elder/evaluation-report',
-          component: 'elder/evaluationReport/index',
-        },
-        {
-          path: '/elder/evaluation-trend',
-          component: 'elder/evaluationTrend/index',
-        },
-      ],
-    },
-    {
-      path: '/evaluate',
-      routes: [
+		'@umijs/plugins/dist/tailwindcss',
+		'@umijs/plugins/dist/react-query',
+	],
+	publicPath: process.env.NODE_ENV === 'production' ? '/evaluation/' : '/',
+	base: process.env.NODE_ENV === 'production' ? '/evaluation/' : '/',
+	antd: {
+		configProvider: {},
+		theme: {
+			colorPrimary: '#00ADB8',
+			token: {
+				colorPrimary: '#00ADB8',
+			},
+			components: {
+				Button: {
+					colorPrimary: '#00ADB8',
+					borderRadius: 4,
+				},
+			},
+		},
+		style: 'less',
+		appConfig: {},
+	},
+	initialState: {},
+	model: {},
+	request: {
+		dataField: 'data',
+	},
+	routes: [
+		{
+			path: '/',
+			redirect: '/evaluate/task-list',
+		},
+		{ path: '/login', component: 'user/login/index', layout: false },
+		{ path: '/user-info', component: 'user/info/index' },
+		{
+			path: '/elder',
+			routes: [
+				{
+					path: '/elder',
+					redirect: '/elder/list',
+				},
+				{ path: '/elder/list', component: 'elder/list/index' },
+				{ path: '/elder/detail', component: 'elder/detail/index' },
+				{
+					path: '/elder/evaluation-report',
+					component: 'elder/evaluationReport/index',
+				},
+				{
+					path: '/elder/evaluation-trend',
+					component: 'elder/evaluationTrend/index',
+				},
+			],
+		},
+		{
+			path: '/evaluate',
+			routes: [
 
-        {
-          path: '/evaluate',
-          redirect: '/evaluate/task-list',
-        },
-        {
-          path: '/evaluate/add/:customerId/:recordMainId',
-          component: 'evaluate/add/index',
-        },
-        {
-          path: '/evaluate/detail/:templateCode/:recordMainId',
-          component: 'evaluate/detail/index',
-        },
-        {
-          path: '/evaluate/add-and-view-of-composite/:customerId/:templateCode',
-          component: 'evaluate/addAndViewOfComposite/index',
-        },
-        {
-          path: '/evaluate/template-list',
-          component: 'evaluateTemplate/list/index',
-        },
+				{
+					path: '/evaluate',
+					redirect: '/evaluate/task-list',
+				},
+				{
+					path: '/evaluate/add/:customerId/:recordMainId',
+					component: 'evaluate/add/index',
+				},
+				{
+					path: '/evaluate/detail/:templateCode/:recordMainId',
+					component: 'evaluate/detail/index',
+				},
+				{
+					path: '/evaluate/add-and-view-of-composite/:customerId/:templateCode',
+					component: 'evaluate/addAndViewOfComposite/index',
+				},
+				{
+					path: '/evaluate/template-list',
+					component: 'evaluateTemplate/list/index',
+				},
 
-        { path: '/evaluate/task-list', component: 'evaluate/taskList/index' },
-      ],
-
-
-    },
-    { path: '/*', component: '@/pages/404.tsx' },
-  ],
-  alias: {
-    '@': 'src/',
-  },
-  npmClient: 'pnpm',
-  proxy: {
-    '/api': {
-      target: 'http://jsonplaceholder.typicode.com/',
-      changeOrigin: true,
-      pathRewrite: { '^/api': '' },
-    },
-    '/hcsp-gateway': {
-      target: 'https://dev-shcsp.tisi.com.cn/hcsp-gateway',
-      changeOrigin: true,
-      pathRewrite: { '^/hcsp-gateway': '' },
-    },
-    // 本地mock
-    '/local': {
-      // target: "http://localhost:8080/",
-      // hangeOrigin: true,
-      pathRewrite: { '^/local': '' },
-    },
-  },
-  tailwindcss: {},
-
-  extraPostCSSPlugins: [
-    pxtorem({
-      rootValue: 16, // 根据设计稿设置
-      propList: ['*'],
-      unitPrecision: 10,
-    }),
-  ],
-  devtool: process.env.NODE_ENV === 'development' ? 'source-map' : false,
+				{ path: '/evaluate/task-list', component: 'evaluate/taskList/index' },
+			],
 
 
-  jsMinifier: 'none',
+		},
+		{ path: '/*', component: '@/pages/404.tsx' },
+	],
+	alias: {
+		'@': 'src/',
+	},
+	npmClient: 'pnpm',
+	proxy: {
+		'/api': {
+			target: 'http://jsonplaceholder.typicode.com/',
+			changeOrigin: true,
+			pathRewrite: { '^/api': '' },
+		},
+		'/hcsp-gateway': {
+			target: 'https://dev-shcsp.tisi.com.cn/hcsp-gateway',
+			changeOrigin: true,
+			pathRewrite: { '^/hcsp-gateway': '' },
+			// TODO by sunshu dev环境证书过期了，这里暂不进行证书验证
+			secure: false,
+		},
+		// 本地mock
+		'/local': {
+			// target: "http://localhost:8080/",
+			// hangeOrigin: true,
+			pathRewrite: { '^/local': '' },
+		},
+	},
+	tailwindcss: {},
+
+	extraPostCSSPlugins: [
+		pxtorem({
+			rootValue: 16, // 根据设计稿设置
+			propList: ['*'],
+			unitPrecision: 10,
+		}),
+	],
+	devtool: process.env.NODE_ENV === 'development' ? 'source-map' : false,
+
+
+	jsMinifier: 'none',
 });

@@ -16,7 +16,9 @@ import {
 	EInput,
 	ERadio,
 	ESelect,
-	ETable, ETitle,
+	ETable, ETitle, EDynamicList,
+	EMonthCheckBox,
+	EFrequencyCheckBox,
 } from '@/pages/evaluate/components/evaluateForm/components/index';
 import { Form } from 'antd';
 import { OptionTypeEnum } from '@/pages/evaluate/components/evaluateForm/enums/OptionTypeEnum';
@@ -27,6 +29,10 @@ const { EDateTimePicker, ETimePicker } = EDateTime;
 const { ETextArea } = EInput;
 const { OneSection, TwoSection } = ETitle;
 
+//hooks
+//样式
+//工具
+//常量
 //hooks
 //样式
 //工具
@@ -50,7 +56,7 @@ const FormItemBaseContainerDefault = ({
 	return (
 		<div>
 			<div
-				className="w-[620px] font-semibold h-[30px] justify-start items-center gap-2.5 inline-flex mb-[10px]  text-black">
+				className="w-[620px] font-semibold min-h-[30px] justify-start items-center gap-2.5 inline-flex mb-[10px]  text-black">
 				{item?.elementRequireFlg === ElementRequireFlgEnum.YES &&
 					<div className="w-6 font-bold h-6 p-2.5  text-xl justify-center items-center gap-2.5 flex">
 						※
@@ -181,23 +187,8 @@ const FormItemComponent = ({
 
 	// 日期组件- 年月日、日期时间、时分
 	const createDateComponent = ({ elementDataType, ...item }) => {
-		const rules = [{
-			validator: (rule, value = {}) => {
-				if (item?.elementRequireFlg === ElementRequireFlgEnum.YES) {
-					if (!value.answer) {
-						return Promise.reject('必填项');
-					}
-				}
-				//身份证号校验
-				//数字校验
-
-				return Promise.resolve();
-			},
-		}];
-
 		const formItemProps = {
 			...commonFormItemProps,
-			rules,
 		};
 
 		switch (elementDataType) {
@@ -222,6 +213,29 @@ const FormItemComponent = ({
 					</FormItemBaseContainer>
 				);
 		}
+	};
+
+	const createFrequencyCheckboxComponent = ({ elementDataType, ...item }) => {
+		const formItemProps = {
+			...commonFormItemProps,
+		};
+
+		switch (elementDataType) {
+			case ElementDataTypeEnum.WEEK_CHECKBOX:
+				return (
+					<FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
+						<EFrequencyCheckBox form={form} item={item} type="week" />
+					</FormItemBaseContainer>
+				);
+
+			case ElementDataTypeEnum.MONTH_CHECKBOX:
+				return (
+					<FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
+						<EFrequencyCheckBox form={form} item={item} type="month" />
+					</FormItemBaseContainer>
+				);
+		}
+
 	};
 
 	// 文本域组件
@@ -329,6 +343,7 @@ const FormItemComponent = ({
 
 	// 表格组件
 	const createTableComponent = (item: TemplateElementResDTO) => {
+		console.log('ETable item', item);
 		const rules = [
 			{
 				validator: (rule, value) => {
@@ -351,7 +366,12 @@ const FormItemComponent = ({
 
 		return (
 			<FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
-				<ETable form={form} item={item} disabled={disabled} />
+				{
+					item?.optionList?.length > 2 ? <ETable form={form} item={item} disabled={disabled} /> :
+						<EDynamicList form={form} item={item} disabled={disabled} />
+				}
+
+
 			</FormItemBaseContainer>
 		);
 	};
@@ -366,6 +386,8 @@ const FormItemComponent = ({
 		[ElementTypeEnum.TWO_SECTION]: (item) => createTwoSectionComponent(item),
 		[ElementTypeEnum.TABLE]: (item) => createTableComponent(item),
 		[ElementTypeEnum.DATE]: (item) => createDateComponent(item),
+		[ElementTypeEnum.FREQUENCY]: (item) => createFrequencyCheckboxComponent(item),
+
 		// ...
 	};
 
