@@ -20,6 +20,7 @@ import { useRequest } from '@@/exports';
 import { ElementVisibleEnum } from '@/pages/evaluate/components/evaluateForm/enums/ElementVisibleEnum';
 import { useEffect, useState } from 'react';
 import { TitleComponentArrConst } from '@/pages/evaluate/const/TitleComponentConst';
+import { ElementTypeEnum } from '@/enums/ElementTypeEnum';
 
 //常量
 
@@ -38,6 +39,15 @@ const useSubmitAddForm = (form: FormInstance, params, elementList) => {
 	useEffect(() => {
 		setCanSubmit(true);
 	}, [params.templateCode]);
+
+	//表格组件去重
+	const dynamicListComponentDeduplication = (element) => {
+		const { bodyList } = element;
+		const deduplicationBodyList = _.uniq(bodyList.map(item => JSON.stringify(item))).map(item => JSON.parse(item));
+
+		element.bodyList = deduplicationBodyList;
+		return element;
+	};
 
 	const submitAddForm = async () => {
 
@@ -63,15 +73,23 @@ const useSubmitAddForm = (form: FormInstance, params, elementList) => {
 			return acc;
 		}, {});
 
+		//表格组件去重
+
 
 		//PATCH： 这里是因为后端需要将没填写过的数据也带回去，所以需要额外打补丁，将原有的模板数据和已填写的数据进行合并
 		const resultDataList = Object.entries({
 			...initialValues,
 			...values,
 		}).map(([key, value]) => {
+			let newValue = value;
+			//这里是为了处理表格组件的数据
+			if (value.elementType === ElementTypeEnum.TABLE) {
+				newValue = dynamicListComponentDeduplication(newValue);
+			}
+
 			return {
 				elementId: value.id,
-				...value,
+				...newValue,
 			};
 		}).filter(item => item);
 

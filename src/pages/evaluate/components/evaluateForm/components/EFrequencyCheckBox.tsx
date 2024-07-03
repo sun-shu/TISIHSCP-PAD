@@ -10,9 +10,12 @@ const weekOptions = [
 	{ label: '周六', value: '7' },
 	{ label: '周日', value: '1' },
 ];
-const dayOptions = Array.from({ length: 30 }, (v, i) => {
+const dayOptions = Array.from({ length: 31 }, (v, i) => {
 	return { label: `${(i + 1).toString()}日`, value: (i + 1).toString().padStart(2, '0') };
 });
+
+const DAY_IN_MONTH_LIMIT = 10;
+
 const EFrequencyCheckBox = (props) => {
 	const { id, value = {}, onChange, item: config, type = 'week' } = props;
 
@@ -28,14 +31,22 @@ const EFrequencyCheckBox = (props) => {
 	};
 
 	const options = type === 'week' ? weekOptions : dayOptions;
+
+	const checkboxItemDisabled = (item) => {
+		if (type === 'month') {
+			return value?.answer?.split(',').length >= DAY_IN_MONTH_LIMIT && !value?.answer?.split(',').includes(item?.value.toString());
+		}
+		return false;
+	};
 	return (<>
 		<Checkbox.Group
 			className="w-full"
 			value={value?.answer?.split(',')} onChange={handleOnChange}>
-			<Space direction="horizontal" size={[24, 16]} className="w-full" wrap>
+			<Space direction="horizontal" className="w-full" wrap>
 				{
 					options?.map((item) => {
-						return (<Checkbox value={item?.value.toString()} className="min-w-[80px]">{item?.label}</Checkbox>);
+						return (<Checkbox value={item?.value.toString()} className="min-w-[80px]"
+															disabled={checkboxItemDisabled(item)}>{item?.label}</Checkbox>);
 					})
 				}
 			</Space>

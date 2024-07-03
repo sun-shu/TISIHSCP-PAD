@@ -187,9 +187,23 @@ const FormItemComponent = ({
 
 	// 日期组件- 年月日、日期时间、时分
 	const createDateComponent = ({ elementDataType, ...item }) => {
+		const rules = [{
+			validator: (rule, value = {}) => {
+				if (item?.elementRequireFlg === ElementRequireFlgEnum.YES) {
+					if (!value.answer) {
+						return Promise.reject('必填项');
+					}
+				}
+
+				return Promise.resolve();
+			},
+		}];
+
 		const formItemProps = {
 			...commonFormItemProps,
+			rules,
 		};
+
 
 		switch (elementDataType) {
 			case ElementDataTypeEnum.YEAR_MONTH_DAY:
@@ -216,22 +230,35 @@ const FormItemComponent = ({
 	};
 
 	const createFrequencyCheckboxComponent = ({ elementDataType, ...item }) => {
+		const rules = [{
+			validator: (rule, value = {}) => {
+				if (item?.elementRequireFlg === ElementRequireFlgEnum.YES) {
+					if (!value.answer) {
+						return Promise.reject('必填项');
+					}
+				}
+
+				return Promise.resolve();
+			},
+		}];
+
 		const formItemProps = {
 			...commonFormItemProps,
+			rules,
 		};
 
 		switch (elementDataType) {
-			case ElementDataTypeEnum.WEEK_CHECKBOX:
-				return (
-					<FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
-						<EFrequencyCheckBox form={form} item={item} type="week" />
-					</FormItemBaseContainer>
-				);
-
 			case ElementDataTypeEnum.MONTH_CHECKBOX:
 				return (
 					<FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
 						<EFrequencyCheckBox form={form} item={item} type="month" />
+					</FormItemBaseContainer>
+				);
+				
+			case ElementDataTypeEnum.WEEK_CHECKBOX:
+				return (
+					<FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
+						<EFrequencyCheckBox form={form} item={item} type="week" />
 					</FormItemBaseContainer>
 				);
 		}
@@ -343,7 +370,8 @@ const FormItemComponent = ({
 
 	// 表格组件
 	const createTableComponent = (item: TemplateElementResDTO) => {
-		console.log('ETable item', item);
+		const isDynamic = item?.optionList?.length <= 2;
+
 		const rules = [
 			{
 				validator: (rule, value) => {
@@ -367,8 +395,9 @@ const FormItemComponent = ({
 		return (
 			<FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
 				{
-					item?.optionList?.length > 2 ? <ETable form={form} item={item} disabled={disabled} /> :
-						<EDynamicList form={form} item={item} disabled={disabled} />
+					isDynamic ? <EDynamicList form={form} item={item} disabled={disabled} /> :
+						<ETable form={form} item={item} disabled={disabled} />
+
 				}
 
 
