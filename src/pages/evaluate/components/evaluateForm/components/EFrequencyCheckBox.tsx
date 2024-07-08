@@ -16,8 +16,15 @@ const dayOptions = Array.from({ length: 31 }, (v, i) => {
 
 const DAY_IN_MONTH_LIMIT = 10;
 
+/**
+ * 频率选择
+ * @param props
+ * disabled 因为子项要单独计算是否禁用，所以这里需要传递一个总的禁用状态控制
+ * @constructor
+ * @return {JSX.Element}
+ */
 const EFrequencyCheckBox = (props) => {
-	const { id, value = {}, onChange, item: config, type = 'week' } = props;
+	const { id, value = {}, onChange, item: config, type = 'week', disabled } = props;
 
 	const handleOnChange = (newValue) => {
 		const data = {
@@ -38,10 +45,11 @@ const EFrequencyCheckBox = (props) => {
 		}
 		return false;
 	};
-	return (<>
+
+	return (<div id={id}>
 		<Checkbox.Group
 			className="w-full"
-			value={value?.answer?.split(',')} onChange={handleOnChange}>
+			value={value?.answer?.split(',')} onChange={handleOnChange} disabled={disabled}>
 			<Space direction="horizontal" className="w-full" wrap>
 				{
 					options?.map((item) => {
@@ -52,7 +60,7 @@ const EFrequencyCheckBox = (props) => {
 			</Space>
 		</Checkbox.Group>
 
-	</>);
+	</div>);
 };
 
 export default EFrequencyCheckBox;

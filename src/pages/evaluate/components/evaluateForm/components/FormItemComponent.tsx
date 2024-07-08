@@ -251,14 +251,14 @@ const FormItemComponent = ({
 			case ElementDataTypeEnum.MONTH_CHECKBOX:
 				return (
 					<FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
-						<EFrequencyCheckBox form={form} item={item} type="month" />
+						<EFrequencyCheckBox form={form} item={item} type="month" disabled={disabled} />
 					</FormItemBaseContainer>
 				);
-				
+
 			case ElementDataTypeEnum.WEEK_CHECKBOX:
 				return (
 					<FormItemBaseContainer item={item} key={item?.id} form={form} formItemProps={formItemProps}>
-						<EFrequencyCheckBox form={form} item={item} type="week" />
+						<EFrequencyCheckBox form={form} item={item} type="week" disabled={disabled} />
 					</FormItemBaseContainer>
 				);
 		}
@@ -457,7 +457,6 @@ const FormItemComponent = ({
 
 							const setElementVisible = async (elementId: number, elementIsShow: ElementVisibleEnum) => {
 								const element = await form.getFieldValue(elementId);
-								console.log('changeElementVisible element', element, item);
 
 								if (elementIsShow === ElementVisibleEnum.SHOW) {
 									form.setFieldValue(elementId, {
