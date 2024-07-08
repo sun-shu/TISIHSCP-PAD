@@ -19,12 +19,14 @@
 // :
 // {code: "10", name: "年/月/日/时/分", enName: "Year/Month/Day/Hour/Minute", jpName: "年/月/日/時/分"}
 export enum ElementDataTypeEnum {
-  NUMBER = '01',
-  TEXT = '02',
-  DATE = '03',
-  IDCARD = '05',
-  PHONE = '06',
-  YEAR_MONTH_DAY = '08',
-  HOUR_MINUTE = '09',
-  DATE_TIME = '10',
+	NUMBER = '01',
+	TEXT = '02',
+	DATE = '03',
+	IDCARD = '05',
+	PHONE = '06',
+	YEAR_MONTH_DAY = '08',
+	HOUR_MINUTE = '09',
+	DATE_TIME = '10',
+	WEEK_CHECKBOX = '11',
+	MONTH_CHECKBOX = '12',
 }
