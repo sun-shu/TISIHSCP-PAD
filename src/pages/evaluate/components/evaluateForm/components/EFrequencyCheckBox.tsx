@@ -41,7 +41,8 @@ const EFrequencyCheckBox = (props) => {
 
 	const checkboxItemDisabled = (item) => {
 		if (type === 'month') {
-			return value?.answer?.split(',').length >= DAY_IN_MONTH_LIMIT && !value?.answer?.split(',').includes(item?.value.toString());
+			const dataArr = value?.answer?.split(',');
+			return dataArr.length >= DAY_IN_MONTH_LIMIT && !dataArr.includes(item?.value.toString());
 		}
 		return false;
 	};

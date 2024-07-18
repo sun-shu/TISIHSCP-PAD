@@ -237,7 +237,7 @@ const FormItemComponent = ({
 						return Promise.reject('必填项');
 					}
 				}
-
+				
 				return Promise.resolve();
 			},
 		}];
@@ -369,8 +369,10 @@ const FormItemComponent = ({
 	};
 
 	// 表格组件
+
+	const DynamicListLimit = 2;
 	const createTableComponent = (item: TemplateElementResDTO) => {
-		const isDynamic = item?.optionList?.length <= 2;
+		const isDynamic = item?.optionList?.length <= DynamicListLimit;
 
 		const rules = [
 			{
@@ -397,9 +399,7 @@ const FormItemComponent = ({
 				{
 					isDynamic ? <EDynamicList form={form} item={item} disabled={disabled} /> :
 						<ETable form={form} item={item} disabled={disabled} />
-
 				}
-
 
 			</FormItemBaseContainer>
 		);
