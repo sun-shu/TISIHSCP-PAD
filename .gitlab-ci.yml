@@ -8,6 +8,7 @@ sonarqube-check:
   stage: pre
   image:
     name: sonarsource/sonar-scanner-cli:latest
+    pull_policy: if-not-present
     entrypoint: [ "" ]
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
