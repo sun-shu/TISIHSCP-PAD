@@ -109,19 +109,19 @@ variables:
   SENTRY_AUTH_TOKEN: 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
   SENTRY_ORG: tisi
   SENTRY_PROJECT: tisihscp-pad
-#
-#deploy:
-#  stage: deploy
-#  script:
-#    - rm -rf dist/js/*.map
-#    - mkdir -p /cache/hcsp-frontend
-#    - ls -al
-#    - cp -r dist/* /cache/hcsp-frontend
-#  # 只在特定分支上运行
-#  only:
-#    # 合并请求和特定分支
-#    - HCSP-FRONTEND-VUE-SIT
-#    - sunshu_cicd_build
+
+deploy:
+ stage: deploy
+ script:
+   - rm -rf dist/*.map
+   - mkdir -p /cache/hcsp-frontend/evaluation
+   - ls -al
+   - cp -r dist/* /cache/hcsp-frontend/evaluation
+ # 只在特定分支上运行
+ only:
+   # 合并请求和特定分支
+   - HCSP-FRONTEND-VUE-SIT
+   - tisi_cicd
 #
 #
 #notify_feishu:
