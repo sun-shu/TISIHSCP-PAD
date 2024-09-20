@@ -52,7 +52,8 @@ build:
     # 构建
     - pnpm run build
     - mkdir -p $CI_PROJECT_DIR/dist
-    - rm -rf $CI_PROJECT_DIR/dist/*
+    - pwd
+    - ls -la
     # 将 dist 目录复制到 artifacts 目录下
     - cp -r dist/* $CI_PROJECT_DIR/dist/
   artifacts:
