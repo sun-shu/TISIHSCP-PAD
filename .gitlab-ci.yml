@@ -108,7 +108,7 @@ sentry_release:
 variables:
   SENTRY_AUTH_TOKEN: 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
   SENTRY_ORG: tisi
-  SENTRY_PROJECT: TISIHSCP-PAD
+  SENTRY_PROJECT: tisihscp-pad
 #
 #deploy:
 #  stage: deploy
