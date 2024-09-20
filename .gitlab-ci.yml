@@ -55,7 +55,7 @@ build:
     - pwd
     - ls -la
     # 将 dist 目录复制到 artifacts 目录下
-    - cp -r dist/* $CI_PROJECT_DIR/dist/
+    # - cp -r dist/* $CI_PROJECT_DIR/dist/
   artifacts:
     name: "dist-${CI_COMMIT_REF_NAME}"
     paths:
