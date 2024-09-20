@@ -88,7 +88,7 @@ sentry_release:
 
 
     # 上传 /dist/ 目录下的文件
-    - sentry-cli releases files $CI_COMMIT_SHA upload-sourcemaps dist/js --url-prefix ~/js/
+    - sentry-cli releases files $CI_COMMIT_SHA upload-sourcemaps dist/ --url-prefix ~/
 
     # 完成发布
     - sentry-cli releases finalize $CI_COMMIT_SHA
