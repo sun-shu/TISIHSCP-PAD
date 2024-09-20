@@ -39,75 +39,73 @@ cache:
     - hcsp-frontend/node_modules/
 
 
-#build:
-#  stage: build
-#  image: node:16.19.1  # 使用适合您项目的 Node.js 版本
-#  script:
-#    - cd hcsp-frontend || echo "Failed to change directory"
-#    - pwd
-#    - ls -la
-#    # 或者 yarn install，取决于使用的包管理器
-#    - npm install -d cypress
-#    - npm install
-#    # 构建
-#    - npm run build
-#    - mkdir -p $CI_PROJECT_DIR/dist
-#    - rm -rf $CI_PROJECT_DIR/dist/*
-#    # 将 dist 目录复制到 artifacts 目录下
-#    - cp -r dist/* $CI_PROJECT_DIR/dist/
-#  artifacts:
-#    name: "dist-${CI_COMMIT_REF_NAME}"
-#    paths:
-#      - dist/
-#    expire_in: 1 hour
-#  only:
-#    # 合并请求和特定分支
-#    - HCSP-FRONTEND-VUE-SIT
-#    - sunshu_cicd_build
-#
-#
-#sentry_release:
-#  stage: release
-#  image:
-#    name: getsentry/sentry-cli:latest
-#  script:
-#    - pwd
-#    - ls -la
-#    - export SENTRY_AUTH_TOKEN="$SENTRY_AUTH_TOKEN"
-#    - export SENTRY_ORG="$SENTRY_ORG"
-#    - export SENTRY_PROJECT="$SENTRY_PROJECT"
-#    # 如果使用的是自托管的Sentry，请取消下面这行的注释并设置正确的URL
-#    - export SENTRY_URL="https://tisi.sentry.io/"
-#
-#    # 创建新的Sentry版本
-#    - sentry-cli releases new -p $SENTRY_PROJECT $CI_COMMIT_SHA
-#
-#    # 设置提交数据
-#    - sentry-cli releases set-commits --auto $CI_COMMIT_SHA
-#
-#
-#    # 上传 /dist/ 目录下的文件
-#    - sentry-cli releases files $CI_COMMIT_SHA upload-sourcemaps dist/js --url-prefix ~/js/
-#
-#    # 完成发布
-#    - sentry-cli releases finalize $CI_COMMIT_SHA
-#
-#
-#    # 部署到生产环境（如果适用）
-#    - sentry-cli releases deploys $CI_COMMIT_SHA new -e production
-#
-#    - pwd
-#    - ls -la
-#  only:
-#    # 合并请求和特定分支
-#    - HCSP-FRONTEND-VUE-SIT
-#    - sunshu_cicd_build
-#
-#
-#variables:
-#  SENTRY_AUTH_TOKEN: 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
-#  SENTRY_ORG: tisi
-#  SENTRY_PROJECT: admin-vue
+build:
+  stage: build
+  image: node:16.19.1  # 使用适合您项目的 Node.js 版本
+  script:
+    - pwd
+    - ls -la
+    # 或者 yarn install，取决于使用的包管理器
+    - npm install
+    # 构建
+    - npm run build
+    - mkdir -p $CI_PROJECT_DIR/dist
+    - rm -rf $CI_PROJECT_DIR/dist/*
+    # 将 dist 目录复制到 artifacts 目录下
+    - cp -r dist/* $CI_PROJECT_DIR/dist/
+  artifacts:
+    name: "dist-${CI_COMMIT_REF_NAME}"
+    paths:
+      - dist/
+    expire_in: 1 hour
+  only:
+    # 合并请求和特定分支
+    - HCSP-FRONTEND-VUE-SIT
+    - tisi_cicd
+
+
+sentry_release:
+  stage: release
+  image:
+    name: getsentry/sentry-cli:latest
+  script:
+    - pwd
+    - ls -la
+    - export SENTRY_AUTH_TOKEN="$SENTRY_AUTH_TOKEN"
+    - export SENTRY_ORG="$SENTRY_ORG"
+    - export SENTRY_PROJECT="$SENTRY_PROJECT"
+    # 如果使用的是自托管的Sentry，请取消下面这行的注释并设置正确的URL
+    - export SENTRY_URL="https://tisi.sentry.io/"
+
+    # 创建新的Sentry版本
+    - sentry-cli releases new -p $SENTRY_PROJECT $CI_COMMIT_SHA
+
+    # 设置提交数据
+    - sentry-cli releases set-commits --auto $CI_COMMIT_SHA
+
+
+    # 上传 /dist/ 目录下的文件
+    - sentry-cli releases files $CI_COMMIT_SHA upload-sourcemaps dist/js --url-prefix ~/js/
+
+    # 完成发布
+    - sentry-cli releases finalize $CI_COMMIT_SHA
+
+
+    # 部署到生产环境（如果适用）
+    - sentry-cli releases deploys $CI_COMMIT_SHA new -e production
+
+    - pwd
+    - ls -la
+  only:
+    # 合并请求和特定分支
+    - HCSP-FRONTEND-VUE-SIT
+    - tisi_cicd
+
+
+variables:
+  SENTRY_AUTH_TOKEN: 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
+  SENTRY_ORG: tisi
+  SENTRY_PROJECT: TISIHSCP-PAD
 #
 #deploy:
 #  stage: deploy
