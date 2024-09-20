@@ -122,50 +122,50 @@ deploy:
    # 合并请求和特定分支
    - HCSP-FRONTEND-VUE-SIT
    - tisi_cicd
-#
-#
-#notify_feishu:
-#  stage: deploy
-#  image:
-#    name: curlimages/curl:latest
-#    pull_policy: if-not-present
-#  script:
-#    - |
-#      curl -k -X POST -H "Content-Type:application/json" \
-#      -d '{
-#        "msg_type": "post",
-#        "content": {
-#          "post": {
-#            "zh_cn": {
-#              "title": "PROD01-TISIHCSP-ADMIN-VUE项目/分支：'"${CI_COMMIT_BRANCH/tool/}"'已发布",
-#              "content": [
-#                [
-#                {
-#                    "tag": "text",
-#                    "text": "提交人: '"${CI_COMMIT_AUTHOR}"'\n"
-#                  },
-#                  {
-#                    "tag": "text",
-#                    "text": "本次更新内容：'"${CI_COMMIT_MESSAGE}"'\n"
-#                  },
-#
-#                  {
-#                    "tag": "a",
-#                    "text": "查看流水线",
-#                    "href": "'"${CI_PROJECT_URL}/-/pipelines/${CI_PIPELINE_ID}"'"
-#                  }
-#                ]
-#              ]
-#            }
-#          }
-#        }
-#      }' \
-#      https://open.feishu.cn/open-apis/bot/v2/hook/5c380c6b-e97b-4bad-987b-3d5d6117320c
-#  only:
-#    # 合并请求和特定分支
-#    - HCSP-FRONTEND-VUE-SIT
-#    - sunshu_cicd_build
-#  when: on_success
+
+
+notify_feishu:
+ stage: deploy
+ image:
+   name: curlimages/curl:latest
+   pull_policy: if-not-present
+ script:
+   - |
+     curl -k -X POST -H "Content-Type:application/json" \
+     -d '{
+       "msg_type": "post",
+       "content": {
+         "post": {
+           "zh_cn": {
+             "title": "PROD01-TISIHCSP-EVA-PAD-BASE项目/分支：'"${CI_COMMIT_BRANCH/tool/}"'已发布",
+             "content": [
+               [
+               {
+                   "tag": "text",
+                   "text": "提交人: '"${CI_COMMIT_AUTHOR}"'\n"
+                 },
+                 {
+                   "tag": "text",
+                   "text": "本次更新内容：'"${CI_COMMIT_MESSAGE}"'\n"
+                 },
+
+                 {
+                   "tag": "a",
+                   "text": "查看流水线",
+                   "href": "'"${CI_PROJECT_URL}/-/pipelines/${CI_PIPELINE_ID}"'"
+                 }
+               ]
+             ]
+           }
+         }
+       }
+     }' \
+     https://open.feishu.cn/open-apis/bot/v2/hook/5c380c6b-e97b-4bad-987b-3d5d6117320c
+ only:
+   # 合并请求和特定分支
+   - HCSP-FRONTEND-VUE-SIT
+   - tisi_cicd
+ when: on_success
 
 
 
