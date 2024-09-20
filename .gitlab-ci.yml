@@ -46,7 +46,7 @@ build:
     - pwd
     - ls -la
     # 或者 yarn install，取决于使用的包管理器
-    - npm install -g pnpm
+    - npm install -g pnpm@7.33.6
     - pnpm install
     # 构建
     - pnpm run build
